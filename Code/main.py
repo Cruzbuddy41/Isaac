@@ -7,4 +7,6 @@ print("6 7😎😎😎😎😎")
 #Trents commit
 print("93")
 print("test")
-#Michas commit
+#Micahs commit
+for i in range(10):
+    print("Rodih")
