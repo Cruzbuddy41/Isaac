@@ -10,4 +10,4 @@ print("test")
 
 #Micahs commit
 for i in range(10):
-    print("Rodih")
+    print("WE love Rodih")
