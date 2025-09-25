@@ -1,6 +1,6 @@
 import gpiozero as GPIO
 import time
-from HR8825 import HR8825
+from classes_we_use import HR8825
 
 
 try:
