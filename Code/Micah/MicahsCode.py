@@ -9,7 +9,7 @@ try:
 
 	Motor1.SetMicroStep('hardward','1/16step')
 	Motor2.SetMicroStep('hardward' ,'1/16step')
-	Motor2.TurnStep(Dir='forward', steps=1600, stepdelay=0.0.0005)	
+	Motor2.TurnStep(Dir='forward', steps=1600, stepdelay=0.0005)	
 	Motor1.TurnStep(Dir='forward', steps=1600, stepdelay = 0.0005)
 	time.sleep(0.5)
 	Motor1.Stop()
