@@ -14,9 +14,9 @@ try:
   	def forward(steps):
  		a = steps
   		while a != 0:
-    	Motor2.TurnStep(Dir='forward', steps=1, stepdelay=0.0005)	
-		Motor1.TurnStep(Dir='forward', steps=1, stepdelay = 0.0005)
-    	a = a - 1
+    		Motor2.TurnStep(Dir='forward', steps=1, stepdelay=0.0005)	
+			Motor1.TurnStep(Dir='forward', steps=1, stepdelay = 0.0005)
+    		a = a - 1
 
   	forward(2048)
 
