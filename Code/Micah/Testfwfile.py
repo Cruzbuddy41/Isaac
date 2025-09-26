@@ -11,18 +11,16 @@ def forward(steps):
 		Motor2.SetMicroStep('hardward' ,'1/16step')
  		a = steps
   		while a != 0:
-    		Motor2.TurnStep(Dir='forward', steps=1, stepdelay=0.0005)
+			Motor2.TurnStep(Dir='backward', steps=1, stepdelay=0.0005)
 			Motor1.TurnStep(Dir='forward', steps=1, stepdelay = 0.0005)
-    		a = a - 1
-
-	
-    	Motor1.Stop()
+			a = a - 1
+		Motor1.Stop()
 		Motor2.Stop()
     
 	except:
-    	print("\nMotor stop")
+		print("\nMotor stop")
 		Motor1.Stop()
-    	Motor2.Stop()
-    	exit()
+		Motor2.Stop()
+		exit()
 
 forward(2048)
