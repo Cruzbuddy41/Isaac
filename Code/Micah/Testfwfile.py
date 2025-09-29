@@ -1,6 +1,6 @@
 import gpiozero as GPIO
 import time
-from Classes_we_use_test import HR8825
+from classes_we_use import HR8825
 
 def forward(steps):
     try:
