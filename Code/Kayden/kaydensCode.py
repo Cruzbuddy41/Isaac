@@ -23,4 +23,4 @@ def forward(steps):
 		Motor2.Stop()
 		exit()
 
-forward(2048)
+forward(400)
