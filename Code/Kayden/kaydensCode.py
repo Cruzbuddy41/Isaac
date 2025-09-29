@@ -10,7 +10,8 @@ def forward(steps):
         Motor1.SetMicroStep('hardward','1/16step')
         a = steps
         while a != 0:
-            Motor1.TurnStep(Dir='forward', steps=1, stepdelay = 0.0005)
+            Motor2.TurnStep(Dir='forward', steps=1, stepdelay = 0.0005)
+            Motor1.TurnStep(Dir='backward', steps=1, stepdelay = 0.0005)
             a = a - 1
         Motor1.Stop()
         Motor2.Stop()
