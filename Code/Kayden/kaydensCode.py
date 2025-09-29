@@ -8,6 +8,7 @@ def forward(steps):
         Motor2 = HR8825(dir_pin=24, step_pin=18, enable_pin=4, mode_pins=(21, 22, 27))
 
         Motor1.SetMicroStep('hardward','1/16step')
+        Motor2.SetMicroStep('hardward','1/16step')
         a = steps
         while a != 0:
             Motor2.TurnStep(Dir='forward', steps=1, stepdelay = 0.0005)
