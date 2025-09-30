@@ -37,5 +37,6 @@ def turn(steps):
     finally:
         Motor1.Stop()
         Motor2.Stop()
-        print("Motors stopped.")forward(15)
+        print("Motors stopped.")
+forward(15)
 turn(15)
