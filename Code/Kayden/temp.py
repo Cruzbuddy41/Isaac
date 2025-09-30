@@ -32,12 +32,8 @@ def forward(steps):
 			
         Motor1.Stop()
         Motor2.Stop()
-    
-    except Exception as e:
-        print(f"\nMotor stop due to an error: {e}")
-        Motor1.Stop()
-        Motor2.Stop()
-        exit()
+    except KeyboardInterrupt:
+        print("\nStopping motors gracefully...")
 
 # Set microstepping to 'softward' to allow software control
 Motor1.SetMicroStep('softward', '1/16step')
