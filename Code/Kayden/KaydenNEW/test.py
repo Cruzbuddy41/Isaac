@@ -19,6 +19,7 @@ def controller():
             continuous_mode = None      # 'forward' or 'backward' or None
             paused = False
             status_msg = "Ready."
+            time.sleep(5)
             def single_step(direction: str):
                 if direction == 'forward':
                     Motor2.TurnStep(Dir='forward', steps=1, stepdelay=STEP_DELAY)
