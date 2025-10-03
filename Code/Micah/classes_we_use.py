@@ -69,33 +69,9 @@ class HR8825():
         if (mode == ControlMode[1]):
             print("set pins")
             self.Configure_mode(microstep[stepformat])
-        
-    def TurnStep(self, Dir, steps, stepdelay=0.005):
+
+    def TurnStep(self, Dir):
         if (Dir == MotorDir[0]):
-            print("forward")
-            self.digital_write(self.enable_pin, 1)
-            self.digital_write(self.dir_pin, 0)
-        elif (Dir == MotorDir[1]):
-            print("backward")
-            self.digital_write(self.enable_pin, 1)
-            self.digital_write(self.dir_pin, 1)
-        else:
-            print("the dir must be : 'forward' or 'backward'")
-            self.digital_write(self.enable_pin, 0)
-            return
-
-        if (steps == 0):
-            return
-
-        print("turn step:",steps)
-        for i in range(steps):
-            self.digital_write(self.step_pin, True)
-            time.sleep(stepdelay)
-            self.digital_write(self.step_pin, False)
-            time.sleep(stepdelay)
-
-    def Turn(self, Dir):
-        if (Dir == "forward"):
             print("forward")
             self.digital_write(self.enable_pin, 1)
             self.digital_write(self.dir_pin, 0)
@@ -105,3 +81,4 @@ class HR8825():
             self.digital_write(self.dir_pin, 1)
 
         self.digital_write(self.step_pin, True)
+
