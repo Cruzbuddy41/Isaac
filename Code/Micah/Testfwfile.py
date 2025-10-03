@@ -31,7 +31,7 @@ def backward(steps):
         print("Motors running. Press Ctrl+C to stop.")
         time.sleep(2.5)
         for i in range(0, steps):
-            Motor2.Turn(Dir='backward')
+            Motor2.Turn(Dir='forward')
             Motor1.Turn(Dir='forward')
             time.sleep(0.05)
             Motor2.Stop()
