@@ -9,8 +9,7 @@ def forward(steps):
         Motor1.SetMicroStep('hardward', '1/16step')
         Motor2.SetMicroStep('hardward', '1/16step')
         print("Motors running. Press Ctrl+C to stop.")
-        time.sleep(2.5) # hello
-        Motor1.TurnStep(Dir='forward', steps=1, stepdelay=0.05)
+        time.sleep(2.5)
         for i in range(steps):
             Motor2.TurnStep(Dir='backward', steps=1, stepdelay=0.05)
             Motor1.TurnStep(Dir='forward', steps=1, stepdelay=0.05)
@@ -20,4 +19,22 @@ def forward(steps):
         Motor1.Stop()
         Motor2.Stop()
         print("Motors stopped.")
-forward(60)
+def backward(steps):
+    Motor1 = HR8825(dir_pin=13, step_pin=19, enable_pin=12, mode_pins=(16, 17, 20))
+    Motor2 = HR8825(dir_pin=24, step_pin=18, enable_pin=4, mode_pins=(21, 22, 27))
+    try:
+        Motor1.SetMicroStep('hardward', '1/16step')
+        Motor2.SetMicroStep('hardward', '1/16step')
+        print("Motors running. Press Ctrl+C to stop.")
+        time.sleep(2.5)
+        for i in range(steps):
+            Motor2.TurnStep(Dir='forward', steps=1, stepdelay=0.05)
+            Motor1.TurnStep(Dir='backward', steps=1, stepdelay=0.05)
+    except KeyboardInterrupt:
+        print("\nStopping motors gracefully...")
+    finally:
+        Motor1.Stop()
+        Motor2.Stop()
+        print("Motors stopped.")
+forward(40)
+backward(40)
