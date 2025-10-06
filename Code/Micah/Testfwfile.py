@@ -43,4 +43,4 @@ def backward(steps):
         Motor2.Stop()
         print("Motors stopped.")
 forward(40)
-backward(40)
+backward(40) #bugger
