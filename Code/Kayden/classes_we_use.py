@@ -85,4 +85,3 @@ class HR8825():
             return
         self.digital_write(self.step_pin, True)
         self.digital_write(self.step_pin, False)
-        time.sleep(stepdelay)
