@@ -95,7 +95,7 @@ class HR8825():
             time.sleep(stepdelay)
 
     def Turn(self, Dir):
-        if (Dir == MotorDir[0]):
+        if (Dir == "forward"):
             print("forward")
             self.digital_write(self.enable_pin, 1)
             self.digital_write(self.dir_pin, 0)
