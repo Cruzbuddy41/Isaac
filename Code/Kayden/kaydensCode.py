@@ -21,4 +21,4 @@ def forward(steps):
         Motor1.Stop()
         Motor2.Stop()
         print("Motors stopped.")
-forward(40)
+forward(100)
