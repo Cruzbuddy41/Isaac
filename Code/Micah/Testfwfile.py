@@ -13,7 +13,7 @@ def forward(steps):
         for i in range(steps):
             Motor2.Turn(Dir='forward')
             Motor1.Turn(Dir='backward')
-            time.sleep(0.05)
+            time.sleep(0.1)
             Motor2.Stop()
             Motor1.Stop()
     except KeyboardInterrupt:
