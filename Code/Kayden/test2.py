@@ -13,8 +13,6 @@ def forward(steps):
         for i in range(steps):
             Motor2.TurnStep(Dir='forward')
             Motor1.TurnStep(Dir='backward')
-            Motor1 = HR8825(dir_pin=13, step_pin=19, enable_pin=12, mode_pins=(16, 17, 20))
-            Motor2 = HR8825(dir_pin=24, step_pin=18, enable_pin=4, mode_pins=(21, 22, 27))
             time.sleep(0.05)
     except KeyboardInterrupt:
         print("\nStopping motors gracefully...")
