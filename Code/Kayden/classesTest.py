@@ -77,7 +77,7 @@ class HR8825():
         self.digital_write(self.step_pin, True)
         self.digital_write(self.step_pin, False)
 
-     def backward(self):
+    def backward(self):
         print("forward")
         self.digital_write(self.enable_pin, 1)
         self.digital_write(self.dir_pin, 1)
