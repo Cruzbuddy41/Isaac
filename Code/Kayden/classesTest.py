@@ -73,9 +73,8 @@ class HR8825():
     def forward(self):
         print("forward")
         self.digital_write(self.enable_pin, 1)
-        self.digital_write(self.dir_pin, 0)
+        self.digital_write(self.dir_pin, 1)
         self.digital_write(self.step_pin, True)
-        self.digital_write(self.step_pin, False)
         def __init__(self, dir_pin, step_pin, enable_pin, mode_pins):
             self.dir_pin = dir_pin
             self.step_pin = step_pin        
@@ -100,10 +99,9 @@ class HR8825():
 
     def backward(self):
         print("backward")
-        self.digital_write(self.enable_pin, 1)
-        self.digital_write(self.dir_pin, 1)
+        self.digital_write(self.enable_pin, 0)
+        self.digital_write(self.dir_pin, 0)
         self.digital_write(self.step_pin, True)
-        self.digital_write(self.step_pin, False)
         def __init__(self, dir_pin, step_pin, enable_pin, mode_pins):
             self.dir_pin = dir_pin
             self.step_pin = step_pin        
