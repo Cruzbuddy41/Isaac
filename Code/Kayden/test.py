@@ -32,7 +32,7 @@ def backward(steps):
         time.sleep(3)
         for i in range(steps):
             Motor2.forward()
-            time.sleep(0.05)
+            time.sleep(0.5)
             Motor2.forward()
             Motor1.forward()
     except KeyboardInterrupt:
