@@ -14,7 +14,7 @@ def forward(steps):
         for i in range(steps):
             Motor2.forward()
             Motor1.forward()
-            time.sleep(1.5)
+            time.sleep(1)
     except KeyboardInterrupt:
         print("\nStopping motors gracefully...")
     finally:
@@ -39,6 +39,6 @@ def backward(steps):
         Motor1.Stop()
         Motor2.Stop()
         print("Motors stopped.")
-forward(2)
+forward(0.5)
 time.sleep(5)
 backward(20)
