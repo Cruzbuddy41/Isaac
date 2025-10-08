@@ -31,7 +31,7 @@ def backward(steps):
         print("Sleeping 3")
         time.sleep(3)
         for i in range(steps):
-            Motor2.backward()
+            Motor2.forward()
             Motor1.backward()
             time.sleep(0.05)
     except KeyboardInterrupt:
