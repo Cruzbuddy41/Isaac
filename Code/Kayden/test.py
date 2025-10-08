@@ -33,7 +33,7 @@ def backward(steps):
         for i in range(steps):
             Motor2.forward()
             print("2")
-            time.sleep(0.001)
+            time.sleep(1)
             Motor2.forward()
             print("2")
             Motor1.forward()
