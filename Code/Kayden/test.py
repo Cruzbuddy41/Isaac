@@ -39,6 +39,6 @@ def backward(steps):
         Motor1.Stop()
         Motor2.Stop()
         print("Motors stopped.")
-forward(18)
+forward(16)
 time.sleep(5)
 backward(20)
