@@ -38,6 +38,7 @@ def backward(steps):
             print("2")
             Motor1.forward()
             print("1")
+            print(i)
     except KeyboardInterrupt:
         print("\nStopping motors gracefully...")
     finally:
