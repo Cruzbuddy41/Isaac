@@ -9,7 +9,7 @@ def forward(steps):
         Motor1.SetMicroStep('softward', '1/16step')
         Motor2.SetMicroStep('softward', '1/16step')
         print("Motors running. Press Ctrl+C to stop.")
-        print("Sleeping 3")
+        print("Sleeping")
         time.sleep(3) # hello
         for i in range(steps):
             Motor2.forward()
@@ -28,19 +28,17 @@ def backward(steps):
         Motor1.SetMicroStep('hardward', '1/16step')
         Motor2.SetMicroStep('hardward', '1/16step')
         print("Motors running. Press Ctrl+C to stop.")
-        print("Sleeping 3")
-        time.sleep(3)
+        time.sleep(3) # hello
         for i in range(steps):
-            Motor2.forward()
-            Motor1.forward()
-            time.sleep(0.05)
+            Motor2.backward()
+            Motor1.backward()
+            time.sleep(0.5)
     except KeyboardInterrupt:
         print("\nStopping motors gracefully...")
     finally:
         Motor1.Stop()
         Motor2.Stop()
         print("Motors stopped.")
-#forward(15)
-#print("Sleeping 3")
-#time.sleep(3)
-backward(50)
+forward(15)
+time.sleep(5)
+backward(20)
