@@ -42,8 +42,8 @@ def move_backward(steps, delay=0.005):
         print("Motors stopped.")
 
 if __name__ == '__main__':
-    move_forward(15)
+    move_forward(100)
 
     time.sleep(3)
 
-    move_backward(15)
+    move_backward(100)
