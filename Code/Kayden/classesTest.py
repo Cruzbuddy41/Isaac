@@ -99,8 +99,29 @@ class HR8825():
 
     def backward(self):
         print("backward")
-        self.digital_write(self.enable_pin, 1)
-        self.digital_write(self.dir_pin, 0)
+        def __init__(self, dir_pin, step_pin, enable_pin, mode_pins):
+            self.dir_pin = dir_pin
+            self.step_pin = step_pin        
+            self.enable_pin = enable_pin
+            self.mode_pins = mode_pins
+        
+            self.dir = GPIO.LED(self.dir_pin)
+            self.step = GPIO.LED(self.step_pin)        
+            self.enable = GPIO.LED(self.enable_pin)
+            self.mode_1 = GPIO.LED(self.mode_pins[0])
+            self.mode_2 = GPIO.LED(self.mode_pins[1])
+            self.mode_3 = GPIO.LED(self.mode_pins[2])
+
+            self.control_pin = {
+              dir_pin: self.dir,
+              enable_pin: self.enable,
+              step_pin: self.step,
+              mode_pins[0]: self.mode_1,
+              mode_pins[1]: self.mode_2,
+              mode_pins[2]: self.mode_3
+            }
+        self.digital_write(self.enable_pin, -1)
+        self.digital_write(self.dir_pin, -1)
         self.digital_write(self.step_pin, True)
         def __init__(self, dir_pin, step_pin, enable_pin, mode_pins):
             self.dir_pin = dir_pin
