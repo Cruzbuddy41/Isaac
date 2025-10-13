@@ -24,13 +24,13 @@ from time import sleep
 
 # Motor 1 Pins (Driver 1)
 # ENABLE is connected to PWM, DIR is connected to a standard output.
-M1_ENABLE_PIN = 12 # Connects to HR8825 ENABLE (Controls Speed/Power, PWM)
-M1_DIR_PIN = 13 # Connects to HR8825 DIR (Controls Direction)
+M1_ENABLE_PIN = 17 # Connects to HR8825 ENABLE (Controls Speed/Power, PWM)
+M1_DIR_PIN = 27 # Connects to HR8825 DIR (Controls Direction)
  
 
 # Motor 2 Pins (Driver 2)
-M2_ENABLE_PIN = 4 # Connects to HR8825 ENABLE (Controls Speed/Power, PWM)
-M2_DIR_PIN = 24 # Connects to HR8825 DIR (Controls Direction)
+M2_ENABLE_PIN = 22 # Connects to HR8825 ENABLE (Controls Speed/Power, PWM)
+M2_DIR_PIN = 23 # Connects to HR8825 DIR (Controls Direction)
  
 
 # --- Initialise gpiozero devices ---
