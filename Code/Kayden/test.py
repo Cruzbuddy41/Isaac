@@ -128,8 +128,8 @@ try:
     sleep(2)
  
     # 2. Motor 2 Backward (Fast Speed)
-    #motor_backward(2, 0.9) # 90% speed
-    #sleep(2)
+    motor_backward(2, 0.9) # 90% speed
+    sleep(2)
  
     # 3. Stop Motor 1 and change Motor 2 direction
     #motor_stop(1)
