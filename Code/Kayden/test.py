@@ -124,12 +124,12 @@ try:
     print("\n--- Starting Motor Demo ---")
  
     # 1. Motor 1 Forward (Medium Speed)
-    #motor_forward(1, 0.6) # 60% speed
-    #sleep(2)
+    motor_forward(1, 0.6) # 60% speed
+    sleep(2)
  
     # 2. Motor 2 Backward (Fast Speed)
-    motor_backward(2, 0.9) # 90% speed
-    sleep(2)
+    #motor_backward(2, 0.9) # 90% speed
+    #sleep(2)
  
     # 3. Stop Motor 1 and change Motor 2 direction
     #motor_stop(1)
