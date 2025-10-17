@@ -57,3 +57,4 @@ def stop():
 class RobotController:
     pass
 # time.sleep(5)
+forward(15)
