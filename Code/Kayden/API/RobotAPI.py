@@ -8,13 +8,10 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# Set the correct path to your favicon.ico file
-# Example: If the file is in the same directory as your Python script
 favicon_path = "favicon.ico" 
 
 @app.get("/favicon.ico")
 async def get_favicon():
-    # Wrap in a try-except block to handle file not found gracefully
     try:
         return FileResponse(favicon_path)
     except FileNotFoundError:
