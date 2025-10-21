@@ -9,7 +9,10 @@ app = FastAPI(
     description="An API to perform robot actions of forward, backward, left, right turns.",
     version="1.0.0",
 )
-
+@app.get("/")
+async def read_root():
+    return {"message": "Welcome to the Robot API"}
+    
 @app.post("/move/forward", status_code=200)
 async def move_forward(steps: int):
     RobotController.forward(15)
