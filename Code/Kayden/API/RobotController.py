@@ -1,6 +1,8 @@
 import time
 from MotorController import HR8825
-
+import tkinter
+root = tk.Tk()
+root.mainloop()
 
 def forward(steps):
     Motor1 = HR8825(dir_pin=13, step_pin=19, enable_pin=12, mode_pins=(16, 17, 20))
