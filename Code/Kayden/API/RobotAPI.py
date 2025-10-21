@@ -1,9 +1,6 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from typing import Optional, Dict
-import RobotController
-import uuid
 from fastapi.responses import FileResponse
+import RobotController
 
 app = FastAPI(
     title="Robot API",
@@ -11,11 +8,17 @@ app = FastAPI(
     version="1.0.0",
 )
 
-favicon_path = "path/to/your/favicon.ico"
+# Set the correct path to your favicon.ico file
+# Example: If the file is in the same directory as your Python script
+favicon_path = "favicon.ico" 
 
 @app.get("/favicon.ico")
 async def get_favicon():
-    return FileResponse(favicon_path)
+    # Wrap in a try-except block to handle file not found gracefully
+    try:
+        return FileResponse(favicon_path)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Favicon not found")
 
 @app.post("/move/forward", status_code=200)
 async def move_forward(steps: int):
