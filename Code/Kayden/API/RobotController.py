@@ -1,8 +1,7 @@
 import time
 from MotorController import HR8825
 import tkinter
-root = tk.Tk()
-root.mainloop()
+
 go = False
 
 def forward(steps):
