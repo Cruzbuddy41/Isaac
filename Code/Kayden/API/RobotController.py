@@ -3,17 +3,18 @@ from MotorController import HR8825
 import tkinter
 root = tk.Tk()
 root.mainloop()
+go = False
 
 def forward(steps):
     Motor1 = HR8825(dir_pin=13, step_pin=19, enable_pin=12, mode_pins=(16, 17, 20))
     Motor2 = HR8825(dir_pin=24, step_pin=18, enable_pin=4, mode_pins=(21, 22, 27))
-    
+    go = True
     Motor1.SetMicroStep('softward', '1/16step')
     Motor2.SetMicroStep('softward', '1/16step')
     print("Motors running. Press Ctrl+C to stop.")
     print("Sleeping")
     time.sleep(3) # hello
-    for i in range(steps):
+    while go:
         Motor2.forward()
         Motor1.forward()
         time.sleep(0.05)
@@ -39,6 +40,7 @@ def backward(steps):
     print("Motors stopped.")
 
 def stop():
+    go = False
     Motor1 = HR8825(dir_pin=13, step_pin=19, enable_pin=12, mode_pins=(16, 17, 20))
     Motor2 = HR8825(dir_pin=24, step_pin=18, enable_pin=4, mode_pins=(21, 22, 27))
     try:
