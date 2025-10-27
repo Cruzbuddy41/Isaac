@@ -1,56 +1,106 @@
+from PCA9685 import PCA9685
 import time
-from MotorController import HR8825
-import tkinter
 
-go = False
+Dir = [
+    'forward',
+    'backward'
+]
+pwm = PCA9685(0x40, debug=False)
+pwm.setPWMFreq(50)
 
-def forward():
-    Motor1 = HR8825(dir_pin=13, step_pin=19, enable_pin=12, mode_pins=(16, 17, 20))
-    Motor2 = HR8825(dir_pin=24, step_pin=18, enable_pin=4, mode_pins=(21, 22, 27))
-    go = True
-    Motor1.SetMicroStep('softward', '1/16step')
-    Motor2.SetMicroStep('softward', '1/16step')
-    print("Motors running. Press Ctrl+C to stop.")
-    print("Sleeping")
-    time.sleep(3) # hello
-    while go:
-        Motor2.forward()
-        Motor1.forward()
-        time.sleep(0.05)
-    Motor1.Stop()
-    Motor2.Stop()
-    print("Motors stopped.")
+class MotorDriver():
+    ''' Motor Driver Class '''
+    def __init__(self):
+        self.PWMA = 0
+        self.AIN1 = 1
+        self.AIN2 = 2
+        self.PWMB = 5
+        self.BIN1 = 3
+        self.BIN2 = 4
+
+    def MotorRun(self, motor, index, speed):
+        '''
+        Code that turns the motors and adjusts speed
+        motor - 0 or 1 Right side = 0, Left side = 1
+        index - forward or backward
+        speed - 0-100 
+        '''
+
+        # Can't be more than 100%
+        if speed > 100:
+            return
+
+        # Right side motor
+        if(motor == 0):
+
+            # Set our motor speed
+            pwm.setDutycycle(self.PWMA, speed)
+
+            # Log motor
+            print("Right side ", end='')
+
+            # Move this side forward
+            if(index == Dir[0]):
+                print (Dir[0])
+                pwm.setLevel(self.AIN1, 0)
+                pwm.setLevel(self.AIN2, 1)
+            else:
+                print (Dir[1])
+                pwm.setLevel(self.AIN1, 1)
+                pwm.setLevel(self.AIN2, 0)
+
+        # Left side motor
+        elif(motor == 1):
+
+            pwm.setDutycycle(self.PWMB, speed)
+            print("Left side ", end='')
+
+            # Move forward
+            if(index == Dir[0]):
+                print (Dir[0])
+                pwm.setLevel(self.BIN1, 0)
+                pwm.setLevel(self.BIN2, 1)
+            else:
+                print (Dir[1])
+                pwm.setLevel(self.BIN1, 1)
+                pwm.setLevel(self.BIN2, 0)
+
+        # You can only move forward or backwards
+        else:
+            print("Error: index must be forward or backward")
+            return
+
+    def MotorStop(self, motor):
+        if (motor == 0):
+            pwm.setDutycycle(self.PWMA, 0)
+        else:
+            pwm.setDutycycle(self.PWMB, 0)
+
+print("Motor driver test code")
+Motor = MotorDriver()
+
+print("Forward 5 seconds, half speed")
+Motor.MotorRun(0, 'forward', 50)
+Motor.MotorRun(1, 'forward', 50)
+time.sleep(2)
+
+print("Backward 5 seconds, half speed")
+Motor.MotorRun(0, 'backward', 50)
+Motor.MotorRun(1, 'backward', 50)
+time.sleep(2)
 
 
-def backward(steps):
-    Motor1 = HR8825(dir_pin=13, step_pin=19, enable_pin=12, mode_pins=(16, 17, 20))
-    Motor2 = HR8825(dir_pin=24, step_pin=18, enable_pin=4, mode_pins=(21, 22, 27))
-    
-    Motor1.SetMicroStep('hardward', '1/16step')
-    Motor2.SetMicroStep('hardward', '1/16step')
-    print("Motors running. Press Ctrl+C to stop.")
-    time.sleep(3) # hello
-    for i in range(steps):
-        Motor2.backward()
-        Motor1.backward()
-        time.sleep(0.5)
-    Motor1.Stop()
-    Motor2.Stop()
-    print("Motors stopped.")
+print("Turn left, half speed")
+Motor.MotorRun(0, 'forward', 50)
+Motor.MotorRun(1, 'backward', 50)
+time.sleep(2.75)
 
-def stop():
-    go = False
-    Motor1 = HR8825(dir_pin=13, step_pin=19, enable_pin=12, mode_pins=(16, 17, 20))
-    Motor2 = HR8825(dir_pin=24, step_pin=18, enable_pin=4, mode_pins=(21, 22, 27))
-    try:
-        Motor1.SetMicroStep('hardward', '1/16step')
-        Motor2.SetMicroStep('hardward', '1/16step')
-        Motor1.Stop()
-        Motor2.Stop()
-        print("Motors stopped.")
-    except:
-        print("IT AINT STOPPING AHHHHHHHHHHH!!!!!!")
 
-class RobotController:
-    pass
-# time.sleep(5)
+print("Turn right, half speed")
+Motor.MotorRun(0, 'backward', 50)
+Motor.MotorRun(1, 'forward', 50)
+time.sleep(3.25)
+
+print("Stop")
+Motor.MotorStop(0)
+Motor.MotorStop(1)
