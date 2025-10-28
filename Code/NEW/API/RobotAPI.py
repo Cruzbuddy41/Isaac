@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
-import RobotController
+import test
 
 app = FastAPI(
     title="Robot API",
