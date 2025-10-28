@@ -18,8 +18,10 @@ async def get_favicon():
         raise HTTPException(status_code=404, detail="Favicon not found")
 
 @app.post("/move/forward", status_code=200)
-async def move_forward():
-    RobotController.MotorRun()
+async def move_forward(speed):
+    RobotController.MotorRun(0, 'forward', speed)
+    RobotController.MotorRun(1, 'forward', speed)
+    time.sleep(2)
     return {"status": "success"}
 
 @app.post("/stop", status_code=200)
