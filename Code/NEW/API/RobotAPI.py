@@ -19,10 +19,10 @@ async def get_favicon():
 
 @app.post("/move/forward", status_code=200)
 async def move_forward():
-    RobotController.forward()
+    RobotController.MotorRun()
     return {"status": "success"}
 
 @app.post("/stop", status_code=200)
 async def stop():
-    RobotController.stop()
+    RobotController.MotorStop()
     return {"status": "success"}
