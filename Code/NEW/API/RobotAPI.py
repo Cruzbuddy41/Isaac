@@ -2,6 +2,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 import RobotController
 
+Motor = MotorDriver()
+
 app = FastAPI(
     title="Robot API",
     description="An API to perform robot actions of forward, backward, left, right turns.",
@@ -19,12 +21,12 @@ async def get_favicon():
 
 @app.post("/move/forward", status_code=200)
 async def move_forward(speed):
-    MotorDriver.MotorRun(0, 'forward', speed)
-    MotorDriver.MotorRun(1, 'forward', speed)
+    Motor.MotorRun(0, 'forward', speed)
+    Motor.MotorRun(1, 'forward', speed)
     time.sleep(2)
     return {"status": "success"}
 
 @app.post("/stop", status_code=200)
 async def stop():
-    MotorDriver.MotorStop()
+    Motor.MotorStop()
     return {"status": "success"}
