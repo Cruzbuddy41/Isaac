@@ -1,4 +1,4 @@
-from importsFor2 import PCA9685
+from PCA9685 import PCA9685
 import time
 
 Dir = [
