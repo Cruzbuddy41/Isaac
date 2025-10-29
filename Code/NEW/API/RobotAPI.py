@@ -25,6 +25,8 @@ async def move_forward(speed):
     Motor.MotorRun(0, 'forward', speed)
     Motor.MotorRun(1, 'forward', speed)
     time.sleep(2)
+    Motor.MotorStop(0)
+    Motor.MotorStop(1)
     return {"status": "success"}
 
 @app.post("/stop", status_code=200)
