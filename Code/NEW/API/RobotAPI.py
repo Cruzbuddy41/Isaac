@@ -62,5 +62,6 @@ async def move_backward(speed, ttime):
 
 @app.post("/stop", status_code=200)
 async def stop():
-    Motor.MotorStop()
+    Motor.MotorStop(0)
+    Motor.MotorStop(1)
     return {"status": "success"}
