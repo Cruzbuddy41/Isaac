@@ -1,12 +1,12 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 import time
-import importsFor
+import RobotController
 
-Motor = importsFor.MotorDriver()
+Motor = RobotController.MotorDriver()
 
 app = FastAPI(
-    title="API",
+    title="RobotAPI",
     description="An API to perform robot actions of forward, backward, left, right turns.",
     version="1.0.0",
 )
