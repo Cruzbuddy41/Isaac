@@ -39,6 +39,15 @@ async def move_right(speed, ttime):
     time.sleep(ttime)
     Motor.MotorStop(0)
     return {"status": "success"}
+
+@app.post("/move/left", status_code=200)    
+async def move_left(speed, ttime):
+    ttime = int(ttime)
+    speed = int(speed)
+    Motor.MotorRun(1, 'forward', speed)
+    time.sleep(ttime)
+    Motor.MotorStop(1)
+    return {"status": "success"}
     
 @app.post("/stop", status_code=200)
 async def stop():
