@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 import RobotController
 
-Motor = MotorDriver()
+Motor = RobotController.MotorDriver()
 
 app = FastAPI(
     title="Robot API",
