@@ -6,7 +6,7 @@ import importsFor
 Motor = importsFor.MotorDriver()
 
 app = FastAPI(
-    title="Robot API",
+    title="API",
     description="An API to perform robot actions of forward, backward, left, right turns.",
     version="1.0.0",
 )
