@@ -22,8 +22,7 @@ async def get_favicon():
 
 @app.post("/move/forward", status_code=200)
 async def move_forward(speed):
-    print(type(speed))
-    speed = 50
+    speed = int(speed)
     Motor.MotorRun(0, 'forward', speed)
     Motor.MotorRun(1, 'forward', speed)
     time.sleep(2)
