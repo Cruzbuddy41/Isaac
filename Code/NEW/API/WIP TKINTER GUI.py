@@ -1,11 +1,9 @@
 import tkinter as tk
 import requests
 
-# --- Configuration ---
-api_url = "http://127.0.0.1:8000"  # Base API URL
+api_url = "http://127.0.0.1:8000"
 
 
-# --- Function ---
 
 def button_click(direction_id):
     """
