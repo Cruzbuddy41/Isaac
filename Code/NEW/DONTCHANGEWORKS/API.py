@@ -3,7 +3,7 @@ from fastapi.responses import FileResponse
 import time
 import importsFor
 
-Motor = RobotController.MotorDriver()
+Motor = importsFor.MotorDriver()
 
 app = FastAPI(
     title="Robot API",
