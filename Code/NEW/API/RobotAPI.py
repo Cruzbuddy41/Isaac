@@ -24,7 +24,7 @@ async def get_favicon():
 async def move_forward(speed):
     speed = int(speed)
     Motor.MotorRun(0, 'forward', speed)
-    Motor.MotorRun(1, 'forward', speed)
+    Motor.MotorRun(1, 'backward', speed)
     time.sleep(2)
     Motor.MotorStop(0)
     Motor.MotorStop(1)
