@@ -1,84 +1,16 @@
 import tkinter as tk
 import requests
-from PCA9685 import PCA9685
 import time
+import RobotController
 
-Dir = [
-    'forward',
-    'backward'
-]
-pwm = PCA9685(0x40, debug=False)
-pwm.setPWMFreq(50)
+#what i did is define the functions
 
-class MotorDriver():
-    ''' Motor Driver Class '''
-    def __init__(self):
-        self.PWMA = 0
-        self.AIN1 = 1
-        self.AIN2 = 2
-        self.PWMB = 5
-        self.BIN1 = 3
-        self.BIN2 = 4
-
-    def MotorRun(self, motor, index, speed):
-        '''
-        Code that turns the motors and adjusts speed
-        motor - 0 or 1 Right side = 0, Left side = 1
-        index - forward or backward
-        speed - 0-100
-        '''
-
-        # Can't be more than 100%
-        if int(speed) > 100:
-            return
-
-        # Right side motor
-        if(motor == 0):
-
-            # Set our motor speed
-            pwm.setDutycycle(self.PWMA, speed)
-
-            # Log motor
-            print("Right side ", end='')
-
-            # Move this side forward
-            if(index == Dir[0]):
-                print (Dir[0])
-                pwm.setLevel(self.AIN1, 0)
-                pwm.setLevel(self.AIN2, 1)
-            else:
-                print (Dir[1])
-                pwm.setLevel(self.AIN1, 1)
-                pwm.setLevel(self.AIN2, 0)
-
-        # Left side motor
-        elif(motor == 1):
-
-            pwm.setDutycycle(self.PWMB, speed)
-            print("Left side ", end='')
-
-            # Move forward
-            if(index == Dir[0]):
-                print (Dir[0])
-                pwm.setLevel(self.BIN1, 0)
-                pwm.setLevel(self.BIN2, 1)
-            else:
-                print (Dir[1])
-                pwm.setLevel(self.BIN1, 1)
-                pwm.setLevel(self.BIN2, 0)
-
-        # You can only move forward or backwards
-        else:
-            print("Error: index must be forward or backward")
-            return
-
-    def MotorStop(self, motor):
-        if (motor == 0):
-            pwm.setDutycycle(self.PWMA, 0)
-        else:
-            pwm.setDutycycle(self.PWMB, 0)
 
 api_url = "http://127.0.0.1:8000"
+
+Motor = RobotController.MotorDriver()
+
+
 def move_forward(speed, ttime):
     ttime = int(ttime)
     speed = int(speed)
@@ -87,7 +19,26 @@ def move_forward(speed, ttime):
     time.sleep(ttime)
     Motor.MotorStop(0)
     Motor.MotorStop(1)
-
+def move_backward(speed, ttime):
+    ttime = int(ttime)
+    speed = int(speed)
+    Motor.MotorRun(0, 'backward', speed)
+    Motor.MotorRun(1, 'forward', speed)
+    time.sleep(ttime)
+    Motor.MotorStop(0)
+    Motor.MotorStop(1)
+def move_right(speed, ttime):
+    ttime = int(ttime)
+    speed = int(speed)
+    Motor.MotorRun(0, 'forward', speed)
+    time.sleep(ttime)
+    Motor.MotorStop(0)
+def move_left(speed, ttime):
+    ttime = int(ttime)
+    speed = int(speed)
+    Motor.MotorRun(1, 'forward', speed)
+    time.sleep(ttime)
+    Motor.MotorStop(1)
 
 def button_click(direction_id):
     """
@@ -146,6 +97,22 @@ def button_click(direction_id):
 root = tk.Tk()
 root.title("API Controller")
 root.geometry("300x200")
+
+# this lwk creates an entry
+speedentry = tk.Entry(root, width=50)
+speedentry.grid(row=0, column=0, padx=5, pady=5, sticky="e")
+speedentrylabel = tk.Label(root, text="Speed:")
+speedentrylabel.grid(row=1, column=0, padx=5, pady=5, sticky="e")
+
+ttimeentry = tk.Entry(root, width=50)
+ttimeentry.grid(row=0, column=2, padx=5, pady=5, sticky="e")
+ttimeentrylabel = tk.Label(root, text="Speed:")
+ttimeentrylabel.grid(row=1, column=2, padx=5, pady=5, sticky="e")
+
+#gets the input
+def get_inputspeed():
+    user_inputspeed = entry.get()
+
 
 # Configure grid to expand and center buttons
 root.grid_rowconfigure(0, weight=1)
