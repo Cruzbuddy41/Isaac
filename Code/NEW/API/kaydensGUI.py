@@ -75,18 +75,18 @@ root.title("Placeholder GUI")
 root.geometry("400x250")
 
 # Create and place the input labels and entry boxes
-tk.Label(root, text="Input Field 1:").pack(pady=5)
+tk.Label(root, text="Speed:").pack(pady=5)
 entry_input1 = tk.Entry(root, width=40)
 entry_input1.pack(pady=5)
 
-tk.Label(root, text="Input Field 2:").pack(pady=5)
+tk.Label(root, text="Time:").pack(pady=5)
 entry_input2 = tk.Entry(root, width=40)
 entry_input2.pack(pady=5)
 
-tk.Button(root, text="Button 1", command=lambda: move_forward(entry_input1.get(), entry_input2.get())).pack(pady=5)
-tk.Button(root, text="Button 2", command=lambda: move_backward(entry_input1.get(), entry_input2.get())).pack(pady=5)
-tk.Button(root, text="Button 3", command=lambda: move_left(entry_input1.get(), entry_input2.get())).pack(pady=5)
-tk.Button(root, text="Button 4", command=lambda: move_right(entry_input1.get(), entry_input2.get())).pack(pady=5)
+tk.Button(root, text="Forward", command=lambda: move_forward(entry_input1.get(), entry_input2.get())).pack(pady=5)
+tk.Button(root, text="Backward", command=lambda: move_backward(entry_input1.get(), entry_input2.get())).pack(pady=5)
+tk.Button(root, text="Left", command=lambda: move_left(entry_input1.get(), entry_input2.get())).pack(pady=5)
+tk.Button(root, text="Right", command=lambda: move_right(entry_input1.get(), entry_input2.get())).pack(pady=5)
 
 # Start the main event loop
 root.mainloop()
