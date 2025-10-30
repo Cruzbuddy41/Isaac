@@ -88,5 +88,4 @@ tk.Button(root, text="Backward", command=lambda: move_backward(entry_input1.get(
 tk.Button(root, text="Left", command=lambda: move_left(entry_input1.get(), entry_input2.get())).pack(pady=5)
 tk.Button(root, text="Right", command=lambda: move_right(entry_input1.get(), entry_input2.get())).pack(pady=5)
 
-# Start the main event loop
 root.mainloop()
