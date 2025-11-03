@@ -72,7 +72,7 @@ def move_backward(speed: int, ttime: int):
 # Create the main application window
 root = tk.Tk()
 root.title("Placeholder GUI")
-root.geometry("400x250")
+root.geometry("500x300")
 
 # Create and place the input labels and entry boxes
 tk.Label(root, text="Speed:").pack(pady=5)
