@@ -1,6 +1,9 @@
 import tkinter as tk
 import requests
 base_url = "http://10.25.128.40:8000"
+entry_input1 = 40
+entry_input2 = 100
+
 def move_forward(speed: int, ttime: int):
     endpoint = f"{base_url}/move/forward"
 
@@ -78,19 +81,25 @@ root = tk.Tk()
 root.title("Placeholder GUI")
 root.geometry("500x400")
 
-tk.Label(root, text="Speed:").pack(pady=5)
-entry_input1 = tk.Entry(root, width=40)
-entry_input1.pack(pady=5)
+tk.Label(root, text=f"Speed: {entry_input1}").pack(pady=5)
+#entry_input1 = tk.Entry(root, width=40)
+#entry_input1.pack(pady=5)
 
-tk.Label(root, text="Time:").pack(pady=5)
-entry_input2 = tk.Entry(root, width=40)
-entry_input2.pack(pady=5)
+tk.Label(root, text=f"Time: {entry_input2}").pack(pady=5)
+#entry_input2 = tk.Entry(root, width=40)
+#entry_input2.pack(pady=5)
 
-tk.Button(root, text="Forward", command=lambda: move_forward(entry_input1.get(), entry_input2.get())).pack(pady=5)
-tk.Button(root, text="Backward", command=lambda: move_backward(entry_input1.get(), entry_input2.get())).pack(pady=5)
-tk.Button(root, text="Left", command=lambda: move_left(entry_input1.get(), entry_input2.get())).pack(pady=5)
-tk.Button(root, text="Right", command=lambda: move_right(entry_input1.get(), entry_input2.get())).pack(pady=5)
+tk.Button(root, text="Forward \"W\"", command=lambda: move_forward(entry_input1, entry_input2)).pack(pady=5)
+tk.Button(root, text="Backward \"S\"", command=lambda: move_backward(entry_input1, entry_input2)).pack(pady=5)
+tk.Button(root, text="Left \"A\"", command=lambda: move_left(entry_input1, entry_input2)).pack(pady=5)
+tk.Button(root, text="Right \"D\"", command=lambda: move_right(entry_input1, entry_input2)).pack(pady=5)
 
-tk.Button(root, text="STOP", command=stop).pack(pady=20)
+tk.Button(root, text="STOP \"SPACE\"", command=stop, height=40, width=40, bg="red").pack(pady=20)
+
+root.bind("<w>", lambda e: move_forward(entry_input1, entry_input2))
+root.bind("<s>", lambda e: move_backward(entry_input1, entry_input2))
+root.bind("<a>", lambda e: move_left(entry_input1, entry_input2))
+root.bind("<d>", lambda e: move_right(entry_input1, entry_input2))
+root.bind("<space>", lambda e: stop())
 
 root.mainloop()

@@ -21,34 +21,28 @@ async def get_favicon():
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Favicon not found")
 
-
-# ---------- Motion manager (single active motion at a time) ----------
 class MotionManager:
     def __init__(self, motor):
         self.motor = motor
         self._stop_evt = threading.Event()
         self._thread = None
-        self._lock = threading.Lock()  # protect motor access
+        self._lock = threading.Lock()
 
     def _run_motion(self, start_actions, stop_actions, duration_s: float):
-        # Start motors under lock
         with self._lock:
             for action in start_actions:
                 action()
 
         try:
             t0 = time.monotonic()
-            # Poll stop flag frequently for snappy stops
             while (time.monotonic() - t0) < duration_s and not self._stop_evt.is_set():
-                time.sleep(0.02)  # 20 ms polling interval
+                time.sleep(0.02)
         finally:
-            # Always stop motors, even if an exception occurs
             with self._lock:
                 for action in stop_actions:
                     action()
 
     def start(self, start_actions, stop_actions, duration_s: float):
-        # Stop any previous motion (non-blocking join)
         self.stop(wait=False)
         self._stop_evt.clear()
         self._thread = threading.Thread(
@@ -67,8 +61,6 @@ class MotionManager:
 
 motion = MotionManager(Motor)
 
-
-# ---------- Routes that trigger non-blocking motions ----------
 @app.post("/move/forward", status_code=200)
 def move_forward(
     speed: int = Query(..., ge=0, le=100),
@@ -121,9 +113,7 @@ def move_left(
 
 @app.post("/stop", status_code=200)
 def stop():
-    # Signal the background motion to stop and wait briefly
     motion.stop(wait=True)
-    # Double-ensure motors are stopped (belt & suspenders)
     with motion._lock:
         Motor.MotorStop(0)
         Motor.MotorStop(1)
