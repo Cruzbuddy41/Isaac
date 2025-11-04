@@ -94,8 +94,8 @@ def move_right(
     speed: int = Query(..., ge=0, le=100),
     ttime: float = Query(..., gt=0),
 ):
-    start = [lambda: Motor.MotorRun(0, "forward", speed)]
-    stop = [lambda: Motor.MotorStop(0)]
+    start = [lambda: Motor.MotorRun(1, "forward", speed)]
+    stop = [lambda: Motor.MotorStop(1)]
     motion.start(start, stop, ttime)
     return {"status": "running", "action": "right", "speed": speed, "time_s": ttime}
 
