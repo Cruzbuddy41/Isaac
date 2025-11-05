@@ -94,19 +94,25 @@ def move_right(
     speed: int = Query(..., ge=0, le=100),
     ttime: float = Query(..., gt=0),
 ):
-    start = [lambda: Motor.MotorRun(1, "forward", speed)]
-    stop = [lambda: Motor.MotorStop(1)]
+    start = [
+        lambda: Motor.MotorRun(0, "backward", speed),
+        lambda: Motor.MotorRun(1, "backward", speed),
+    ]
+    stop = [lambda: Motor.MotorStop(0), lambda: Motor.MotorStop(1)]
     motion.start(start, stop, ttime)
     return {"status": "running", "action": "right", "speed": speed, "time_s": ttime}
 
 
 @app.post("/move/left", status_code=200)
 def move_left(
-    speed: int = Query(..., ge=0, le=100),
-    ttime: float = Query(..., gt=0),
+        speed: int = Query(..., ge=0, le=100),
+        ttime: float = Query(..., gt=0),
 ):
-    start = [lambda: Motor.MotorRun(1, "backward", speed)]
-    stop = [lambda: Motor.MotorStop(1)]
+    start = [
+        lambda: Motor.MotorRun(0, "backward", speed),
+        lambda: Motor.MotorRun(1, "backward", speed),
+    ]
+    stop = [lambda: Motor.MotorStop(0), lambda: Motor.MotorStop(1)]
     motion.start(start, stop, ttime)
     return {"status": "running", "action": "left", "speed": speed, "time_s": ttime}
 
