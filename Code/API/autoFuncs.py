@@ -1,5 +1,6 @@
 import tkinter as tk
 import requests
+import time
 
 base_url = "http://10.25.128.40:8000"
 
@@ -76,4 +77,21 @@ def stop():
     except requests.exceptions.RequestException as e:
         print("Error occured while stopping")
 
-move_forward(50, 5)
+move_forward(50, 2.8)
+#1 sec = 1 foot
+time.sleep(2.9)
+move_left(10,1)
+time.sleep(1)
+move_forward(50,1.1)
+time.sleep(1)
+move_left(20,1)
+time.sleep(1)
+move_right(50, .75)
+time.sleep(1)
+move_forward(50,.5)
+time.sleep(1.5)
+move_left(30, 1)
+time.sleep(1)
+move_forward(50,2)
+time.sleep(1)
+move_right(50,.8)
