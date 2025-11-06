@@ -4,7 +4,7 @@ import time
 
 base_url = "http://10.25.128.40:8000"
 
-def move_forward(speed: int, ttime: int):
+def move_forward(speed: int, ttime: float):
     endpoint = f"{base_url}/move/forward"
 
     params = {
@@ -20,7 +20,7 @@ def move_forward(speed: int, ttime: int):
     except requests.exceptions.RequestException as e:
         print(f"An error occurred during the request: {e}")
 
-def move_right(speed: int, ttime: int):
+def move_right(speed: int, ttime: float):
     endpoint = f"{base_url}/move/right"
 
     params = {
@@ -36,7 +36,7 @@ def move_right(speed: int, ttime: int):
     except requests.exceptions.RequestException as e:
         print(f"An error occurred during the request: {e}")
 
-def move_left(speed: int, ttime: int):
+def move_left(speed: int, ttime: float):
     endpoint = f"{base_url}/move/left"
 
     params = {
@@ -52,7 +52,7 @@ def move_left(speed: int, ttime: int):
     except requests.exceptions.RequestException as e:
         print(f"An error occurred during the request: {e}")
 
-def move_backward(speed: int, ttime: int):
+def move_backward(speed: int, ttime: float):
     endpoint = f"{base_url}/move/backward"
 
     params = {
@@ -89,9 +89,14 @@ time.sleep(1)
 move_right(50, .75)
 time.sleep(1)
 move_forward(50,.5)
-time.sleep(1.5)
-move_left(30, 1)
 time.sleep(1)
-move_forward(50,2)
-time.sleep(1)
+move_forward(50,1.9)
+time.sleep(2.3)
 move_right(50,.8)
+time.sleep(1)
+move_forward(50,2.2)
+time.sleep(2.5)
+move_left(50,.8)
+time.sleep(1)
+move_forward(50, 2.7)
+
