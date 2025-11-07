@@ -1,7 +1,7 @@
 import tkinter as tk
 import requests
 base_url = "http://10.25.128.40:8000"
-entry_input1 = 40
+entry_input1 = 60
 entry_input2 = 100
 
 def move_forward(speed: int, ttime: int):
