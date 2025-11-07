@@ -96,8 +96,8 @@ tk.Button(root, text="Right \"D\"", command=lambda: move_right(entry_input1, ent
 
 tk.Button(root, text="STOP \"SPACE\"", command=stop, height=40, width=40, bg="red").pack(pady=20)
 
-root.bind("<w>", lambda e: move_forward(entry_input1, entry_input2))
-root.bind("<s>", lambda e: move_backward(entry_input1, entry_input2))
+root.bind("<w>", lambda e: move_backward(entry_input1, entry_input2))
+root.bind("<s>", lambda e: move_forward(entry_input1, entry_input2))
 root.bind("<a>", lambda e: move_left(entry_input1, entry_input2))
 root.bind("<d>", lambda e: move_right(entry_input1, entry_input2))
 root.bind("<space>", lambda e: stop())
