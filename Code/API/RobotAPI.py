@@ -67,8 +67,8 @@ def move_forward(
     ttime: float = Query(..., gt=0),
 ):
     start = [
-        lambda: Motor.MotorRun(0, "backward", speed),
-        lambda: Motor.MotorRun(1, "forward", speed),
+        lambda: Motor.MotorRun(0, "forward", speed),
+        lambda: Motor.MotorRun(1, "backward", speed),
     ]
     stop = [lambda: Motor.MotorStop(0), lambda: Motor.MotorStop(1)]
     motion.start(start, stop, ttime)
@@ -81,8 +81,8 @@ def move_backward(
     ttime: float = Query(..., gt=0),
 ):
     start = [
-        lambda: Motor.MotorRun(0, "forward", speed),
-        lambda: Motor.MotorRun(1, "backward", speed),
+        lambda: Motor.MotorRun(0, "backward", speed),
+        lambda: Motor.MotorRun(1, "forward", speed),
     ]
     stop = [lambda: Motor.MotorStop(0), lambda: Motor.MotorStop(1)]
     motion.start(start, stop, ttime)
@@ -95,8 +95,8 @@ def move_right(
     ttime: float = Query(..., gt=0),
 ):
     start = [
-        lambda: Motor.MotorRun(0, "forward", speed),
-        lambda: Motor.MotorRun(1, "forward", speed),
+        lambda: Motor.MotorRun(0, "backward", speed),
+        lambda: Motor.MotorRun(1, "backward", speed),
     ]
     stop = [lambda: Motor.MotorStop(0), lambda: Motor.MotorStop(1)]
     motion.start(start, stop, ttime)
@@ -109,8 +109,8 @@ def move_left(
         ttime: float = Query(..., gt=0),
 ):
     start = [
-        lambda: Motor.MotorRun(0, "backward", speed),
-        lambda: Motor.MotorRun(1, "backward", speed),
+        lambda: Motor.MotorRun(0, "forward", speed),
+        lambda: Motor.MotorRun(1, "forward", speed),
     ]
     stop = [lambda: Motor.MotorStop(0), lambda: Motor.MotorStop(1)]
     motion.start(start, stop, ttime)
