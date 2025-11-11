@@ -1,21 +1,29 @@
 import cv2
-import time
-import numpy as np
 
+# Open the default camera (usually index 0)
+# If you have multiple cameras, you might need to try other indices (1, 2, etc.)
 cap = cv2.VideoCapture(0)
-time.sleep(1.5)  # Wait for exposure
 
-ret, frame = cap.read()
-
-if ret:
-    # Print max and mean pixel values
-    max_val = np.max(frame)
-    mean_val = np.mean(frame)
-    print(f"Frame captured. Max pixel value: {max_val}, Mean pixel value: {mean_val}")
-
-    cv2.imwrite('diagnostics_image.jpg', frame)
-    print("Image saved as diagnostics_image.jpg")
+# Check if the camera opened successfully
+if not cap.isOpened():
+    print("Error: Could not open video device.")
 else:
-    print("Failed to read frame.")
+    # Loop to continuously capture frames
+    while True:
+        ret, frame = cap.read()  # Read a frame from the camera
 
-cap.release()
+        if not ret:
+            print("Error: Could not read frame.")
+            break
+
+        # Display the captured frame
+        cv2.imshow('Logitech Camera Feed', frame)
+
+        # Exit the loop if 'q' is pressed
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    # Release the camera and destroy all windows when done
+    cap.release()
+    cv2.destroyAllWindows()
+
