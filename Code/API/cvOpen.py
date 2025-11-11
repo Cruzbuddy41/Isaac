@@ -1,29 +1,32 @@
 import cv2
+from datetime import datetime
+from pathlib import Path
 
-# Open the default camera (usually index 0)
-# If you have multiple cameras, you might need to try other indices (1, 2, etc.)
-cap = cv2.VideoCapture(0)
+DEVICE_INDEX = 0          # 0 -> /dev/video0, change if needed
+WIDTH, HEIGHT = 1920, 1080  # pick a supported resolution
 
-# Check if the camera opened successfully
+out_dir = Path("images")
+out_dir.mkdir(exist_ok=True)
+
+cap = cv2.VideoCapture(DEVICE_INDEX, cv2.CAP_V4L2)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, WIDTH)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, HEIGHT)
+
 if not cap.isOpened():
-    print("Error: Could not open video device.")
-else:
-    # Loop to continuously capture frames
-    while True:
-        ret, frame = cap.read()  # Read a frame from the camera
+    raise RuntimeError("Could not open camera. Check device index and permissions.")
 
-        if not ret:
-            print("Error: Could not read frame.")
-            break
+# Warm-up: grab a couple frames so auto-exposure can settle
+for _ in range(5):
+    cap.read()
 
-        # Display the captured frame
-        cv2.imshow('Logitech Camera Feed', frame)
-
-        # Exit the loop if 'q' is pressed
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-    # Release the camera and destroy all windows when done
+ret, frame = cap.read()
+if not ret:
     cap.release()
-    cv2.destroyAllWindows()
+    raise RuntimeError("Failed to capture frame.")
 
+ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+outfile = out_dir / f"photo_{ts}.jpg"
+cv2.imwrite(str(outfile), frame)
+
+cap.release()
+print(f"Saved {outfile}")
