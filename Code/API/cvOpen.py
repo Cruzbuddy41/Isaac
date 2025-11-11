@@ -5,7 +5,7 @@ from pathlib import Path
 DEVICE_INDEX = 0          # 0 -> /dev/video0, change if needed
 WIDTH, HEIGHT = 1920, 1080  # pick a supported resolution
 
-out_dir = Path("images")
+out_dir = Path("images") #hi kayden
 out_dir.mkdir(exist_ok=True)
 
 cap = cv2.VideoCapture(DEVICE_INDEX, cv2.CAP_V4L2)
