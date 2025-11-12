@@ -80,11 +80,11 @@ def stop():
 move_forward(50, 2.8)
 #1 sec = 1 foot
 time.sleep(2.9)
-move_left(12,1.5)
+move_left(25,1.5)
 time.sleep(2.1)
 move_forward(50,1)
 time.sleep(1.4)
-move_right(25, .9)
+move_right(25, 4)
 time.sleep(1.1)
 move_forward(50,.7)
 time.sleep(.9)
