@@ -1,4 +1,4 @@
-import cv2
+"""import cv2
 from datetime import datetime
 from pathlib import Path
 
@@ -29,4 +29,4 @@ outfile = out_dir / f"photo_{ts}.jpg"
 cv2.imwrite(str(outfile), frame)
 
 cap.release()
-print(f"Saved {outfile}")
+print(f"Saved {outfile}")"""
