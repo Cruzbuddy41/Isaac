@@ -2,7 +2,7 @@ import cv2
 from datetime import datetime
 from pathlib import Path
 
-DEVICE_INDEX = 1          # 0 -> /dev/video0, change if needed
+DEVICE_INDEX = 0          # 0 -> /dev/video0, change if needed
 WIDTH, HEIGHT = 1920, 1080  # pick a supported resolution
 
 out_dir = Path("images") #hi kayden

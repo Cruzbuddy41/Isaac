@@ -1,8 +1,8 @@
 import tkinter as tk
 import requests
 base_url = "http://10.25.128.40:8000"
-entry_input1 = 100
-entry_input2 = 100
+entry_input1 = 40
+entry_input2 = 1000
 
 def move_forward(speed: int, ttime: int):
     endpoint = f"{base_url}/move/forward"
@@ -23,6 +23,7 @@ def move_forward(speed: int, ttime: int):
 def move_right(speed: int, ttime: int):
     endpoint = f"{base_url}/move/right"
 
+    speed = speed / 2
     params = {
         "speed": speed,
         "ttime": ttime
@@ -38,6 +39,8 @@ def move_right(speed: int, ttime: int):
 
 def move_left(speed: int, ttime: int):
     endpoint = f"{base_url}/move/left"
+
+    speed = speed / 2
 
     params = {
         "speed": speed,
