@@ -77,24 +77,30 @@ def stop():
     except requests.exceptions.RequestException as e:
         print("Error occured while stopping")
 
-move_forward(50, 2.8)
+move_forward(30, 2.8)
 #1 sec = 1 foot
-time.sleep(2.9)
-move_left(12,1.5)
+time.sleep(3)
+move_left(10,2.5)
+time.sleep(2.6)
+move_forward(30,4.8)
+time.sleep(5.1)
+
+move_right(25, 2)
+time.sleep(2.5)
+
+move_forward(30,2)
 time.sleep(2.1)
-move_forward(50,1)
-time.sleep(1.4)
-move_right(25, .9)
-time.sleep(1.1)
-move_forward(50,.7)
-time.sleep(.9)
-move_forward(50,1.9)
-time.sleep(2)
-move_right(25,.8)
-time.sleep(.9)
-move_forward(50,2.2)
-time.sleep(2.3)
-move_left(25,.9)
-time.sleep(1)
-move_forward(50, 2.8)
+move_left(10,3)
+time.sleep(3.1)
+move_forward(30,2.5)
+time.sleep(2.6)
+
+move_right(25,2.5)
+time.sleep(2.6)
+move_forward(30,4)
+time.sleep(4.1)
+
+move_left(25,2.5)
+time.sleep(3.1)
+move_forward(30, 3)
 
