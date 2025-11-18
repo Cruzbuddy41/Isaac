@@ -77,30 +77,27 @@ def stop():
     except requests.exceptions.RequestException as e:
         print("Error occured while stopping")
 
-move_forward(30, 2.8)
+move_forward(30, 2.75)
 
-time.sleep(3)
-move_left(10,2.5)
-time.sleep(2.6)
-move_forward(30,4.8)
-time.sleep(5.1)
+time.sleep(2.85)
+move_left(10,1.5)
+time.sleep(1.6)
+move_forward(30,4.6)
+time.sleep(4.7)
 
-move_right(25, 2)
-time.sleep(2.5)
+move_right(45, 0.7175)
+time.sleep(0.7175)
 
-move_forward(30,2)
-time.sleep(2.1)
-move_left(10,3)
-time.sleep(3.1)
-move_forward(30,2.5)
-time.sleep(2.6)
+move_forward(30,4.88)
+time.sleep(4.88)
 
-move_right(25,2.5)
-time.sleep(2.6)
-move_forward(30,4)
-time.sleep(4.1)
 
-move_left(25,2.5)
-time.sleep(3.1)
-move_forward(30, 3)
+move_right(52,.7)
+time.sleep(.7)
+move_forward(30,4.3)
+time.sleep(4.3)
+
+move_left(45,.85)
+time.sleep(.85)
+move_forward(30, 6)
 
