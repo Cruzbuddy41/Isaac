@@ -2,7 +2,7 @@ import tkinter as tk
 import requests
 import time
 
-base_url = "http://10.25.128.225:8000"
+base_url = "http://10.25.128.40:8000"
 
 def move_forward(speed: int, ttime: float):
     endpoint = f"{base_url}/move/forward"
