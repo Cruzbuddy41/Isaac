@@ -78,7 +78,7 @@ def stop():
         print("Error occured while stopping")
 
 move_forward(30, 2.8)
-#1 sec = 1 foot
+
 time.sleep(3)
 move_left(10,2.5)
 time.sleep(2.6)
