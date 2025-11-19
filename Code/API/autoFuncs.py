@@ -85,21 +85,18 @@ time.sleep(1.6)
 move_forward(30,4.5)
 time.sleep(4.7)
 
-move_right(45, 0.7175)
+move_right(50, 0.7175)
 time.sleep(0.7175)
-
 
 move_forward(30,4.88)
 time.sleep(4.88)
 
-move_left(10,1.5)
-time.sleep(1.6)
-move_right(45,0.7175)
+move_right(45,0.74)
 time.sleep(0.7175)
-move_forward(30,4.3)
+move_forward(30,4)
 time.sleep(4.3)
 
-move_left(45,.85)
+move_left(44,.85)
 time.sleep(.85)
 move_forward(30, 6)
 
