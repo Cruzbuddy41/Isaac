@@ -63,7 +63,7 @@ motion = MotionManager(Motor)
 
 @app.post("/move/forward", status_code=200)
 def move_forward(
-    speed: int = Query(..., ge=0, le=100),
+    speed: int = Query(..., ge=0, le=200),
     ttime: float = Query(..., gt=0),
 ):
     start = [
@@ -77,7 +77,7 @@ def move_forward(
 
 @app.post("/move/backward", status_code=200)
 def move_backward(
-    speed: int = Query(..., ge=0, le=100),
+    speed: int = Query(..., ge=0, le=200),
     ttime: float = Query(..., gt=0),
 ):
     start = [
@@ -91,7 +91,7 @@ def move_backward(
 
 @app.post("/move/right", status_code=200)
 def move_right(
-    speed: int = Query(..., ge=0, le=100),
+    speed: int = Query(..., ge=0, le=200),
     ttime: float = Query(..., gt=0),
 ):
     start = [
@@ -105,7 +105,7 @@ def move_right(
 
 @app.post("/move/left", status_code=200)
 def move_left(
-        speed: int = Query(..., ge=0, le=100),
+        speed: int = Query(..., ge=0, le=200),
         ttime: float = Query(..., gt=0),
 ):
     start = [

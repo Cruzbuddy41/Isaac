@@ -27,8 +27,8 @@ class MotorDriver():
         '''
 
         # Can't be more than 100%
-        if int(speed) > 100:
-            return
+        #if int(speed) > 100:
+            #return
 
         # Right side motor
         if(motor == 0):
