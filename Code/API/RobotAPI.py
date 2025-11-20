@@ -63,7 +63,7 @@ motion = MotionManager(Motor)
 
 @app.post("/move/forward", status_code=200)
 def move_forward(
-    speed: int = Query(..., ge=0, le=200),
+    speed: int = Query(..., ge=0, le=1000),
     ttime: float = Query(..., gt=0),
 ):
     start = [
