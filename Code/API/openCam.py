@@ -1,25 +1,35 @@
-import numpy as np
-import cv2 as cv
+# To capture from a webcam, use 0
+# To open a video file, use the path: 'my_video.mp4'
+cap = cv2.VideoCapture(0)
 
-cap = cv.VideoCapture(0)
 if not cap.isOpened():
-    print("Cannot open camera")
+    print("Error: Could not open video source.")
     exit()
+
 while True:
-    # Capture frame-by-frame
+    # Read one frame at a time
     ret, frame = cap.read()
 
-    # if frame is read correctly ret is True
+    # 'ret' is a boolean: True if frame was read successfully
     if not ret:
-        print("Can't receive frame (stream end?). Exiting ...")
-        break
-    # Our operations on the frame come here
-    gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-    # Display the resulting frame
-    cv.imshow('frame', gray)
-    if cv.waitKey(1) == ord('q'):
+        print("End of video or error.")
         break
 
-# When everything done, release the capture
+    # --- PROCESS YOUR FRAME HERE ---
+    # Example: Convert to grayscale
+    gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    # ---
+
+    # Display the processed frame
+    cv2.imshow('Webcam Feed', gray_frame)
+
+    # Quit when 'q' is pressed
+    # We use a 1ms waitKey. This also controls the video playback speed.
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Clean up
 cap.release()
-cv.destroyAllWindows()
+cv2.destroyAllWindows()
+
+
