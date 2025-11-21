@@ -1,4 +1,4 @@
-# To capture from a webcam, use 0
+""""# To capture from a webcam, use 0
 # To open a video file, use the path: 'my_video.mp4'
 cap = cv2.VideoCapture(0)
 
