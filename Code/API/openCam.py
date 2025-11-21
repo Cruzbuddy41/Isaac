@@ -1,5 +1,8 @@
 # To capture from a webcam, use 0
 # To open a video file, use the path: 'my_video.mp4'
+import cv2
+import numpy as np
+
 cap = cv2.VideoCapture(0)
 
 if not cap.isOpened():
