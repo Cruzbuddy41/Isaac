@@ -30,6 +30,6 @@ while True:
 
 # Clean up
 cap.release()
-cv2.destroyAllWindows()
+cv2.destroyAllWindows()"""
 
 
