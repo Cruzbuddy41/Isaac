@@ -6,6 +6,7 @@ image = cv2.imread('my_image.jpg')
 print(f"Shape: {image.shape}")
 print(f"Data type: {image.dtype}")
 
+#hi
 gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 print(f"Grayscale shape: {gray_image.shape}")
 hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
