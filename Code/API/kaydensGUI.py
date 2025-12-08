@@ -83,10 +83,10 @@ def stop():
 def boom(entry_input1):
     temp = entry_input1
     if(temp < 90):
-        entry_input1 = temp + 10
-        return entry_input1
+        temp = temp + 10
     else:
-        print("Cant go faster sadly")
+        print("Can't go faster sadly")
+    return temp
 
 root = tk.Tk()
 root.title("Placeholder GUI")
