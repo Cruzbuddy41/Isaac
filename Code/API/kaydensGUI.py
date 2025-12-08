@@ -80,12 +80,14 @@ def stop():
     except requests.exceptions.RequestException as e:
         print("Error occured while stopping")
 
-def boom(entry_input1):
+def boom():
+    global entry_input1
     temp = entry_input1
-    if(temp < 90):
+    if((temp + 10) <= 100):
         temp = temp + 10
         entry_input1 = temp
         print("did something")
+        print(entry_input1)
     else:
         print("Can't go faster sadly")
 
@@ -105,7 +107,7 @@ tk.Button(root, text="Forward \"W\"", command=lambda: move_forward(entry_input1,
 tk.Button(root, text="Backward \"S\"", command=lambda: move_backward(entry_input1, entry_input2)).pack(pady=5)
 tk.Button(root, text="Left \"A\"", command=lambda: move_left(entry_input1, entry_input2)).pack(pady=5)
 tk.Button(root, text="Right \"D\"", command=lambda: move_right(entry_input1, entry_input2)).pack(pady=5)
-tk.Button(root, text="FASTER!!!!!!!!!!!! \"F\"", command=lambda: boom(entry_input1)).pack(pady=5)
+tk.Button(root, text="FASTER!!!!!!!!!!!! \"F\"", command=lambda: boom()).pack(pady=5)
 
 tk.Button(root, text="STOP \"SPACE\"", command=stop, height=40, width=40, bg="red").pack(pady=20)
 
@@ -113,7 +115,7 @@ root.bind("<w>", lambda e: move_backward(entry_input1, entry_input2))
 root.bind("<s>", lambda e: move_forward(entry_input1, entry_input2))
 root.bind("<a>", lambda e: move_left(entry_input1, entry_input2))
 root.bind("<d>", lambda e: move_right(entry_input1, entry_input2))
-root.bind("<f>", lambda e: boom(entry_input1))
+root.bind("<f>", lambda e: boom())
 root.bind("<space>", lambda e: stop())
 
 root.mainloop()
