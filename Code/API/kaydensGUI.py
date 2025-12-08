@@ -84,9 +84,10 @@ def boom(entry_input1):
     temp = entry_input1
     if(temp < 90):
         temp = temp + 10
+        entry_input1 = temp
+        print("did something")
     else:
         print("Can't go faster sadly")
-    return temp
 
 root = tk.Tk()
 root.title("Placeholder GUI")
