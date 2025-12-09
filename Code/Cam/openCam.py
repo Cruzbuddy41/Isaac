@@ -1,4 +1,4 @@
-import cv2
+"""import cv2
 import numpy as np
 
 lower_blue = np.array([100, 150, 50])
