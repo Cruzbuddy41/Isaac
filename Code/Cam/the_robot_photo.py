@@ -1,10 +1,10 @@
 import cv2
 import time
 
-def capture_photo_mac(filename="webcam_photo.jpg"):
+def capture_photo_mac(filename="ph.jpg"):
     # 0 represents the first available camera (usually the built-in one)
     # If you have external cameras, you might use 1, 2, etc.
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
 
     # Check if the camera opened successfully
     if not cap.isOpened():
