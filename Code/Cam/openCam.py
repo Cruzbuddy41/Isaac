@@ -22,4 +22,4 @@ while True:
     cv2.imshow("Video", frame)
 
 cap.release()
-cv2.destroyAllWindows()
+cv2.destroyAllWindows()"""
