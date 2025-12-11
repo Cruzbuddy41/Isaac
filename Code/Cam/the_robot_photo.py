@@ -12,9 +12,10 @@ def capture_photo_mac(filename="ph.jpg"):
         return
 
     print("Camera opened successfully. Capturing image in 2 seconds...")
-    time.sleep(2) # Give camera time to adjust
 
-    # Capture a single frame
+    for i in range(30):
+        cap.read()
+        # Capture a single frame
     ret, frame = cap.read()
 
     # Release the camera resource
