@@ -4,38 +4,57 @@ import smtplib
 from email.message import EmailMessage
 import imghdr
 import cv2
-import time
 folder_path = "/home/isaac/Isaac/Code/Cam"
 filename = "images.jpg"
 image_path = os.path.join(folder_path, filename)
 
-def capture_photo_mac(filename):
-    # 0 represents the first available camera (usually the built-in one)
-    # If you have external cameras, you might use 1, 2, etc.
+def capture_photo_linux(filename="images.jpg"):
     cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
 
-    # Check if the camera opened successfully
     if not cap.isOpened():
-        print("Error: Could not open camera.")
+        print("Could not open camera")
         return
-    print("Camera opened successfully. Capturing image in 2 seconds...")
-    time.sleep(2) # Give camera time to adjust
 
-    # Capture a single frame
+    print("Capturing image")
+
+    for i in range(30):
+        cap.read()
+
     ret, frame = cap.read()
 
-    # Release the camera resource
     cap.release()
-
     if ret:
-        # Save the captured frame as a JPEG file
         cv2.imwrite(filename, frame)
-        print(f"Picture saved successfully as {filename}")
-    else:
-        print("Error: Failed to capture frame.")
+        print(f"Worked (Potentially)")
+        return frame
 
-if __name__ == "__main__":
-    capture_photo_mac("images.jpg")
+def capture_photo_mac(filename="ph.jpg"):
+    cap = cv2.VideoCapture(0)
+
+    if not cap.isOpened():
+        print("Could not open camera")
+        return
+
+    print("Capturing image")
+
+    for i in range(30):
+        cap.read()
+
+    ret, frame = cap.read()
+
+    cap.release()
+    if ret:
+        cv2.imwrite(filename, frame)
+        print(f"Worked (Potentially)")
+        return frame
+
+print("Input mac for mac Input linux for linux")
+choice = input()
+
+if(choice == "mac"):
+    image = capture_photo_mac()
+else:
+    image = capture_photo_linux()
 
 def send_image_email(sender_email, sender_password, receiver_email, image_path):
     # 1. Create the email object
