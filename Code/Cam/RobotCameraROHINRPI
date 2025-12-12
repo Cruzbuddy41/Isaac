@@ -94,7 +94,7 @@ def send_image_email(sender_email, sender_password, receiver_email, image_path):
 if __name__ == "__main__":
     SENDER = "bd554192@ahschool.com"
     PASSWORD = "yfuw cqhq rynh ptmb" # Your App Password (not login password)
-    RECEIVER = "sadfeen.sadiq@ahschool.com"
+    RECEIVER = ["sadfeen.sadiq@ahschool.com", "brian.grom@ahschool.com]
     IMAGE_FILE = image_path
 
     send_image_email(SENDER, PASSWORD, RECEIVER, IMAGE_FILE)
