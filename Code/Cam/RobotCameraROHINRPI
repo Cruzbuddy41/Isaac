@@ -1,0 +1,81 @@
+import time
+import os
+import smtplib
+from email.message import EmailMessage
+import imghdr
+import cv2
+import time
+folder_path = "/home/isaac/Isaac/Code/Cam"
+filename = "images.jpg"
+image_path = os.path.join(folder_path, filename)
+
+def capture_photo_mac(filename):
+    # 0 represents the first available camera (usually the built-in one)
+    # If you have external cameras, you might use 1, 2, etc.
+    cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
+
+    # Check if the camera opened successfully
+    if not cap.isOpened():
+        print("Error: Could not open camera.")
+        return
+    print("Camera opened successfully. Capturing image in 2 seconds...")
+    time.sleep(2) # Give camera time to adjust
+
+    # Capture a single frame
+    ret, frame = cap.read()
+
+    # Release the camera resource
+    cap.release()
+
+    if ret:
+        # Save the captured frame as a JPEG file
+        cv2.imwrite(filename, frame)
+        print(f"Picture saved successfully as {filename}")
+    else:
+        print("Error: Failed to capture frame.")
+
+if __name__ == "__main__":
+    capture_photo_mac("images.jpg")
+
+def send_image_email(sender_email, sender_password, receiver_email, image_path):
+    # 1. Create the email object
+    msg = EmailMessage()
+    msg['Subject'] = 'Here is your captured photo!'
+    msg['From'] = sender_email
+    msg['To'] = receiver_email
+    msg.set_content('Attached is the image captured from the camera.')
+
+    # 2. Open the image file in binary mode
+    if not os.path.exists(image_path):
+        print(f"Error: The file {image_path} does not exist.")
+        return
+
+    with open(image_path, 'rb') as f:
+        file_data = f.read()
+        file_type = imghdr.what(f.name) # automated detection of jpeg/png
+        file_name = os.path.basename(image_path)
+
+    # 3. Attach the image data to the email
+    msg.add_attachment(file_data, maintype='image', subtype=file_type, filename=file_name)
+
+    # 4. Connect to the SMTP server (Example: Gmail)
+    # If using Outlook, use 'smtp.office365.com'
+    # If using Yahoo, use 'smtp.mail.yahoo.com'
+    try:
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+            smtp.login(sender_email, sender_password)
+            smtp.send_message(msg)
+            print("Email sent successfully!")
+    except Exception as e:
+        print(f"Error sending email: {e}")
+
+
+
+
+if __name__ == "__main__":
+    SENDER = "bd554192@ahschool.com"
+    PASSWORD = "yfuw cqhq rynh ptmb" # Your App Password (not login password)
+    RECEIVER = "bd554192@ahschool.com"
+    IMAGE_FILE = image_path
+
+    send_image_email(SENDER, PASSWORD, RECEIVER, IMAGE_FILE)
