@@ -49,4 +49,4 @@ if(choice == "mac"):
 else:
     image = capture_photo_linux()
 
-kaydensUpload.send(image, "bd6010870@ahschool.com")
+kaydensUpload.send(image, "brian.grom@ahschool.com")
