@@ -1,11 +1,15 @@
-import cv2
 import time
 import os
 import smtplib
 from email.message import EmailMessage
 import imghdr
+import cv2
+import time
+folder_path = "/home/isaac/Isaac/Code/Cam"
+filename = "images.jpg"
+image_path = os.path.join(folder_path, filename)
 
-def capture_photo_mac(foldername="/home/Isaac/Isaac/Code/Cam", filename="images.jpg"):
+def capture_photo_mac(filename):
     # 0 represents the first available camera (usually the built-in one)
     # If you have external cameras, you might use 1, 2, etc.
     cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
@@ -14,9 +18,6 @@ def capture_photo_mac(foldername="/home/Isaac/Isaac/Code/Cam", filename="images.
     if not cap.isOpened():
         print("Error: Could not open camera.")
         return
-
-full_path = os.path.join(folder_path, filename)
-
     print("Camera opened successfully. Capturing image in 2 seconds...")
     time.sleep(2) # Give camera time to adjust
 
@@ -28,10 +29,13 @@ full_path = os.path.join(folder_path, filename)
 
     if ret:
         # Save the captured frame as a JPEG file
-        cv2.imwrite(full_path, frame)
+        cv2.imwrite(filename, frame)
         print(f"Picture saved successfully as {filename}")
     else:
         print("Error: Failed to capture frame.")
+
+if __name__ == "__main__":
+    capture_photo_mac("images.jpg")
 
 def send_image_email(sender_email, sender_password, receiver_email, image_path):
     # 1. Create the email object
@@ -69,10 +73,9 @@ def send_image_email(sender_email, sender_password, receiver_email, image_path):
 
 
 if __name__ == "__main__":
-    capture_photo_mac()
     SENDER = "bd554192@ahschool.com"
     PASSWORD = "yfuw cqhq rynh ptmb" # Your App Password (not login password)
-    RECEIVER = "sadfeen.sadiq@ahschool.com"
-    IMAGE_FILE = "/Users/bd554192/Downloads/download.jpeg" 
+    RECEIVER = "bd554192@ahschool.com"
+    IMAGE_FILE = image_path
 
     send_image_email(SENDER, PASSWORD, RECEIVER, IMAGE_FILE)
