@@ -1,5 +1,4 @@
 import cv2
-import numpy as np
 import kaydensUpload
 
 image = cv2.imread('my_image.jpg')
