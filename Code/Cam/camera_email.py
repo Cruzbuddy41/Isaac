@@ -15,7 +15,7 @@ def send_photo_email(image, receiver_email):
     smtpPort = 587
     sender = "bd6011080@ahschool.com"  # Your sender email
     # This must be an App Password if using Gmail/Yahoo
-    password = "xbgq zkzv pvwz odkv"  # Your generated App Password
+    password = "zons uhwz jlvo pemu"  # Your generated App Password
 
     currentTime = time.strftime("%m-%d-%Y", time.localtime())
     subject = "Photo capture: " + currentTime
