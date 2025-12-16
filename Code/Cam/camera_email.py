@@ -12,7 +12,7 @@ SMTP_PORT = 587
 SENDER_EMAIL = "bd6011080@ahschool.com"
 # Use an App Password for Gmail/Yahoo for security
 SENDER_PASSWORD = "zons uhwz jlvo pemu"
-RECEIVER_EMAIL = "sadfeen.sadiq@ahschool.com"  # <-- Change this to your recipient email
+RECEIVER_EMAIL = "brian.grom@ahschool.com"  # <-- Change this to your recipient email
 IMAGE_FILENAME = "ph.jpg"
 
 
