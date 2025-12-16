@@ -3,9 +3,7 @@ import time
 import smtplib
 import ssl
 from email.message import EmailMessage
-from email.mime.application import MIMEApplication
 from os.path import basename
-
 ssl._create_default_https_context = ssl._create_unverified_context
 
 namevar = "ph.jpg"
@@ -34,10 +32,12 @@ def capture_photo_mac(filename="ph.jpg"):
         print("Failed to grab frame")
 
 
+
 capture_photo_mac()
 
-sender_email = "bd6010870@ahschool.com"
-receiver_email = "brian.grom@ahschool.com"
+
+send = "bd6010870@ahschool.com"
+unluckyrecipient = "brian.grom@ahschool.com"
 app_password = "inmm taje rprm tlqu"
 
 subject = "micah's python project"
@@ -48,24 +48,24 @@ mr grom do you know me? are we tight
 msg = EmailMessage()
 msg.set_content(body)
 msg["Subject"] = subject
-msg["From"] = sender_email
-msg["To"] = receiver_email
+msg["From"] = send
+msg["To"] = unluckyrecipient
+
 
 try:
     with open(namevar, "rb") as fil:
-        part = MIMEApplication(
-            fil.read(),
-            Name=basename(namevar)
-        )
-    part['Content-Disposition'] = 'attachment; filename="%s"' % basename(namevar)
-    msg.attach(part)
+        file_data = fil.read()
+        file_name = basename(namevar)
+
+    msg.add_attachment(file_data, maintype='image', subtype='jpeg', filename=file_name)
     print(f"Attachment added: {namevar}")
 except FileNotFoundError:
     print(f"Warning: Attachment file not found at {namevar}")
 
+# Send email
 try:
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-        server.login(sender_email, app_password)
+        server.login(send, app_password)
         server.send_message(msg)
     print("Email sent successfully!")
 except smtplib.SMTPException as e:
