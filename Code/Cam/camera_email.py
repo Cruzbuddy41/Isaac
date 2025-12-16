@@ -1,9 +1,9 @@
 import time
 import os
 import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.image import MIMEImage
+from camera_email.mime.multipart import MIMEMultipart
+from camera_email.mime.text import MIMEText
+from camera_email.mime.image import MIMEImage
 
 # --- Configuration ---
 # Update these variables with your information

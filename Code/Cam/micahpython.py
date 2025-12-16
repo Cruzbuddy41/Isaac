@@ -2,8 +2,8 @@ import cv2
 import time
 import smtplib
 import ssl
-from email.message import EmailMessage
-from email.mime.application import MIMEApplication
+from camera_email.message import EmailMessage
+from camera_email.mime.application import MIMEApplication
 from os.path import basename
 
 
