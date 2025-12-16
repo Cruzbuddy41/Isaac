@@ -1,80 +1,80 @@
-import time
-import os
+import cv2
 import smtplib
-from camera_email.mime.multipart import MIMEMultipart
-from camera_email.mime.text import MIMEText
-from camera_email.mime.image import MIMEImage
+import time
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
 
-# --- Configuration ---
-# Update these variables with your information
-SMTP_SERVER = 'smtp.gmail.com' # Use 'smtp.mail.yahoo.com', etc. for other providers
-SMTP_PORT = 587
-SENDER_EMAIL = 'bd6011080@ahschool.com'
-# Use an App Password for Gmail/Yahoo for security (not your main password)
-SENDER_PASSWORD = 'Trentontc1'
-RECEIVER_EMAIL = 'sadfeen.sadiq@ahschool.com'
-EMAIL_SUBJECT = 'Raspberry Pi Photo'
-EMAIL_BODY = 'Here is the photo captured by the Raspberry Pi.'
-IMAGE_PATH = '/home/isaac/Isaac/code/cam/ph.jpg' # Ensure your 'pi' user has access to this path
 
-# --- 1. Capture the image using picamera2 ---
-def capture_image(path):
-    print("Initializing camera and capturing photo...")
-    try:
-        from picamera2 import Picamera2
-        picam2 = Picamera2()
-        camera_config = picam2.create_preview_configuration(main={"size": (1280, 720)})
-        picam2.configure(camera_config)
-        picam2.start()
-        time.sleep(2) # Give camera time to adjust light levels
-        picam2.capture_file(path)
-        picam2.stop()
-        print(f"Photo saved to {path}")
-    except ImportError:
-        print("Picamera2 not found. Please install it using: sudo apt install python3-picamera2")
-        exit()
-    except Exception as e:
-        print(f"Error capturing image: {e}")
-        exit()
+def send_photo_email(image, receiver_email):
+    """
+    Takes an OpenCV image frame and emails it to a recipient.
+    """
+    # --- Email Configuration (Update these details) ---
+    smtpServer = "smtp.gmail.com"
+    smtpPort = 587
+    sender = "bd6011080@ahschool.com"  # Your sender email
+    # This must be an App Password if using Gmail/Yahoo
+    password = "Trentontc1"  # Your generated App Password
 
-# --- 2. Send the email with the image attachment ---
-def send_email(subject, body, sender, recipient, password, image_path):
-    print(f"Attempting to send email to {recipient}...")
+    currentTime = time.strftime("%m-%d-%Y", time.localtime())
+    subject = "Photo capture: " + currentTime
 
-    # Create the root message and fill in the headers
     msg = MIMEMultipart()
-    msg['Subject'] = subject
     msg['From'] = sender
-    msg['To'] = recipient
-    msg.attach(MIMEText(body, 'plain'))
+    msg['To'] = receiver_email
+    msg['Subject'] = subject
 
-    # Attach the image
-    try:
-        with open(image_path, 'rb') as fp:
-            img = MIMEImage(fp.read())
-        img.add_header('Content-Disposition', 'attachment', filename=os.path.basename(image_path))
-        msg.attach(img)
-    except FileNotFoundError:
-        print(f"Attachment file not found at {image_path}. Skipping attachment.")
+    # Attach a plain text body
+    msg.attach(MIMEText("A photo captured by the camera.", 'plain'))
+
+    # Encode the OpenCV image frame into JPEG data
+    is_success, buffer = cv2.imencode(".jpg", image)
+    if not is_success:
+        print("Failed to encode image.")
         return
 
-    # Send the email via SMTP server
+    img_data = buffer.tobytes()
+    # Create the email image attachment
+    image_attachment = MIMEImage(img_data, name="image.jpg")
+    msg.attach(image_attachment)
+
+    # --- Send the email ---
     try:
-        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
-            server.starttls() # Secure the connection
-            server.login(sender, password)
-            server.send_message(msg)
+        server = smtplib.SMTP(smtpServer, smtpPort)
+        server.starttls()
+        server.login(sender, password)
+        server.sendmail(sender, receiver_email, msg.as_string())
+        server.quit()
         print("Email sent successfully!")
     except smtplib.SMTPAuthenticationError:
-        print("Authentication error. Check your email address and App Password.")
-        print("For Gmail, you may need to generate an App Password in your [Google Account security settings](myaccount.google.com).")
+        print("Authentication Error: Check your sender email and App Password.")
+        print("Ensure you are using an App Password for Gmail, not your main account password.")
     except Exception as e:
-        print(f"An error occurred while sending email: {e}")
+        print(f"An error occurred: {e}")
 
-# --- Main execution ---
+
+# --- Main execution block ---
 if __name__ == "__main__":
-    capture_image(IMAGE_PATH)
-    if os.path.exists(IMAGE_PATH):
-        send_email(EMAIL_SUBJECT, EMAIL_BODY, SENDER_EMAIL, RECEIVER_EMAIL, SENDER_PASSWORD, IMAGE_PATH)
+    # Configure the recipient email address here:
+    RECIPIENT_EMAIL_ADDRESS = "sadfeen.sadiq@ahschool.com"
+
+    print("Opening camera (using OpenCV)...")
+    # Use index 0 for the first camera connected (USB or CSI camera)
+    cap = cv2.VideoCapture(0)
+
+    if not cap.isOpened():
+        print("Cannot open camera. Exiting.")
+        exit()
+
+    # Capture a single frame
+    ret, frame = cap.read()
+
+    if ret:
+        print("Frame captured. Preparing email...")
+        send_photo_email(frame, RECIPIENT_EMAIL_ADDRESS)
     else:
-        print("Cannot send email because the image file was not created.")
+        print("Failed to grab frame.")
+
+    # Release the camera resource
+    cap.release()
