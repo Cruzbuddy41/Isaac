@@ -1,9 +1,14 @@
+import os
+import sys
+
+# Remove the path that causes the 'xcb' error
+os.environ.pop("QT_QPA_PLATFORM_PLUGIN_PATH", None)
+# Force the output to the Pi's HDMI monitor
+os.environ["DISPLAY"] = ":0"
+
 import cv2
 import numpy as np
 import time
-import os
-os.environ.pop("QT_QPA_PLATFORM_PLUGIN_PATH", None)
-
 def nothing(x):
     pass
 
