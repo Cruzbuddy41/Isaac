@@ -1,0 +1,100 @@
+import time
+import os
+import smtplib
+from email.message import EmailMessage
+import imghdr
+import cv2
+folder_path = "/home/isaac/Isaac/Code/Cam"
+filename = "images.jpg"
+image_path = os.path.join(folder_path, filename)
+
+def capture_photo_linux(filename="images.jpg"):
+    cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
+
+    if not cap.isOpened():
+        print("Could not open camera")
+        return
+
+    print("Capturing image")
+
+    for i in range(30):
+        cap.read()
+
+    ret, frame = cap.read()
+
+    cap.release()
+    if ret:
+        cv2.imwrite(filename, frame)
+        print(f"Worked (Potentially)")
+        return frame
+
+def capture_photo_mac(filename="ph.jpg"):
+    cap = cv2.VideoCapture(0)
+
+    if not cap.isOpened():
+        print("Could not open camera")
+        return
+
+    print("Capturing image")
+
+    for i in range(30):
+        cap.read()
+
+    ret, frame = cap.read()
+
+    cap.release()
+    if ret:
+        cv2.imwrite(filename, frame)
+        print(f"Worked (Potentially)")
+        return frame
+
+print("Input mac for mac Input linux for linux")
+choice = input()
+
+if(choice == "mac"):
+    image = capture_photo_mac()
+else:
+    image = capture_photo_linux()
+
+def send_image_email(sender_email, sender_password, receiver_email, image_path):
+    # 1. Create the email object
+    msg = EmailMessage()
+    msg['Subject'] = 'Here is your captured photo!'
+    msg['From'] = sender_email
+    msg['To'] = receiver_email
+    msg.set_content('Attached is the image captured from the camera.')
+
+    # 2. Open the image file in binary mode
+    if not os.path.exists(image_path):
+        print(f"Error: The file {image_path} does not exist.")
+        return
+
+    with open(image_path, 'rb') as f:
+        file_data = f.read()
+        file_type = imghdr.what(f.name) # automated detection of jpeg/png
+        file_name = os.path.basename(image_path)
+
+    # 3. Attach the image data to the email
+    msg.add_attachment(file_data, maintype='image', subtype=file_type, filename=file_name)
+
+    # 4. Connect to the SMTP server (Example: Gmail)
+    # If using Outlook, use 'smtp.office365.com'
+    # If using Yahoo, use 'smtp.mail.yahoo.com'
+    try:
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+            smtp.login(sender_email, sender_password)
+            smtp.send_message(msg)
+            print("Email sent successfully!")
+    except Exception as e:
+        print(f"Error sending email: {e}")
+
+
+
+
+if __name__ == "__main__":
+    SENDER = "bd554192@ahschool.com"
+    PASSWORD = "yfuw cqhq rynh ptmb" # Your App Password (not login password)
+    RECEIVER = ["sadfeen.sadiq@ahschool.com", "brian.grom@ahschool.com"]
+    IMAGE_FILE = image_path
+
+    send_image_email(SENDER, PASSWORD, RECEIVER, IMAGE_FILE)
