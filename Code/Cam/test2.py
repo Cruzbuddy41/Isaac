@@ -11,7 +11,7 @@ os.environ["DISPLAY"] = ":0"
 cap = cv2.VideoCapture(0)
 
 # Define the static lower and upper bounds
-# Lower: [81, 100, 100]
+# Lower: [81, 100, 100
 # Upper: [101, 255, 255]
 lower = np.array([81, 100, 100])
 upper = np.array([101, 255, 255])
