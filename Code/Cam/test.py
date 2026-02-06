@@ -1,23 +1,28 @@
 import cv2
-import kaydensUpload
+import numpy as np
+import time
 
-image = cv2.imread('my_image.jpg')
-kaydensUpload.send(image, "bd6010870@ahschool.com")
-print(f"Shape: {image.shape}")
-print(f"Data type: {image.dtype}")
+def nothing(x):
+    pass
 
-# Convert our BGR image to Grayscale
-gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-print(f"Grayscale shape: {gray_image.shape}")
-hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-blurred_image = cv2.GaussianBlur(image, (5, 5), 0)
-gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-ret, binary_mask = cv2.threshold(gray_image, 127, 255, cv2.THRESH_BINARY)
-edges = cv2.Canny(image, 100, 200)
-cv2.imshow('Edges', edges)
+cv2.namedWindow("Picker")
+cv2.createTrackbar("Color", "Picker", 0, 245, nothing)
 
+cap = cv2.VideoCapture(0)
 
-cv2.waitKey(0)
+while True:
+    _, frame = cap.read()
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    hue = cv2.getTrackbarPos("Color", "Picker")
+    lower = np.array([hue - 10, 100, 100])
+    upper = np.array([hue + 10, 255, 255])
+    mask = cv2.inRange(hsv, lower, upper)
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    cv2.drawContours(frame, contours, -1, (0, 255, 0), 2)
+
+    cv2.imshow("Picker", frame)
+    if cv2.waitKey(1) == ord('q'): break
+
+cap.release()
 cv2.destroyAllWindows()
-cv2.imwrite('new_image.png', edges)
+o
