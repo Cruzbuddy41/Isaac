@@ -34,7 +34,7 @@ while True:
     # Show the result
     cv2.imshow("Object Detection", frame)
 
-    if cv2.waitKey(1) == ord('q'):
+    if cv2.waitKey(100) == ord('q'):
         break
 
 cap.release()
