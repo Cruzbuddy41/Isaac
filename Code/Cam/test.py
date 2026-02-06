@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 import time
+import os
+os.environ.pop("QT_QPA_PLATFORM_PLUGIN_PATH", None)
 
 def nothing(x):
     pass
