@@ -20,7 +20,7 @@ if ret:
         for line in lines:
             x1, y1, x2, y2 = line[0]
             cv2.line(frame, (x1, y1), (x2, y2), (0, 0, 255), 3)
-    save_path = 'lane_output.jpg'
+    save_path = 'lane_output2.jpg'
     cv2.imwrite(save_path, frame)
     print(f"Image successfully saved to {save_path}")
 else:
