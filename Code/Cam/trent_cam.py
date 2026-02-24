@@ -2,17 +2,6 @@ import cv2
 import numpy as np
 import time
 
-
-def region_of_interest(img, vertices):
-    """Applies an image mask. Only keeps the region of the image defined by the polygon."""
-    mask = np.zeros_like(img)
-    # Fill the polygon with white (255)
-    cv2.fillPoly(mask, vertices, 255)
-    # Bitwise AND to only keep edges inside the mask
-    masked_image = cv2.bitwise_and(img, mask)
-    return masked_image
-
-
 # 1. Initialize camera
 cap = cv2.VideoCapture(0)
 time.sleep(2)  # Camera warm-up
@@ -21,54 +10,56 @@ ret, frame = cap.read()
 if ret:
     print("Frame captured. Processing...")
 
-    # 2. Get image dimensions for the Region of Interest
-    height = frame.shape[0]
-    width = frame.shape[1]
+    # --- Image Processing Pipeline ---
 
-    # 3. Grayscale and Blur
+    # 2. Grayscale and Blur
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    blur = cv2.GaussianBlur(gray, (5, 5), 0)  # Reduced blur kernel to keep sharp lines
+    blur = cv2.GaussianBlur(gray, (5, 5), 0)
 
-    # 4. Canny Edge Detection (Removed the fixed threshold for better lighting adaptability)
-    edges = cv2.Canny(blur, 50, 150)
+    # 3. Otsu's Thresholding
+    # Automatically calculates the best threshold value to separate the
+    # light tiles from the darker tape and grout. Inverts it so darks become white.
+    _, thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
 
-    # 5. Define Region of Interest (A triangle covering the bottom half of the frame)
-    # Adjust these points based on how your camera is mounted!
-    roi_vertices = np.array([
-        [(0, height),  # Bottom left
-         (int(width / 2), int(height / 2)),  # Middle center (vanishing point)
-         (width, height)]  # Bottom right
-    ], dtype=np.int32)
+    # 4. Morphological Opening (The Grout Eraser)
+    # A 7x7 kernel will erase any white lines thinner than 7 pixels (the grout),
+    # while keeping the thicker white blobs (the tape).
+    kernel = np.ones((7, 7), np.uint8)
+    clean_mask = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel, iterations=1)
 
-    # Apply the mask to the edges
-    masked_edges = region_of_interest(edges, roi_vertices)
+    # 5. Canny Edge Detection on the cleaned mask
+    edges = cv2.Canny(clean_mask, 50, 150)
 
-    # 6. Hough Line Transform on the masked edges
+    # 6. Hough Line Transform
+    # We increase maxLineGap heavily to jump over the torn/missing pieces of tape
     lines = cv2.HoughLinesP(
-        masked_edges,
+        edges,
         rho=1,
         theta=np.pi / 180,
-        threshold=50,  # Minimum number of intersections to detect a line
-        minLineLength=40,  # Minimum length of a line (pixels)
-        maxLineGap=20  # Max gap allowed between line segments to connect them
+        threshold=40,
+        minLineLength=50,  # Ignore tiny random edges
+        maxLineGap=100  # High gap to connect the patchy/torn tape segments
     )
 
     # 7. Draw the lines
     if lines is not None:
         for line in lines:
             x1, y1, x2, y2 = line[0]
-            cv2.line(frame, (x1, y1), (x2, y2), (0, 0, 255), 4)
+            # Drawing green lines so they contrast well with the blue tape
+            cv2.line(frame, (x1, y1), (x2, y2), (0, 255, 0), 4)
 
-    # 8. Save the result
-    save_path = 'accurate_lane_output.jpg'
-    cv2.imwrite(save_path, frame)
+    # 8. Save the results (including debug images!)
+    cv2.imwrite('lane_final_output.jpg', frame)
 
-    # Tip: Also save the 'masked_edges' image to see exactly what the computer is seeing!
-    # cv2.imwrite('debug_edges.jpg', masked_edges)
+    # Saving these debug images is highly recommended so you can see how
+    # the Pi is "thinking" step-by-step
+    cv2.imwrite('debug_1_thresh.jpg', thresh)
+    cv2.imwrite('debug_2_clean_mask.jpg', clean_mask)
+    cv2.imwrite('debug_3_edges.jpg', edges)
 
-    print(f"Image successfully saved to {save_path}")
+    print("Images successfully saved.")
 
 else:
-    print("Error: Could not capture an image.")
+    print("Error: Could not capture an image from the camera.")
 
 cap.release()
