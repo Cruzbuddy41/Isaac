@@ -1,7 +1,7 @@
 import cv2
 import kaydensUpload
 
-def capture_photo_linux(filename="ph.jpg"):
+def capture_photo_linux(filename="lane.jpg"):
     cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
 
     if not cap.isOpened():
@@ -48,5 +48,4 @@ if(choice == "mac"):
     image = capture_photo_mac()
 else:
     image = capture_photo_linux()
-
-kaydensUpload.send(image, "brian.grom@ahschool.com")
+cv2.imwrite("lane.jpg", image)
