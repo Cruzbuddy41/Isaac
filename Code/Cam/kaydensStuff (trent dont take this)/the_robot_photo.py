@@ -1,5 +1,6 @@
 import cv2
 import kaydensUpload
+import makeLines
 
 def capture_photo_linux(filename="lane.jpg"):
     cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
@@ -49,3 +50,4 @@ if(choice == "mac"):
 else:
     image = capture_photo_linux()
 cv2.imwrite("lane.jpg", image)
+makeLines.lanes()
