@@ -32,7 +32,7 @@ if img is None:
    print("Error reading image")
 else:
    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-
+   print("It works?")
 
    lower_blue = np.array([90, 50, 50])
    upper_blue = np.array([130, 255, 255])
