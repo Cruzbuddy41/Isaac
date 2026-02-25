@@ -22,6 +22,8 @@ def capture_photo_linux(filename="lane1.jpg"):
         print(f"Worked (Potentially)")
         return frame
 
+capture_photo_linux()
+
 image_path = "lane1.jpg"
 img = cv2.imread(image_path)
 
