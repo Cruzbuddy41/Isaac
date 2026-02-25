@@ -38,9 +38,12 @@ while True:
     #
     #
     #     cv2.line(img, (x1,y1), (x2, y2), (0,255,0), 2)
-    for line in houghlines:
-        x1, y1, x2, y2 = line[0]
-        cv2.line(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+    if houghlines is not None:
+        for line in houghlines:
+            x1, y1, x2, y2 = line[0] 
+            cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+    else:
+        print("No lines were detected with the current parameters.")
     cv2.imshow('frame', frame)
     if cv2.waitKey(1) == ord('q'):
         break
