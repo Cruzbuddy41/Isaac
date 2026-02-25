@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-
+import time
 cap = cv2.VideoCapture(0)
 if not cap.isOpened():
     print("Cannot open camera")
@@ -23,7 +23,7 @@ while True:
 
     edge = cv2.Canny(dilated, 50, 150)
 
-    houghlines = cv2.HoughLinesP(edge, rho=1, theta=np.pi / 180, threshold=50, minLineLength=50, maxLineGap=100)
+    houghlines = cv2.HoughLinesP(edge, rho=1, theta=np.pi/180, threshold=50, minLineLength=50, maxLineGap=100)
 
     # for rtheta in houghlines:
     #     arr = np.array(rtheta[0], dtype=np.float64)
@@ -40,13 +40,15 @@ while True:
     #     cv2.line(img, (x1,y1), (x2, y2), (0,255,0), 2)
     if houghlines is not None:
         for line in houghlines:
-            x1, y1, x2, y2 = line[0] 
-            cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            x1, y1, x2, y2 = line[0]
+            cv2.line(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
     else:
         print("No lines were detected with the current parameters.")
     cv2.imshow('frame', frame)
     if cv2.waitKey(1) == ord('q'):
         break
+    time.sleep(5)
 
 cap.release()
 cv2.destroyAllWindows()
+
