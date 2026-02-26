@@ -3,8 +3,9 @@ import kaydensUpload
 import makeLines
 
 def capture_photo_linux(filename="lane.jpg"):
-    cap = cv2.VideoCapture(0)
-    cap.set(cv2.CAP_PROP_ZOOM, 0)
+    cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
     if not cap.isOpened():
         print("Could not open camera")
         return
