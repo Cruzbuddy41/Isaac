@@ -4,7 +4,7 @@ import kaydensUpload
 import makeLines
 
 
-def capture_photo_linux(filename="lane.jpg"):
+def capture_photo_linux(filename="lanes.jpg"):
     os.system("v4l2-ctl -d /dev/video0 --set-ctrl=zoom_absolute=100")
 
     cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
@@ -24,7 +24,7 @@ def capture_photo_linux(filename="lane.jpg"):
     return None
 
 
-def capture_photo_mac(filename="ph.jpg"):
+def capture_photo_mac(filename="lanes.jpg"):
     cap = cv2.VideoCapture(0)
     cap.set(cv2.CAP_PROP_ZOOM, 100)
 
