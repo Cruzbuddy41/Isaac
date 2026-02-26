@@ -1,10 +1,10 @@
-import cv2
+"""import cv2
 import smtplib
 import time
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
-"""
+
 def send(image, receiver):
     smtpServer = "smtp.gmail.com"
     smtpPort = 587
@@ -29,4 +29,4 @@ def send(image, receiver):
     server.login(sender, password)
     server.sendmail(sender, receiver, msg.as_string())
     server.quit()
-    print("Email sent successfully!")
+    print("Email sent successfully!")"""
