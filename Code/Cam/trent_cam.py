@@ -19,3 +19,4 @@ cv2.destroyAllWindows()
 
 # Write an image back to disk
 cv2.imwrite('new_image.png', image)
+#
