@@ -52,5 +52,5 @@ if choice == "mac":
 else:
     image = capture_photo_linux()
 
-cv2.imwrite("lanes.jpg", image)
+cv2.imwrite("lane.jpg", image)
 makeLines.lanes()
