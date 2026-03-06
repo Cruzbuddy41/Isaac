@@ -52,9 +52,5 @@ if choice == "mac":
 else:
     image = capture_photo_linux()
 
-if image is not None:
-    # Final save and process
-    cv2.imwrite("lanes.jpg", image)
-    makeLines.lanes()
-else:
-    print("Failed to capture image.")
+cv2.imwrite("lanes.jpg", image)
+makeLines.lanes()
