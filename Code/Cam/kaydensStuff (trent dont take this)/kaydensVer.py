@@ -54,3 +54,23 @@ else:
 
 cv2.imwrite("lane.jpg", image)
 makeLines.lanes()
+#New Stuff:
+
+if choice == "mac":
+    image = capture_photo_mac()
+else:
+    image = capture_photo_linux()
+
+cv2.imwrite("lane.jpg", image)
+
+img_center = image.shape[1] / 2
+lane_center = makeLines.lanes()
+
+threshold = 50
+
+if lane_center < (img_center - threshold):
+    print("Left turn")
+elif lane_center > (img_center + threshold):
+    print("Right turn")
+else:
+    print("Forward hall")
