@@ -38,18 +38,3 @@ else:
 
 if image is not None:
     cv2.imwrite("lane.jpg", image)
-    lane_center = makeLines.lanes()
-
-    if lane_center is None:
-        print("Error: No lanes detected in the current image.")
-    else:
-        height, width, _ = image.shape
-        img_midpoint = width // 2
-        threshold = 100
-
-        if lane_center < (img_midpoint - threshold):
-            print("Left turn")
-        elif lane_center > (img_midpoint + threshold):
-            print("Right turn")
-        else:
-            print("Forward hall")
