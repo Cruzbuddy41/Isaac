@@ -52,23 +52,28 @@ if choice == "mac":
 else:
     image = capture_photo_linux()
 
+cv2.imwrite("lane.jpg", image)
 makeLines.lanes()
 #New Stuff:
+
 if choice == "mac":
     image = capture_photo_mac()
 else:
     image = capture_photo_linux()
 
-cv2.imwrite("lane.jpg", image)
+if image is not None:
+    cv2.imwrite("lane.jpg", image)
 
-img_center = image.shape[1] / 2
-lane_center = makeLines.lanes()
+    lane_center = makeLines.lanes()
+    height, width, _ = image.shape
+    img_midpoint = width // 2
+    threshold = 50
 
-threshold = 50
-
-if lane_center < (img_center - threshold):
-    print("Left turn")
-elif lane_center > (img_center + threshold):
-    print("Right turn")
+    if lane_center < (img_midpoint - threshold):
+        print("Left turn")
+    elif lane_center > (img_midpoint + threshold):
+        print("Right turn")
+    else:
+        print("Forward hall")
 else:
-    print("Forward hall")
+    print("Error: Could not capture image.")
