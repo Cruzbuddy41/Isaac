@@ -23,7 +23,7 @@ def capture_photo_mac(filename="lanes.jpg"):
     ret, frame = cap.read()
     cap.release()
     return frame if ret else None
-
+#
 print("Input mac for mac, Input linux for linux")
 choice = input().strip().lower()
 if choice == "mac":
