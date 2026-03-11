@@ -3,17 +3,22 @@ import time
 import makeLines
 
 def capture_photo_linux(filename="lanes.jpg"):
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
+
     if not cap.isOpened():
+        print("2")
         return None
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
     time.sleep(2)
     for i in range(15):
         cap.read()
+
     ret, frame = cap.read()
     cap.release()
     return frame if ret else None
+
+
 def capture_photo_mac(filename="lanes.jpg"):
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
