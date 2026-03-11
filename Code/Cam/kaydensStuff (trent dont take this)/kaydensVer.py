@@ -1,9 +1,11 @@
 import cv2
 import os
 import makeLines
+import time
 
 def capture_photo_linux(filename="lanes.jpg"):
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
+    time.sleep(2)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
     for i in range(30):
