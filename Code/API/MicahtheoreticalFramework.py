@@ -4,21 +4,12 @@ import time
 
 horizlines = 0
 
-# cap = cv2.VideoCapture(0)
-# if not cap.isOpened():
-#     print("Cannot open camera")
-#     exit()
-# while True:
-#     ret, frame = cap.read()
-#
-#     if not ret:
-#         print("Can't receive frame. Exiting ...")
-#         break
+
 def actualcode(threshold): #this is the actual code. I compressed it into a function for recursion
     global horizlines
+    global frame
     horizlines = 0
-    img = cv2.imread('/Users/bd6010870/Downloads/line_998x1331.png') # this will change based on the cam. this will likely be a frame,ret instance which changes based on the cam.
-    h, w = img.shape[:2]
+    h, w = frame.shape[:2]
 
     side_length = 1400
     tri_height = int((np.sqrt(3) / 2) * side_length)
@@ -36,8 +27,8 @@ def actualcode(threshold): #this is the actual code. I compressed it into a func
 
     cv2.fillPoly(mask, [pts], 255)
 
-    result = np.zeros_like(img)
-    result[mask == 255] = img[mask == 255]
+    result = np.zeros_like(frame)
+    result[mask == 255] = frame[mask == 255]
 
     cv2.polylines(result, [pts], isClosed=True, color=(0, 255, 0), thickness=3)
 
@@ -58,7 +49,7 @@ def actualcode(threshold): #this is the actual code. I compressed it into a func
     if houghlines is not None:
         for line in houghlines:
             x1, y1, x2, y2 = line[0]
-            cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            cv2.line(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
             x1, y1, x2, y2 = line[0]
 
             dx = abs(x2 - x1)
@@ -85,7 +76,18 @@ def check_for_options(): # what im going to do is basically turn left and turn r
         if horizlines > 0:
             move_right(50, 0.7175) #dead end case
 
-while True: # this can change soon in the future.
+
+cap = cv2.VideoCapture(0)
+if not cap.isOpened():
+    print("Cannot open camera")
+    exit()
+while True:
+    ret, frame = cap.read()
+
+    if not ret:
+        print("Can't receive frame. Exiting ...")
+        break
+
     move_forward(30, 4.88)
     actualcode(30)
     if horizlines > 0:
@@ -93,6 +95,9 @@ while True: # this can change soon in the future.
     else:
         continue
 
+    cv2.imshow('frame', img)
+    if cv2.waitKey(1) == ord('q'):
+        break
 
 # cv2.imshow('frame', img)
     # if cv2.waitKey(1) == ord('q'):
