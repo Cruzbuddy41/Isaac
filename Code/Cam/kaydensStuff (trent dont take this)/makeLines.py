@@ -11,7 +11,7 @@ def lanes():
     h, w = img.shape[:2]
     v1 = [int(w * 0.05), h - 1]  # Bottom Left
     v2 = [int(w * 0.95), h - 1]  # Bottom Right
-    v3 = [w // 2, int(h * 0.3)]  # (Middle width, 30% down)
+    v3 = [w // 2, int(h * 0.6)]  # (Middle width, 30% down)
 
     pts = np.array([v1, v2, v3], np.int32)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
