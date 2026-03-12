@@ -3,7 +3,7 @@ import time
 import makeLines
 
 def capture_photo_linux(filename="lanes.jpg"):
-    cap = cv2.VideoCapture("/dev/video0", cv2.CAP_V4L2)
+    cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
 
     if not cap.isOpened():
         print("2")
@@ -38,3 +38,18 @@ else:
 
 if image is not None:
     cv2.imwrite("lane.jpg", image)
+    lane_center = makeLines.lanes()
+
+    if lane_center is None:
+        print("Error: No lanes detected in the current image.")
+    else:
+        height, width, _ = image.shape
+        img_midpoint = width // 2
+        threshold = 100
+
+        if lane_center < (img_midpoint - threshold):
+            print("Left turn")
+        elif lane_center > (img_midpoint + threshold):
+            print("Right turn")
+        else:
+            print("Forward hall")
