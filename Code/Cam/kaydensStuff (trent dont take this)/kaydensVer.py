@@ -4,7 +4,7 @@ import makeLines
 
 
 def capture_photo_linux():
-    cap = cv2.VideoCapture("/dev/video0", cv2.CAP_V4L2)
+    cap = cv2.VideoCapture("/dev/video19", cv2.CAP_V4L2)
     if not cap.isOpened():
         return None
 
