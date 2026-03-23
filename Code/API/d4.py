@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 import the_robot_photo
+import autoFuncs
+
 the_robot_photo.capture_photo_linux()
 img = cv2.imread('lane.jpg')
 if img is None:
@@ -44,10 +46,13 @@ direction = "UNKNOWN"
 
 if len(left_slopes) > 0 and len(right_slopes) > 0:
     direction = "FORWARD"
+    autoFuncs.move_forward(100,5)
 elif len(left_slopes) > 0:
     direction = "RIGHT"
+    autoFuncs.move_right(100,5)
 elif len(right_slopes) > 0:
     direction = "LEFT"
+    autoFuncs.move_left(100,5)
 else:
     direction = "SEARCHING"
 
