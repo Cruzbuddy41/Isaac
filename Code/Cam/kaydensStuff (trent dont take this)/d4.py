@@ -3,7 +3,7 @@ import numpy as np
 import the_robot_photo
 
 the_robot_photo.capture_photo_linux()
-img = cv2.imread('lanes.jpg')
+img = cv2.imread('lane.jpg')
 if img is None:
     print("Error: Could not load image.")
     exit()
