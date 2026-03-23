@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import the_robot_photo
-import autoFuncs
+import movement
 
 the_robot_photo.capture_photo_linux()
 img = cv2.imread('lane.jpg')
