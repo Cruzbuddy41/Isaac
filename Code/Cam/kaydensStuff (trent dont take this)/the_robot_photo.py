@@ -1,5 +1,4 @@
 import cv2
-import kaydensUpload
 import makeLines
 
 def capture_photo_linux(filename="lane.jpg"):

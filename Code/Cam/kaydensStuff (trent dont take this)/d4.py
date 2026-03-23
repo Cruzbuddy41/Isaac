@@ -1,6 +1,9 @@
 import cv2
 import numpy as np
-img = cv2.imread('lane.jpg')
+import the_robot_photo
+
+the_robot_photo.capture_photo_linux()
+img = cv2.imread('lanes.jpg')
 if img is None:
     print("Error: Could not load image.")
     exit()
