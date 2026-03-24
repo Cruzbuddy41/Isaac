@@ -54,7 +54,8 @@ elif len(right_slopes) > 0:
     direction = "LEFT"
     movement.move_left(100,5)
 else:
-    direction = "SEARCHING"
+    direction = "FORWARD"
+    movement.move_forward(100,5)
 
 print(f"Detected Direction: {direction}")
 
