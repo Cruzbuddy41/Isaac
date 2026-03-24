@@ -58,9 +58,10 @@ else:
     movement.move_forward(100,5)
 
 print(f"Detected Direction: {direction}")
-
-# 7. ADD TEXT AND SAVE
 cv2.putText(output_img, f"Direction: {direction}", (50, 50),
             cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-
 cv2.imwrite('lanes_result.jpg', output_img)
+print("Waiting for movement to finish...")
+movement.wait_for_completion()
+print("Program finished.")
+

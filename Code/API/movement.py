@@ -83,3 +83,7 @@ def stop_all():
     Motor.MotorStop(0)
     Motor.MotorStop(1)
     print("Motors stopped.")
+
+def wait_for_completion():
+    if motion._thread and motion._thread.is_alive():
+        motion._thread.join()
