@@ -45,16 +45,16 @@ try:
 
         if len(left_slopes) > 0 and len(right_slopes) > 0:
             direction = "FORWARD"
-            movement.move_forward(100, 1)
+            movement.move_forward(70, 0.3)
         elif len(left_slopes) > 0:
             direction = "RIGHT"
-            movement.move_right(100, 1)
+            movement.move_right(70, 0.3)
         elif len(right_slopes) > 0:
             direction = "LEFT"
-            movement.move_left(100, 1)
+            movement.move_left(70, 0.3)
         else:
             direction = "FORWARD"
-            movement.move_forward(100, 1)
+            movement.move_forward(70, 0.3)
 
         print(f"Detected Direction: {direction}")
         movement.wait_for_completion()
