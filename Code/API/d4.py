@@ -10,7 +10,7 @@ try:
         the_robot_photo.capture_photo_linux()
         img = cv2.imread('lane.jpg')
         if img is None:
-            print("Error: Could not load image. Retrying...")
+            print("error ur an idiot")
             continue
 
         h, w = img.shape[:2]
@@ -63,4 +63,4 @@ try:
         movement.wait_for_completion()
 
 except KeyboardInterrupt:
-    print("\nStopping robot...")
+    print("\nIM TRYING TO STOP GNG")
