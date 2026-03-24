@@ -58,6 +58,8 @@ try:
 
         print(f"Detected Direction: {direction}")
         movement.wait_for_completion()
+        cv2.imwrite('lanes_result.jpg', output_img)
+
 
 except KeyboardInterrupt:
     print("\nGNG I SEE YOU LET ME TRY TO STOP NOW")
