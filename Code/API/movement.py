@@ -1,11 +1,7 @@
-from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import FileResponse
 import threading
 import time
 import RobotController
-
 Motor = RobotController.MotorDriver()
-
 class MotionManager:
     def __init__(self, motor):
         self.motor = motor
@@ -14,22 +10,21 @@ class MotionManager:
         self._lock = threading.Lock()
 
     def _run_motion(self, start_actions, stop_actions, duration_s: float):
+        self._stop_evt.clear()
         with self._lock:
             for action in start_actions:
                 action()
 
-        try:
-            t0 = time.monotonic()
-            while (time.monotonic() - t0) < duration_s and not self._stop_evt.is_set():
-                time.sleep(0.02)
-        finally:
-            with self._lock:
-                for action in stop_actions:
-                    action()
+        t0 = time.monotonic()
+        while (time.monotonic() - t0) < duration_s and not self._stop_evt.is_set():
+            time.sleep(0.02)
+
+        with self._lock:
+            for action in stop_actions:
+                action()
 
     def start(self, start_actions, stop_actions, duration_s: float):
         self.stop(wait=False)
-        self._stop_evt.clear()
         self._thread = threading.Thread(
             target=self._run_motion,
             args=(start_actions, stop_actions, duration_s),
@@ -39,67 +34,52 @@ class MotionManager:
 
     def stop(self, wait: bool = True):
         self._stop_evt.set()
-        t = self._thread
-        if wait and t and t.is_alive():
-            t.join(timeout=1.0)
-
+        if wait and self._thread and self._thread.is_alive():
+            self._thread.join(timeout=1.0)
 
 motion = MotionManager(Motor)
-
-def move_forward(
-    speed: int = Query(..., ge=0, le=100),
-    ttime: float = Query(..., gt=0),
-):
+def move_forward(speed: int = 50, ttime: float = 2.0):
     start = [
         lambda: Motor.MotorRun(0, "backward", speed),
         lambda: Motor.MotorRun(1, "forward", speed),
     ]
-    stop = [lambda: Motor.MotorStop(0), lambda: Motor.MotorStop(1)]
-    motion.start(start, stop, ttime)
-    return {"status": "running", "action": "forward", "speed": speed, "time_s": ttime}
+    stop_actions = [lambda: Motor.MotorStop(0), lambda: Motor.MotorStop(1)]
+    motion.start(start, stop_actions, ttime)
+    print(f"Moving forward: speed {speed} for {ttime}s")
 
 
-def move_backward(
-    speed: int = Query(..., ge=0, le=100),
-    ttime: float = Query(..., gt=0),
-):
+def move_backward(speed: int = 50, ttime: float = 2.0):
     start = [
         lambda: Motor.MotorRun(0, "forward", speed),
         lambda: Motor.MotorRun(1, "backward", speed),
     ]
-    stop = [lambda: Motor.MotorStop(0), lambda: Motor.MotorStop(1)]
-    motion.start(start, stop, ttime)
-    return {"status": "running", "action": "backward", "speed": speed, "time_s": ttime}
+    stop_actions = [lambda: Motor.MotorStop(0), lambda: Motor.MotorStop(1)]
+    motion.start(start, stop_actions, ttime)
+    print(f"Moving backward: speed {speed} for {ttime}s")
 
 
-def move_right(
-    speed: int = Query(..., ge=0, le=100),
-    ttime: float = Query(..., gt=0),
-):
+def move_right(speed: int = 50, ttime: float = 1.0):
     start = [
         lambda: Motor.MotorRun(0, "forward", speed),
         lambda: Motor.MotorRun(1, "forward", speed),
     ]
-    stop = [lambda: Motor.MotorStop(0), lambda: Motor.MotorStop(1)]
-    motion.start(start, stop, ttime)
-    return {"status": "running", "action": "right", "speed": speed, "time_s": ttime}
+    stop_actions = [lambda: Motor.MotorStop(0), lambda: Motor.MotorStop(1)]
+    motion.start(start, stop_actions, ttime)
+    print(f"Turning right: speed {speed} for {ttime}s")
 
-def move_left(
-        speed: int = Query(..., ge=0, le=100),
-        ttime: float = Query(..., gt=0),
-):
+
+def move_left(speed: int = 50, ttime: float = 1.0):
     start = [
         lambda: Motor.MotorRun(0, "backward", speed),
         lambda: Motor.MotorRun(1, "backward", speed),
     ]
-    stop = [lambda: Motor.MotorStop(0), lambda: Motor.MotorStop(1)]
-    motion.start(start, stop, ttime)
-    return {"status": "running", "action": "left", "speed": speed, "time_s": ttime}
+    stop_actions = [lambda: Motor.MotorStop(0), lambda: Motor.MotorStop(1)]
+    motion.start(start, stop_actions, ttime)
+    print(f"Turning left: speed {speed} for {ttime}s")
 
 
-def stop():
+def stop_all():
     motion.stop(wait=True)
-    with motion._lock:
-        Motor.MotorStop(0)
-        Motor.MotorStop(1)
-    return {"status": "stopped"}
+    Motor.MotorStop(0)
+    Motor.MotorStop(1)
+    print("Motors stopped.")
