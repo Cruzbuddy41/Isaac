@@ -46,16 +46,16 @@ direction = "UNKNOWN"
 
 if len(left_slopes) > 0 and len(right_slopes) > 0:
     direction = "FORWARD"
-    movement.move_forward(100,5)
+    movement.move_forward(100,1)
 elif len(left_slopes) > 0:
     direction = "RIGHT"
-    movement.move_right(100,5)
+    movement.move_right(100,1)
 elif len(right_slopes) > 0:
     direction = "LEFT"
-    movement.move_left(100,5)
+    movement.move_left(100,1)
 else:
     direction = "FORWARD"
-    movement.move_forward(100,5)
+    movement.move_forward(100,1)
 
 print(f"Detected Direction: {direction}")
 cv2.putText(output_img, f"Direction: {direction}", (50, 50),
