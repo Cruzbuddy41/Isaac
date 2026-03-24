@@ -56,9 +56,17 @@ try:
             direction = "FORWARD"
             movement.move_forward(70, 0.3)
 
+        # ... your existing movement logic (if/elif/else) ...
         print(f"Detected Direction: {direction}")
         movement.wait_for_completion()
+
+        cv2.polylines(output_img, [pts], isClosed=True, color=(0, 255, 0), thickness=2)
+        if lines is not None:
+            for line in lines:
+                x1, y1, x2, y2 = line[0]
+                cv2.line(output_img, (x1, y1), (x2, y2), (0, 0, 255), 3)
         cv2.imwrite('lanes_result.jpg', output_img)
+
 
 
 except KeyboardInterrupt:
