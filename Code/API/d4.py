@@ -15,8 +15,8 @@ try:
 
         h, w = img.shape[:2]
         center_x = w / 2
-        v1 = [int(w * 0.2), int(h * 0.6)]  # Bottom Left
-        v2 = [int(w * 0.8), int(h * 0.6)]  # Bottom Right
+        v1 = [int(w * 0.4), int(h * 0.6)]  # Bottom Left
+        v2 = [int(w * 0.6), int(h * 0.6)]  # Bottom Right
         v3 = [w // 2, int(h * 0.1)]  # Top Peak
         pts = np.array([v1, v2, v3], np.int32)
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
