@@ -51,10 +51,10 @@ try:
             movement.move_forward(70, 0.1)
         elif len(left_slopes) > 0:
             direction = "RIGHT"
-            movement.move_right(70, 0.4)
+            movement.move_right(70, 0.2)
         elif len(right_slopes) > 0:
             direction = "LEFT"
-            movement.move_left(70, 0.4)
+            movement.move_left(70, 0.3)
         else:
             # Robot now turns LEFT when it loses the line
             direction = "SEARCHING (LEFT)"
