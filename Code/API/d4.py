@@ -10,14 +10,12 @@ try:
         the_robot_photo.capture_photo_linux()
         img = cv2.imread('lane.jpg')
         if img is None:
-            print("error ur an idiot")
+            print("error")
             continue
 
         h, w = img.shape[:2]
         center_x = w / 2
-        v1 = [0, h]  # Far Bottom Left
-        v2 = [w, h]  # Far Bottom Right
-        v3 = [w // 2, int(h * 0.4)]  # Higher Top Peak for further vision
+        v1, v2, v3 = [0, h], [w, h], [w // 2, int(h * 0.4)]
         pts = np.array([v1, v2, v3], np.int32)
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         lower_blue = np.array([100, 100, 50])
@@ -31,40 +29,40 @@ try:
         lines = cv2.HoughLinesP(masked_blue, 1, np.pi / 180, threshold=30,
                                 minLineLength=40, maxLineGap=100)
 
-        output_img = img.copy()
-        cv2.polylines(output_img, [pts], isClosed=True, color=(0, 255, 0), thickness=2)
-
         left_slopes = []
         right_slopes = []
+        top_line_detected = False
 
         if lines is not None:
             for line in lines:
                 x1, y1, x2, y2 = line[0]
-                slope = (y2 - y1) / (x2 - x1) if (x2 - x1) != 0 else 999
-                cv2.line(output_img, (x1, y1), (x2, y2), (0, 0, 255), 3)
+                dx, dy = (x2 - x1), (y2 - y1)
+                slope = dy / dx if dx != 0 else 999
+                if abs(slope) < 0.2 and y1 < (h * 0.6):
+                    top_line_detected = True
+                    cv2.line(img, (x1, y1), (x2, y2), (255, 0, 0), 5)  # Blue highlight for top line
+
                 if slope < -0.1 and x1 < center_x:
                     left_slopes.append(slope)
                 elif slope > 0.1 and x1 > center_x:
                     right_slopes.append(slope)
+
         if len(left_slopes) > 0 and len(right_slopes) > 0:
             direction = "FORWARD"
             movement.move_forward(70, 0.1)
-        elif len(left_slopes) > 0:
+        elif len(left_slopes) > 0 and top_line_detected:
             direction = "RIGHT"
             movement.move_right(70, 0.2)
-        elif len(right_slopes) > 0:
+        elif len(right_slopes) > 0 and top_line_detected:
             direction = "LEFT"
             movement.move_left(70, 0.2)
-        else:
-            # Robot now turns LEFT when it loses the line
-            direction = "FORWARD"
-            movement.move_forward(70, 0.2)
-        print(f"Detected Direction: {direction}")
-        cv2.putText(output_img, f"Dir: {direction}", (50, 50),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-        cv2.imwrite('lanes_result.jpg', output_img)
 
+        else:
+            direction = "FORWARD looking for the opps"
+            movement.move_forward(70, 0.1)
+
+        print(f"Detected Direction: {direction}")
         movement.wait_for_completion()
 
 except KeyboardInterrupt:
-    print("\nIM TRYING TO STOP GNG")
+    print("\nSTOPPING")
