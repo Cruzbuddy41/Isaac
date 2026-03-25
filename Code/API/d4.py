@@ -54,11 +54,11 @@ try:
             movement.move_right(70, 0.2)
         elif len(right_slopes) > 0:
             direction = "LEFT"
-            movement.move_left(70, 0.3)
+            movement.move_left(70, 0.2)
         else:
             # Robot now turns LEFT when it loses the line
-            direction = "SEARCHING (LEFT)"
-            movement.move_left(70, 0.2)
+            direction = "FORWARD"
+            movement.move_forward(70, 0.2)
         print(f"Detected Direction: {direction}")
         cv2.putText(output_img, f"Dir: {direction}", (50, 50),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
