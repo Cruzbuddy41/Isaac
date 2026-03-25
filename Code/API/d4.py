@@ -68,6 +68,9 @@ try:
 
         print(f"Detected Direction: {direction}")
         movement.wait_for_completion()
+        cv2.putText(output_img, f"Dir: {direction}", (50, 50),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        cv2.imwrite('lanes_result.jpg', output_img)
 
 except KeyboardInterrupt:
     print("\nSTOPPING")
