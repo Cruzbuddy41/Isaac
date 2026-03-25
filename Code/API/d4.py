@@ -25,10 +25,13 @@ try:
         mask = cv2.bitwise_and(mask, roi)
 
         M = cv2.moments(mask)
+        output_img = img.copy()
 
         if M["m00"] > 500:
             cx = int(M["m10"] / M["m00"])
+            cy = int(M["m01"] / M["m00"])
             error = cx - center_x
+            cv2.circle(output_img, (cx, cy), 10, (0, 255, 0), -1)
 
             if abs(error) < 30:
                 movement.move_forward(70, 0.1)
@@ -43,6 +46,8 @@ try:
             movement.move_left(60, 0.1)
             direction = "SEARCHING"
 
+        cv2.putText(output_img, direction, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        cv2.imwrite('lanes_result.jpg', output_img)
         print(f"Status: {direction}")
 
 except KeyboardInterrupt:
