@@ -1,27 +1,31 @@
 import cv2
-import makeLines
+import time
+
 
 def capture_photo_linux(filename="lane.jpg"):
-    cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
-    cap.set(cv2.CAP_PROP_ZOOM, 0)
+    # 1. Try standard index first
+    cap = cv2.VideoCapture(0)
+
+    # 2. Wait for camera to warm up
+    time.sleep(1)
 
     if not cap.isOpened():
-        print("Could not open camera")
-        return
+        print("Could not open camera. Trying V4L2 backend...")
+        cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
+        if not cap.isOpened():
+            return None
 
-    print("Capturing image")
-
+    # 3. Flush the buffer (30 frames is good for auto-exposure)
     for i in range(30):
-        cap.read()
+        cap.grab()  # grab() is faster than read() for flushing
 
     ret, frame = cap.read()
-
     cap.release()
-    if ret:
-        cv2.imwrite(filename, frame)
-        print(f"Worked (Potentially)")
-        return frame
 
-image = capture_photo_linux()
-cv2.imwrite("lane.jpg", image)
-makeLines.lanes()
+    if ret and frame is not None:
+        cv2.imwrite(filename, frame)
+        print("Capture successful!")
+        return frame
+    else:
+        print("Capture failed: Frame is empty.")
+        return None
