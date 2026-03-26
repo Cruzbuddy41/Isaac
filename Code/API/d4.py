@@ -20,7 +20,7 @@ try:
         upper_blue = np.array([130, 255, 255])
         mask = cv2.inRange(hsv, lower_blue, upper_blue)
 
-        roi_start_y = int(h * 0.65)
+        roi_start_y = int(h * 0.4)
         roi_mask = np.zeros_like(mask)
         cv2.rectangle(roi_mask, (0, roi_start_y), (w, h), 255, -1)
         mask = cv2.bitwise_and(mask, roi_mask)
@@ -64,17 +64,17 @@ try:
 
             error = target_cx - center_x
 
-            if abs(error) < 50:
-                movement.move_forward(70, 0.1)
+            if abs(error) < 60:
+                movement.move_forward(100, 0.1)
                 direction = "FORWARD"
             elif error > 0:
-                movement.move_right(55, 0.1)
+                movement.move_right(85, 0.1)
                 direction = "RIGHT"
             else:
-                movement.move_left(55, 0.1)
+                movement.move_left(85, 0.1)
                 direction = "LEFT"
         else:
-            movement.move_left(50, 0.1)
+            movement.move_left(60, 0.1)
             direction = "SEARCHING"
 
         cv2.putText(output_img, f"Dir: {direction}", (50, 70),
