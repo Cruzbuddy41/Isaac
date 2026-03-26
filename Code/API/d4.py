@@ -65,16 +65,16 @@ try:
             error = target_cx - center_x
 
             if abs(error) < 60:
-                movement.move_forward(100, 0.1)
+                movement.move_forward(100, 0.5)
                 direction = "FORWARD"
             elif error > 0:
-                movement.move_right(85, 0.1)
+                movement.move_right(85, 0.5)
                 direction = "RIGHT"
             else:
-                movement.move_left(85, 0.1)
+                movement.move_left(85, 0.5)
                 direction = "LEFT"
         else:
-            movement.move_left(60, 0.1)
+            movement.move_left(60, 0.2)
             direction = "SEARCHING"
 
         cv2.putText(output_img, f"Dir: {direction}", (50, 70),
