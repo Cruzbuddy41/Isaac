@@ -20,11 +20,12 @@ try:
         upper_blue = np.array([130, 255, 255])
         mask = cv2.inRange(hsv, lower_blue, upper_blue)
 
+        roi_start_y = int(h * 0.65)
         roi_mask = np.zeros_like(mask)
-        cv2.rectangle(roi_mask, (0, h // 2), (w, h), 255, -1)
+        cv2.rectangle(roi_mask, (0, roi_start_y), (w, h), 255, -1)
         mask = cv2.bitwise_and(mask, roi_mask)
 
-        cv2.line(output_img, (0, h // 2), (w, h // 2), (0, 255, 0), 2)
+        cv2.line(output_img, (0, roi_start_y), (w, roi_start_y), (0, 255, 0), 2)
 
         contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -63,17 +64,17 @@ try:
 
             error = target_cx - center_x
 
-            if abs(error) < 30:
+            if abs(error) < 50:
                 movement.move_forward(70, 0.1)
                 direction = "FORWARD"
             elif error > 0:
-                movement.move_right(80, 0.1)
+                movement.move_right(55, 0.1)
                 direction = "RIGHT"
             else:
-                movement.move_left(80, 0.1)
+                movement.move_left(55, 0.1)
                 direction = "LEFT"
         else:
-            movement.move_left(60, 0.1)
+            movement.move_left(50, 0.1)
             direction = "SEARCHING"
 
         cv2.putText(output_img, f"Dir: {direction}", (50, 70),
