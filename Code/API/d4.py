@@ -52,7 +52,7 @@ try:
             movement.move_left(85, 0.1)
         else:
             direction = "SEARCHING"
-            movement.move_left(60, 0.1)
+            movement.move_forward(60, 0.1)
         cv2.polylines(output_img, [pts], isClosed=True, color=(0, 255, 0), thickness=2)
         cv2.putText(output_img, f"Dir: {direction}", (50, 70),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
