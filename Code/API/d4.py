@@ -43,13 +43,13 @@ try:
                     right_slopes.append(slope)
         if len(left_slopes) > 0 and len(right_slopes) > 0:
             direction = "FORWARD"
-            movement.move_forward(100, 0.1)
+            movement.move_forward(100, 0.2)
         elif len(left_slopes) > 0:
             direction = "RIGHT"
-            movement.move_right(85, 0.1)
+            movement.move_right(85, 0.2)
         elif len(right_slopes) > 0:
             direction = "LEFT"
-            movement.move_left(85, 0.1)
+            movement.move_left(85, 0.2)
         else:
             direction = "SEARCHING"
             movement.move_forward(60, 0.1)
