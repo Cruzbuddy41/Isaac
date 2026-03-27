@@ -18,9 +18,9 @@ try:
         lower_blue = np.array([100, 100, 50])
         upper_blue = np.array([130, 255, 255])
         blue_mask = cv2.inRange(hsv, lower_blue, upper_blue)
-        v1 = [int(w * 0.4), int(h * 0.6)]  # Bottom Left
-        v2 = [int(w * 0.6), int(h * 0.6)]  # Bottom Right
-        v3 = [w // 2, int(h * 0.1)]  # Top Peak
+        v1 = [int(w * 0.05), int(h * 0.95)]  # Bottom Left
+        v2 = [int(w * 0.95), int(h * 0.95)]  # Bottom Right
+        v3 = [w // 2, int(h * 0.05)]  # Top Peak
         pts = np.array([v1, v2, v3], np.int32)
 
         roi_mask = np.zeros((h, w), dtype=np.uint8)
