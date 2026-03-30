@@ -73,3 +73,4 @@ cv2.putText(output_img, f"Direction: {direction}", (50, 50),
             cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
 cv2.imwrite('lanes_result.jpg', output_img)
+#
