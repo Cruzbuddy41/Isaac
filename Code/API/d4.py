@@ -92,24 +92,24 @@ output_img[masked_blue > 0] = [0, 0, 255]
 cv2.polylines(output_img, [pts], isClosed=True, color=(0, 255, 0), thickness=2)
 
 center_x = w // 2
-turn_y_boundary = int(h * 0.5)
+mid_y = int(h * 0.6)
 
-turn_zone = masked_blue[:turn_y_boundary, :]
-top_pixels = cv2.countNonZero(turn_zone)
-
-correction_zone = masked_blue[turn_y_boundary:, :]
-left_correction = correction_zone[:, :center_x]
-right_correction = correction_zone[:, center_x:]
-
+left_correction = masked_blue[mid_y:, :center_x]
+right_correction = masked_blue[mid_y:, center_x:]
 left_pixels = cv2.countNonZero(left_correction)
 right_pixels = cv2.countNonZero(right_correction)
-pixel_diff = right_pixels - left_pixels
 
-cv2.line(output_img, (center_x, turn_y_boundary), (center_x, h), (255, 255, 0), 2)
-cv2.line(output_img, (0, turn_y_boundary), (w, turn_y_boundary), (255, 165, 0), 2)
+turn_zone_top = int(h * 0.3)
+turn_zone_bottom = int(h * 0.5)
+turn_portion = masked_blue[turn_zone_top:turn_zone_bottom, :]
+top_pixels = cv2.countNonZero(turn_portion)
 
-turn_threshold = 12000
-correction_threshold = 2000
+cv2.line(output_img, (center_x, 0), (center_x, h), (255, 255, 0), 1)
+cv2.line(output_img, (0, mid_y), (w, mid_y), (255, 165, 0), 2)
+cv2.rectangle(output_img, (0, turn_zone_top), (w, turn_zone_bottom), (255, 0, 255), 2)
+
+correction_threshold = 1500
+turn_threshold = 6000
 
 direction = "FORWARD"
 
@@ -118,19 +118,17 @@ if top_pixels > turn_threshold:
         direction = "HARD LEFT"
     else:
         direction = "HARD RIGHT"
-elif abs(pixel_diff) > correction_threshold:
-    if pixel_diff > 0:
+elif abs(right_pixels - left_pixels) > correction_threshold:
+    if right_pixels > left_pixels:
         direction = "SLIGHT LEFT"
     else:
         direction = "SLIGHT RIGHT"
 
-cv2.putText(output_img, f"Dir: {direction}", (30, 50),
+cv2.putText(output_img, f"Dir: {direction}", (50, 50),
             cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-cv2.putText(output_img, f"Top Px: {top_pixels} (Need >{turn_threshold})", (30, 90),
+cv2.putText(output_img, f"L: {left_pixels} R: {right_pixels}", (50, 90),
             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
-cv2.putText(output_img, f"L: {left_pixels}  R: {right_pixels}", (30, 130),
+cv2.putText(output_img, f"Turn Pixels: {top_pixels}", (50, 130),
             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
-cv2.putText(output_img, f"Diff: {pixel_diff} (Need >{correction_threshold} or <-{correction_threshold})", (30, 170),
-            cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
 
 cv2.imwrite('lanes_result.jpg', output_img)
