@@ -3,21 +3,16 @@ import time
 
 
 def capture_photo_linux(filename="lane.jpg"):
-    # 1. Try standard index first
     cap = cv2.VideoCapture(0)
-
-    # 2. Wait for camera to warm up
-    time.sleep(0.5)
+    time.sleep(1)
 
     if not cap.isOpened():
         print("Could not open camera. Trying V4L2 backend...")
         cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
         if not cap.isOpened():
             return None
-
-    # 3. Flush the buffer (30 frames is good for auto-exposure)
     for i in range(30):
-        cap.grab()  # grab() is faster than read() for flushing
+        cap.grab()
 
     ret, frame = cap.read()
     cap.release()
