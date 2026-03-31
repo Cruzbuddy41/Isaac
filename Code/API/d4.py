@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-
+print("hi")
 img = cv2.imread('lane.jpg')
 if img is None:
     print("CRITICAL ERROR: I cannot find lane.jpg! Check my file path.")
