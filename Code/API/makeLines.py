@@ -3,7 +3,7 @@ import numpy as np
 
 def lanes():
 
-    img = cv2.imread('lane.jpg')
+    img = cv2.imread('ph.jpg')
     h, w = img.shape[:2]
 
     v1 = [int(w * 0), h - 1]  # 5% from left edge
