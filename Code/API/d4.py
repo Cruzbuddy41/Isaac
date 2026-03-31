@@ -67,4 +67,4 @@ cv2.putText(output_img, f"L: {left_pixels}  R: {right_pixels}", (30, 130),
 cv2.putText(output_img, f"Diff: {pixel_diff} (Need >{correction_threshold} or <-{correction_threshold})", (30, 170),
             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
 
-cv2.imwrite('lanes_result.jpg', output_img)#
+cv2.imwrite('lanes_result.jpg', output_img)
