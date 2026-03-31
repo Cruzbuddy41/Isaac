@@ -3,6 +3,7 @@ import numpy as np
 
 img = cv2.imread('lane.jpg')
 if img is None:
+    print("CRITICAL ERROR: I cannot find lane.jpg! Check my file path.")
     exit()
 
 h, w = img.shape[:2]
