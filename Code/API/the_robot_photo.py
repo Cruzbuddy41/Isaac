@@ -7,7 +7,7 @@ def capture_photo_linux(filename="lane.jpg"):
     cap = cv2.VideoCapture(0)
 
     # 2. Wait for camera to warm up
-    time.sleep(1)
+    time.sleep(0.5)
 
     if not cap.isOpened():
         print("Could not open camera. Trying V4L2 backend...")
