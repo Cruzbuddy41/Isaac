@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import the_robot_photo
 import movement
+import chud_detection
 
 try:
     while True:
@@ -10,6 +11,8 @@ try:
             img = cv2.imread('lane.jpg')
         if img is None:
             continue
+
+        chud_detection.detect(img)
 
         h, w = img.shape[:2]
         center_x = w // 2
