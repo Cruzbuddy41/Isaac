@@ -4,25 +4,26 @@ import time
 from the_robot_photo import capture_photo_linux
 import movement
 
+DEBUG_MODE = False
+
 try:
     while True:
         img = capture_photo_linux()
-        if img is None: continue
-
-        img = cv2.imread("lane.jpg")
         if img is None:
             continue
 
         h, w = img.shape[:2]
 
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-
         lower_blue = np.array([100, 100, 100])
         upper_blue = np.array([130, 255, 255])
         blue_mask = cv2.inRange(hsv, lower_blue, upper_blue)
 
-        v1, v2, v3 = [int(w * 0.05), h - 1], [int(w * 0.95), h - 1], [w // 2, int(h * 0.3)]
+        v1 = [int(w * 0.05), h - 1]
+        v2 = [int(w * 0.95), h - 1]
+        v3 = [w // 2, int(h * 0.3)]
         pts = np.array([v1, v2, v3], np.int32)
+
         roi_mask = np.zeros((h, w), dtype=np.uint8)
         cv2.fillPoly(roi_mask, [pts], 255)
         masked_blue = cv2.bitwise_and(blue_mask, roi_mask)
@@ -37,9 +38,8 @@ try:
 
         turn_threshold = 12000
         correction_threshold = 2000
-        direction = "FORWARD"
-
         speed = 20
+        direction = "SEARCHING"
 
         if top_pixels > turn_threshold:
             if right_pixels > left_pixels:
@@ -63,17 +63,19 @@ try:
 
         else:
             direction = "SEARCHING"
+            if hasattr(movement, 'stop'):
+                movement.stop()
 
         time.sleep(0.3)
-
         if hasattr(movement, 'stop'):
             movement.stop()
 
-        output_img = img.copy()
-        output_img[masked_blue > 0] = [0, 0, 255]
-        cv2.polylines(output_img, [pts], True, (0, 255, 0), 2)
-        cv2.putText(output_img, f"Dir: {direction}", (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-        cv2.imwrite('lanes_result.jpg', output_img)
+        if DEBUG_MODE:
+            output_img = img.copy()
+            output_img[masked_blue > 0] = [0, 0, 255]
+            cv2.polylines(output_img, [pts], True, (0, 255, 0), 2)
+            cv2.putText(output_img, f"Dir: {direction}", (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+            cv2.imwrite('lanes_result.jpg', output_img)
 
 except KeyboardInterrupt:
     if hasattr(movement, 'stop'):
