@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import movement
 print("wsp brodie")
 
 print("reading the image")
@@ -64,13 +65,17 @@ direction = "FORWARD"
 if top_pixels > turn_threshold:
     if right_pixels > left_pixels:
         direction = "HARD LEFT"
+        movement.move_left(50, 1)
     else:
         direction = "HARD RIGHT"
+        movement.move_right(50,1)
 elif abs(pixel_diff) > correction_threshold:
     if pixel_diff > 0:
         direction = "SLIGHT LEFT"
+        movement.move_left(25,1)
     else:
         direction = "SLIGHT RIGHT"
+        movement.move_right(25,1)
 
 cv2.putText(output_img, f"Dir: {direction}", (30, 50),
             cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
