@@ -1,18 +1,17 @@
 import cv2
 import numpy as np
 import time
+from the_robot_photo import capture_photo_linux
 import movement
-
-cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
-
-if not cap.isOpened():
-    print("Error: Could not open camera.")
-    exit()
 
 try:
     while True:
-        ret, img = cap.read()
-        if not ret:
+        success = capture_photo_linux("lane.jpg")
+        if not success:
+            continue
+
+        img = cv2.imread("lane.jpg")
+        if img is None:
             continue
 
         h, w = img.shape[:2]
@@ -80,7 +79,3 @@ try:
 except KeyboardInterrupt:
     if hasattr(movement, 'stop'):
         movement.stop()
-
-finally:
-    cap.release()
-    cv2.destroyAllWindows()
