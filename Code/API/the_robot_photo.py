@@ -17,7 +17,7 @@ def capture_photo_linux(filename="lane.jpg"):
     ret, frame = cap.read()
     cap.release()
 
-    if ret and frame is not None:
+    if ret == True:
         cv2.imwrite(filename, frame)
         print("Capture successful!")
         return frame
