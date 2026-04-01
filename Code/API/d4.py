@@ -42,20 +42,20 @@ try:
         if top_pixels > turn_threshold:
             if right_pixels > left_pixels:
                 direction = "HARD LEFT"
-                movement.move_left(50, 0.1)
+                movement.move_left(80, 0.1)
             else:
                 direction = "HARD RIGHT"
-                movement.move_right(50, 0.1)
+                movement.move_right(80, 0.3)
         elif abs(pixel_diff) > correction_threshold:
             if pixel_diff > 0:
                 direction = "SLIGHT LEFT"
-                movement.move_left(25, 0.1)
+                movement.move_left(60, 0.3)
             else:
                 direction = "SLIGHT RIGHT"
-                movement.move_right(25, 0.1)
+                movement.move_right(60, 0.3)
         elif (left_pixels + right_pixels) > 500:
             direction = "FORWARD"
-            movement.move_forward(30, 0.1)
+            movement.move_forward(80, 0.3)
         else:
             direction = "SEARCHING"
 
