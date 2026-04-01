@@ -1,6 +1,13 @@
 import cv2
 import numpy as np
 import time
+import movement
+
+cap = cv2.VideoCapture(0)
+
+if not cap.isOpened():
+    print("Error: Could not open camera.")
+    exit()
 
 try:
     while True:
@@ -73,3 +80,7 @@ try:
 except KeyboardInterrupt:
     if hasattr(movement, 'stop'):
         movement.stop()
+
+finally:
+    cap.release()
+    cv2.destroyAllWindows()
