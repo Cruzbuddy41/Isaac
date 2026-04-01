@@ -47,10 +47,10 @@ try:
         elif abs(pixel_diff) > correction_threshold:
             if pixel_diff > 0:
                 direction = "SLIGHT LEFT"
-                movement.move_left(80, 1)
+                movement.move_left(80, 2)
             else:
                 direction = "SLIGHT RIGHT"
-                movement.move_right(80, 1)
+                movement.move_right(80, 2)
         elif (left_pixels + right_pixels) > 500:
             direction = "FORWARD"
             movement.move_forward(80, 1)
