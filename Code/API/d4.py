@@ -81,7 +81,9 @@ elif abs(pixel_diff) > correction_threshold:
 elif (left_pixels + right_pixels) > 500:
     direction = "FORWARD"
     movement.move_forward(40, 1)
-
+else:
+    direction = "FORWARD"
+    movement.move_forward(20,1)
 cv2.putText(output_img, f"Dir: {direction}", (30, 50),
             cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
