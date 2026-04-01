@@ -1,10 +1,8 @@
 import cv2
 import numpy as np
 import movement
-import time
 
-print("wsp brodie - Running Headless Mode")
-print("Press Ctrl+C to stop the bot")
+print("wsp brodie")
 
 cap = cv2.VideoCapture(0)
 
@@ -42,25 +40,30 @@ try:
         if top_pixels > turn_threshold:
             if right_pixels > left_pixels:
                 direction = "HARD LEFT"
-                movement.move_left(80, 0.5)
+                movement.move_left(50, 0.1)
             else:
                 direction = "HARD RIGHT"
-                movement.move_right(80, 0.5)
+                movement.move_right(50, 0.1)
         elif abs(pixel_diff) > correction_threshold:
             if pixel_diff > 0:
                 direction = "SLIGHT LEFT"
-                movement.move_left(60, 0.5)
+                movement.move_left(25, 0.1)
             else:
                 direction = "SLIGHT RIGHT"
-                movement.move_right(60, 0.5)
+                movement.move_right(25, 0.1)
         elif (left_pixels + right_pixels) > 500:
             direction = "FORWARD"
-            movement.move_forward(80, 0.5)
+            movement.move_forward(30, 0.1)
         else:
             direction = "SEARCHING"
 
+        output_img = img.copy()
+        output_img[masked_blue > 0] = [0, 0, 255]
+        cv2.polylines(output_img, [pts], True, (0, 255, 0), 2)
+        cv2.putText(output_img, f"Dir: {direction}", (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        cv2.imwrite('lanes_result.jpg', output_img)
+
 except KeyboardInterrupt:
-    print("\nStopping movement and exiting...")
     try:
         movement.stop_all()
     except:
