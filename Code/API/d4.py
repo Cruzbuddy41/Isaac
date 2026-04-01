@@ -3,7 +3,7 @@ import numpy as np
 import time
 import movement
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
 
 if not cap.isOpened():
     print("Error: Could not open camera.")
