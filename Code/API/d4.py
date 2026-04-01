@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import movement
-
+import time
 print("wsp brodie")
 
 cap = cv2.VideoCapture(0)
@@ -56,7 +56,7 @@ try:
             movement.move_forward(80, 1)
         else:
             direction = "SEARCHING"
-
+        time.sleep(2)
         output_img = img.copy()
         output_img[masked_blue > 0] = [0, 0, 255]
         cv2.polylines(output_img, [pts], True, (0, 255, 0), 2)
