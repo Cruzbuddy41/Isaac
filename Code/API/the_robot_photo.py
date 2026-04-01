@@ -3,7 +3,7 @@ import time
 
 
 def capture_photo_linux(filename="lane.jpg"):
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
     time.sleep(1)
 
     if not cap.isOpened():
