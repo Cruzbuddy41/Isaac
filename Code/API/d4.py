@@ -39,23 +39,23 @@ try:
         correction_threshold = 2000
         direction = "FORWARD"
 
-        speed = 40
+        speed = 20
 
         if top_pixels > turn_threshold:
             if right_pixels > left_pixels:
                 direction = "HARD LEFT"
-                movement.move_left(speed, 1)
+                movement.move_left(speed, 2)
             else:
                 direction = "HARD RIGHT"
-                movement.move_right(speed, 1)
+                movement.move_right(speed, 2)
 
         elif abs(pixel_diff) > correction_threshold:
             if pixel_diff > 0:
                 direction = "SLIGHT LEFT"
-                movement.move_left(speed, 1)
+                movement.move_left(speed, 2)
             else:
                 direction = "SLIGHT RIGHT"
-                movement.move_right(speed, 1)
+                movement.move_right(speed, 2)
 
         elif (left_pixels + right_pixels) > 500:
             direction = "FORWARD"
