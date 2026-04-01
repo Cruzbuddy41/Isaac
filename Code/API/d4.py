@@ -6,7 +6,7 @@ import movement
 
 try:
     while True:
-        success = capture_photo_linux()
+        success = capture_photo_linux("lane.jpg")
         if not success:
             continue
 
