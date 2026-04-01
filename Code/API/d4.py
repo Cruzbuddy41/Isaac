@@ -1,10 +1,6 @@
 import cv2
 import numpy as np
-import movement
 import time
-print("wsp brodie")
-
-cap = cv2.VideoCapture(0)
 
 try:
     while True:
@@ -13,9 +9,10 @@ try:
             continue
 
         h, w = img.shape[:2]
+
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-        lower_blue = np.array([90, 50, 50])
+        lower_blue = np.array([100, 100, 100])
         upper_blue = np.array([130, 255, 255])
         blue_mask = cv2.inRange(hsv, lower_blue, upper_blue)
 
@@ -27,8 +24,8 @@ try:
 
         center_x = w // 2
         turn_y_boundary = int(h * 0.5)
-        top_pixels = cv2.countNonZero(masked_blue[:turn_y_boundary, :])
 
+        top_pixels = cv2.countNonZero(masked_blue[:turn_y_boundary, :])
         left_pixels = cv2.countNonZero(masked_blue[turn_y_boundary:, :center_x])
         right_pixels = cv2.countNonZero(masked_blue[turn_y_boundary:, center_x:])
         pixel_diff = right_pixels - left_pixels
@@ -37,30 +34,35 @@ try:
         correction_threshold = 2000
         direction = "FORWARD"
 
+        speed = 40
+
         if top_pixels > turn_threshold:
             if right_pixels > left_pixels:
                 direction = "HARD LEFT"
-                movement.move_left(80, 2)
-                time.sleep(2)
+                movement.move_left(speed, 2)
             else:
                 direction = "HARD RIGHT"
-                movement.move_right(80, 2)
-                time.sleep(2)
+                movement.move_right(speed, 2)
+
         elif abs(pixel_diff) > correction_threshold:
             if pixel_diff > 0:
                 direction = "SLIGHT LEFT"
-                movement.move_left(80, 2)
-                time.sleep(2)
+                movement.move_left(speed, 2)
             else:
                 direction = "SLIGHT RIGHT"
-                movement.move_right(80, 2)
-                time.sleep(2)
+                movement.move_right(speed, 2)
+
         elif (left_pixels + right_pixels) > 500:
             direction = "FORWARD"
-            movement.move_forward(80, 1)
-            time.sleep(2)
+            movement.move_forward(speed, 1)
+
         else:
             direction = "SEARCHING"
+
+        time.sleep(0.3)
+
+        if hasattr(movement, 'stop'):
+            movement.stop()
 
         output_img = img.copy()
         output_img[masked_blue > 0] = [0, 0, 255]
@@ -69,11 +71,5 @@ try:
         cv2.imwrite('lanes_result.jpg', output_img)
 
 except KeyboardInterrupt:
-    try:
-        movement.stop_all()
-    except:
-        movement.move_forward(0, 0)
-
-finally:
-    cap.release()
-    cv2.destroyAllWindows()
+    if hasattr(movement, 'stop'):
+        movement.stop()
