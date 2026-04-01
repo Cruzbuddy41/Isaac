@@ -6,9 +6,8 @@ import movement
 
 try:
     while True:
-        success = capture_photo_linux("lane.jpg")
-        if not success:
-            continue
+        img = capture_photo_linux()
+        if img is None: continue
 
         img = cv2.imread("lane.jpg")
         if img is None:
