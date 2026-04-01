@@ -41,22 +41,27 @@ try:
             if right_pixels > left_pixels:
                 direction = "HARD LEFT"
                 movement.move_left(80, 2)
+                time.sleep(2)
             else:
                 direction = "HARD RIGHT"
                 movement.move_right(80, 2)
+                time.sleep(2)
         elif abs(pixel_diff) > correction_threshold:
             if pixel_diff > 0:
                 direction = "SLIGHT LEFT"
                 movement.move_left(80, 2)
+                time.sleep(2)
             else:
                 direction = "SLIGHT RIGHT"
                 movement.move_right(80, 2)
+                time.sleep(2)
         elif (left_pixels + right_pixels) > 500:
             direction = "FORWARD"
             movement.move_forward(80, 1)
+            time.sleep(2)
         else:
             direction = "SEARCHING"
-        time.sleep(2)
+
         output_img = img.copy()
         output_img[masked_blue > 0] = [0, 0, 255]
         cv2.polylines(output_img, [pts], True, (0, 255, 0), 2)
