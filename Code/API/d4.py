@@ -18,7 +18,7 @@ try:
         center_x = w // 2
         output_img = img.copy()
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-        lower_blue = np.array([100, 100, 50])
+        lower_blue = np.array([100, 150, 100])
         upper_blue = np.array([130, 255, 255])
         mask = cv2.inRange(hsv, lower_blue, upper_blue)
         blurred = cv2.GaussianBlur(mask, (5, 5), 0)
@@ -32,7 +32,7 @@ try:
         pts = np.array([v1, v2, v3], np.int32)
 
         lines = cv2.HoughLinesP(edge, 1, np.pi / 180, threshold=30,
-                                minLineLength=40, maxLineGap=100)
+                                minLineLength=40, maxLineGap=50)
 
         left_slopes = []
         right_slopes = []
@@ -64,6 +64,8 @@ try:
 
         cv2.imwrite('lanes_result.jpg', output_img)
         print(f"Status: {direction}")
+
+        cv2.imwrite('test.jpg', mask)
 
 except KeyboardInterrupt:
     movement.stop()
