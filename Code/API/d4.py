@@ -48,16 +48,16 @@ try:
                     right_slopes.append(slope)
         if len(left_slopes) > 0 and len(right_slopes) > 0:
             direction = "FORWARD"
-            movement.move_forward(100, 0.2)
+            movement.move_forward(80, 0.2)
         elif len(left_slopes) > 0:
             direction = "RIGHT"
-            movement.move_right(85, 0.2)
+            movement.move_right(55, 0.2)
         elif len(right_slopes) > 0:
             direction = "LEFT"
-            movement.move_left(85, 0.2)
+            movement.move_left(55, 0.2)
         else:
             direction = "SEARCHING"
-            movement.move_forward(60, 0.1)
+            movement.move_forward(40, 0.1)
         cv2.polylines(output_img, [pts], isClosed=True, color=(0, 255, 0), thickness=2)
         cv2.putText(output_img, f"Dir: {direction}", (50, 70),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
