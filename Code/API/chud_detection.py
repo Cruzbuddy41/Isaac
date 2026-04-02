@@ -19,7 +19,7 @@ def detect(img):
 
     contours, _ = cv2.findContours(clean_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    output1_img = img.copy()
+    output_img = img.copy()
     object_detected = False
 
     if contours:
@@ -30,7 +30,7 @@ def detect(img):
             object_detected = True
 
             x, y, w, h = cv2.boundingRect(largest_contour)
-            cv2.rectangle(output1_img, (x, y), (x + w, y + h), (0, 255, 0), 4)
+            cv2.rectangle(output_img, (x, y), (x + w, y + h), (0, 255, 0), 4)
 
     plt.figure(figsize=(10, 5))
 
@@ -39,11 +39,11 @@ def detect(img):
     plt.title('Clean Mask (Grating Removed?)')
 
     plt.subplot(1, 2, 2)
-    plt.imshow(cv2.cvtColor(output1_img, cv2.COLOR_BGR2RGB))
+    plt.imshow(cv2.cvtColor(output_img, cv2.COLOR_BGR2RGB))
     if object_detected:
         plt.title('Object Found!')
         print("Object Found")
-        camera_email.email(output1_img)
+        camera_email.email(output_img)
     else:
         plt.title('No Object Detected')
         print('No Object Detected')
