@@ -1,4 +1,3 @@
-import cv2
 import smtplib
 import time
 import os
@@ -47,8 +46,3 @@ def email(img):
     except Exception as e:
         print(f"An error occurred: {e}")
 
-
-
-
-if __name__ == "__main__":
-    email()

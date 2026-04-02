@@ -19,8 +19,8 @@ try:
         upper_blue = np.array([130, 255, 255])
         blue_mask = cv2.inRange(hsv, lower_blue, upper_blue)
 
-        v1 = [int(w * 0.05), h - 1]
-        v2 = [int(w * 0.95), h - 1]
+        v1 = [0, h - 1]
+        v2 = [int(w), h - 1]
         v3 = [w // 2, int(h * 0.3)]
         pts = np.array([v1, v2, v3], np.int32)
 
