@@ -20,16 +20,18 @@ try:
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         lower_blue = np.array([100, 100, 50])
         upper_blue = np.array([130, 255, 255])
-        blue_mask = cv2.inRange(hsv, lower_blue, upper_blue)
-        v1 = [int(w * 0.05), int(h * 0.95)]  # Bottom Left
-        v2 = [int(w * 0.95), int(h * 0.95)]  # Bottom Right
-        v3 = [w // 2, int(h * 0.05)]  # Top Peak
+        mask = cv2.inRange(hsv, lower_blue, upper_blue)
+        blurred = cv2.GaussianBlur(mask, (5, 5), 0)
+        kernel = np.ones((5, 5), np.uint8)
+        dilated = cv2.dilate(blurred, kernel, iterations=1)
+
+        edge = cv2.Canny(dilated, 50, 150)
+        v1 = [0, int(h * 0.95)]  # Bottom Left
+        v2 = [int(w), int(h * 0.95)]  # Bottom Right
+        v3 = [w // 2, 0]  # Top Peak
         pts = np.array([v1, v2, v3], np.int32)
 
-        roi_mask = np.zeros((h, w), dtype=np.uint8)
-        cv2.fillPoly(roi_mask, [pts], 255)
-        masked_blue = cv2.bitwise_and(blue_mask, roi_mask)
-        lines = cv2.HoughLinesP(masked_blue, 1, np.pi / 180, threshold=30,
+        lines = cv2.HoughLinesP(edge, 1, np.pi / 180, threshold=30,
                                 minLineLength=40, maxLineGap=100)
 
         left_slopes = []
