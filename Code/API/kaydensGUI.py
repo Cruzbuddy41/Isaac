@@ -14,7 +14,7 @@ def move_forward(speed: int, ttime: int):
 
     try:
         response = requests.post(endpoint, params=params)
-        response.raise_for_status()
+        response.raise_for_status() 
         print(f"Request successful: {response.json()}")
 
     except requests.exceptions.RequestException as e:

@@ -46,13 +46,46 @@ try:
                     left_slopes.append(slope)
                 elif slope > 0.3 and x1 > center_x:
                     right_slopes.append(slope)
+        h1, w1 = img.shape[1:2]
+        center_x1 = w // 2
+        output_img1 = img.copy()
+        hsv1 = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+        lower_blue1 = np.array([100, 150, 100])
+        upper_blue1 = np.array([130, 255, 255])
+        mask1 = cv2.inRange(hsv, lower_blue, upper_blue)
+        blurred1 = cv2.GaussianBlur(mask, (5, 5), 0)
+        kernel1 = np.ones((5, 5), np.uint8)
+        dilated1 = cv2.dilate(blurred, kernel, iterations=1)
+
+        edge1 = cv2.Canny(dilated, 50, 150)
+        v11 = [0, int(h * 0.95)]  # Bottom Left
+        v21 = [int(w), int(h * 0.95)]  # Bottom Right
+        v31 = [w // 2, 0]  # Top Peak
+        pts1 = np.array([v11, v21, v31], np.int32)
+
+        lines1 = cv2.HoughLinesP(edge, 1, np.pi / 180, threshold=30,
+                                minLineLength=40, maxLineGap=50)
+
+        left_slopes1 = []
+        right_slopes1 = []
+
+        if lines is not None:
+            for line in lines:
+                x1, y1, x2, y2 = line[0]
+                slope = (y2 - y1) / (x2 - x1) if (x2 - x1) != 0 else 999
+                cv2.line(output_img, (x1, y1), (x2, y2), (0, 0, 255), 3)
+                if slope < -0.3 and x1 < center_x1:
+                    left_slopes.append(slope)
+                elif slope > 0.3 and x1 > center_x1:
+                    right_slopes.append(slope)
+
         if len(left_slopes) > 0 and len(right_slopes) > 0:
             direction = "FORWARD"
             movement.move_forward(80, 0.2)
-        elif len(left_slopes) > 0:
+        elif len(left_slopes) > 0 and len(left_slopes1) == 0 and len(right_slopes1) == 0:
             direction = "RIGHT"
             movement.move_right(55, 0.2)
-        elif len(right_slopes) > 0:
+        elif len(right_slopes) > 0 and len(left_slopes1) == 0 and len(right_slopes1) == 0:
             direction = "LEFT"
             movement.move_left(55, 0.2)
         else:
