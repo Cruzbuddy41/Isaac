@@ -44,8 +44,8 @@ try:
         big_pts = np.array([[big_v1, big_v2, big_v3]], np.int32)
 
         # Small Triangle
-        small_v1 = [int(w * 0.3), int(h * 0.6)]
-        small_v2 = [int(w * 0.7), int(h * 0.6)]
+        small_v1 = [int(w * 0.3), int(h * 0.75)]
+        small_v2 = [int(w * 0.7), int(h * 0.75)]
         small_v3 = [w // 2, int(h * 0.3)]
         small_pts = np.array([[small_v1, small_v2, small_v3]], np.int32)
 
@@ -81,16 +81,16 @@ try:
 
         if top_line_detected and big_right_line_detected:
             direction = "LEFT"
-            movement.move_left(55, 0.2)
+            movement.move_left(55, 0.5)
         elif big_right_line_detected and not top_line_detected:
             direction = "FORWARD"
             movement.move_forward(80, 0.2)
         elif top_line_detected and big_left_line_detected:
             direction = "RIGHT"
-            movement.move_right(55, 0.2)
+            movement.move_right(55, 0.5)
         else:
             direction = "SEARCHING"
-            movement.move_forward(40, 0.1)
+            movement.move_forward(40, 0.3)
 
         cv2.putText(output_img, f"Dir: {direction}", (50, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
         cv2.imwrite('lanes_result.jpg', output_img)
