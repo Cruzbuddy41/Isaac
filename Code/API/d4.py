@@ -46,7 +46,7 @@ try:
         # Small Triangle
         small_v1 = [int(w * 0.3), int(h * 0.75)]
         small_v2 = [int(w * 0.7), int(h * 0.75)]
-        small_v3 = [w // 2, int(h * 0.3)]
+        small_v3 = [w // 2, int(h * 0.4)]
         small_pts = np.array([[small_v1, small_v2, small_v3]], np.int32)
 
         big_edges = regionOfInterest(edges, big_pts)
