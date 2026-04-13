@@ -44,9 +44,9 @@ try:
         big_pts = np.array([[big_v1, big_v2, big_v3]], np.int32)
 
         # Small Triangle
-        small_v1 = [int(w * 0.3), int(h * 0.4)]
-        small_v2 = [int(w * 0.7), int(h * 0.4)]
-        small_v3 = [w // 2, int(h * 0.1)]
+        small_v1 = [int(w * 0.3), int(h * 0.6)]
+        small_v2 = [int(w * 0.7), int(h * 0.6)]
+        small_v3 = [w // 2, int(h * 0.3)]
         small_pts = np.array([[small_v1, small_v2, small_v3]], np.int32)
 
         big_edges = regionOfInterest(edges, big_pts)
