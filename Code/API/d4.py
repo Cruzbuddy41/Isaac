@@ -54,6 +54,7 @@ try:
         big_lines = cv2.HoughLinesP(big_edges, 1, np.pi / 180, threshold=30, minLineLength=40, maxLineGap=50)
         small_lines = cv2.HoughLinesP(small_edges, 1, np.pi / 180, threshold=20, minLineLength=20, maxLineGap=50)
         big_right_line_detected = False
+        big_left_line_detected = False
         top_line_detected = False
 
         #right lines
@@ -64,6 +65,9 @@ try:
                 if slope > 0.3 and x1 > center_x:
                     big_right_line_detected = True
                     cv2.line(output_img, (x1, y1), (x2, y2), (0, 0, 255), 3)
+                if slope < -0.3 and x1 < center_x:
+                    big_left_line_detected = True
+                    cv2.line(output_img, (x1, y1), (x2, y2), (0,0,255), 3)
 
         #any lines in small triangle
         if small_lines is not None:
