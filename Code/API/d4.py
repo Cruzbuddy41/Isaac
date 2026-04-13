@@ -80,14 +80,14 @@ try:
         cv2.polylines(output_img, small_pts, isClosed=True, color=(0, 255, 255), thickness=2)  # Yellow = Small
 
         if top_line_detected and big_right_line_detected:
-            direction = "TURN RIGHT"
-            movement.move_right(55, 0.2)
+            direction = "LEFT"
+            movement.move_left(55, 0.2)
         elif big_right_line_detected and not top_line_detected:
             direction = "FORWARD"
             movement.move_forward(80, 0.2)
         elif top_line_detected and big_left_line_detected:
-            direction = "LEFT"
-            movement.move_left(55, 0.2)
+            direction = "RIGHT"
+            movement.move_right(55, 0.2)
         else:
             direction = "SEARCHING"
             movement.move_forward(40, 0.1)
