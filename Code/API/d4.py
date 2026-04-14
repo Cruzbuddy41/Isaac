@@ -40,8 +40,9 @@ try:
         # Big Triangle
         big_v1 = [0, h]  # Bottom Left
         big_v2 = [w, h]  # Bottom Right
-        big_v3 = [w // 2, int(h * 0.4)]  # Middle Peak
-        big_pts = np.array([[big_v1, big_v2, big_v3]], np.int32)
+        big_v3 = [w,0]
+        big_v4 = [0,0]
+        big_pts = np.array([[big_v1, big_v2, big_v3, big_v4]], np.int32)
 
         # Small Triangle
         small_v1 = [int(w * 0.3), int(h * 0.75)]
