@@ -86,6 +86,9 @@ try:
         elif big_right_line_detected and not top_line_detected:
             direction = "FORWARD"
             movement.move_forward(40, 0.75)
+        elif(big_left_line_detected and not top_line_detected):
+            direction = "FORWARD"
+            movement.move_forward(40, 0.75)
         elif top_line_detected and big_left_line_detected:
             direction = "RIGHT"
             movement.move_right(55, 0.5)
