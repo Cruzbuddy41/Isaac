@@ -91,6 +91,9 @@ try:
         elif top_line_detected and big_left_line_detected:
             direction = "RIGHT"
             movement.move_right(55, 0.3)
+        elif top_line_detected and big_left_line_detected and big_right_line_detected:
+            direction = "STOP"
+            movement.stop_all()
         else:
             direction = "SEARCHING"
             movement.move_forward(40, 0.3)
