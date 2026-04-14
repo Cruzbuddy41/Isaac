@@ -6,6 +6,7 @@ import camera_email
 global chud_detected
 chud_detected = False
 def detect(img):
+    global chud_detected
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     lower_turquoise = np.array([80, 50, 50])
