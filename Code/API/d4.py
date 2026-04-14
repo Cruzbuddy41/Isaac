@@ -4,7 +4,6 @@ import the_robot_photo
 import movement
 import chud_detection
 
-
 def regionOfInterest(img, vertices):
     mask = np.zeros_like(img)
     cv2.fillPoly(mask, vertices, 255)
@@ -19,8 +18,8 @@ try:
             img = cv2.imread('lane.jpg')
         if img is None:
             continue
-
-        chud_detection.detect(img)
+        if not chud_detection.chud_detected:
+            chud_detection.detect(img)
 
         h, w = img.shape[:2]
         center_x = w // 2

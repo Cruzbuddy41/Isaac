@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import camera_email
 
+global chud_detected
+chud_detected = False
 def detect(img):
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
@@ -44,9 +46,5 @@ def detect(img):
         plt.title('Object Found!')
         print("Object Found")
         camera_email.email(output_img)
-    else:
-        plt.title('No Object Detected')
-        print('No Object Detected')
-
-    plt.show()
+        chud_detected = True
 
