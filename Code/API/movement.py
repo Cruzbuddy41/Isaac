@@ -38,7 +38,7 @@ class MotionManager:
             self._thread.join(timeout=1.0)
 
 motion = MotionManager(Motor)
-def move_forward(speed: int = 50, ttime: float = 2.0):
+def move_forward(speed: int = 50, ttime: float = 1.0):
     start = [
         lambda: Motor.MotorRun(0, "backward", speed),
         lambda: Motor.MotorRun(1, "forward", speed),
@@ -48,7 +48,7 @@ def move_forward(speed: int = 50, ttime: float = 2.0):
     print(f"Moving forward: speed {speed} for {ttime}s")
 
 
-def move_backward(speed: int = 50, ttime: float = 2.0):
+def move_backward(speed: int = 50, ttime: float = 1.0):
     start = [
         lambda: Motor.MotorRun(0, "forward", speed),
         lambda: Motor.MotorRun(1, "backward", speed),
