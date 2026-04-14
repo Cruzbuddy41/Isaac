@@ -79,7 +79,10 @@ try:
         cv2.polylines(output_img, big_pts, isClosed=True, color=(0, 255, 0), thickness=2)  # Green = Big
         cv2.polylines(output_img, small_pts, isClosed=True, color=(0, 255, 255), thickness=2)  # Yellow = Small
 
-        if top_line_detected and big_right_line_detected:
+        if top_line_detected and big_left_line_detected and big_right_line_detected:
+            direction = "STOP"
+            movement.stop_all()
+        elif top_line_detected and big_right_line_detected:
             direction = "LEFT"
             movement.move_left(55, 0.3)
         elif big_right_line_detected and not top_line_detected:
@@ -91,9 +94,6 @@ try:
         elif top_line_detected and big_left_line_detected:
             direction = "RIGHT"
             movement.move_right(55, 0.3)
-        elif top_line_detected and big_left_line_detected and big_right_line_detected:
-            direction = "STOP"
-            movement.stop_all()
         else:
             direction = "SEARCHING"
             movement.move_forward(40, 0.3)
