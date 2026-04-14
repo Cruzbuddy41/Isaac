@@ -24,7 +24,9 @@ def email(img):
     msg.attach(MIMEText(body, 'plain'))
 
     try:
-        with open(img, 'r') as f:
+        photo_to_send = 'phototosend.jpg'
+        cv2.imwrite('phototosend.jpg', img)
+        with open('phototosend.jpg', 'rb') as f:
             img_data = f.read()
         image_part = MIMEImage(img_data, name=os.path.basename(img))
         image_part.add_header('Content-Disposition', f'attachment; filename="{img}"')
