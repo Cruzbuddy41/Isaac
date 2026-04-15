@@ -103,5 +103,5 @@ try:
         print(f"Status: {direction}")
 
 except KeyboardInterrupt:
-    movement.stop()
+    movement.stop_all()
     print("Stopped by user")
