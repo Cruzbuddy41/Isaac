@@ -10,7 +10,6 @@ def regionOfInterest(img, vertices):
     masked_img = cv2.bitwise_and(img, mask)
     return masked_img
 
-
 try:
     while True:
         img = the_robot_photo.capture_photo_linux()
