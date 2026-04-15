@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Robot Control</title>
+
+<style>
+body{
+    font-family: Arial;
+    text-align:center;
+    margin-top:50px;
+}
+
+#box{
+    width:500px;
+    margin:auto;
+    border:2px solid black;
+    padding:20px;
+}
+
+button{
+    width:100px;
+    height:50px;
+    margin:5px;
+    font-size:18px;
+    cursor:pointer;
+}
+
+#status,#output{
+    border:1px solid black;
+    padding:10px;
+    margin:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="box">
+
+<h2>Robot Dashboard</h2>
+
+<div id="status">
+Status: PLACEHOLDER_STATUS
+</div>
+
+<div id="output">
+Output: PLACEHOLDER_OUTPUT
+</div>
+
+<br>
+
+<button onclick="moveForward()">↑</button>
+<br>
+
+<button onclick="moveLeft()">←</button>
+<button onclick="moveBackward()">↓</button>
+<button onclick="moveRight()">→</button>
+
+<br><br>
+
+<button onclick="startRobot()">Start</button>
+<button onclick="stopRobot()">Stop</button>
+
+</div>
+
+<script>
+
+/* -------------------
+PLACEHOLDER VARIABLES
+Replace these with Python values
+------------------- */
+
+let robotStatus = "PLACEHOLDER_STATUS";
+let robotOutput = "PLACEHOLDER_OUTPUT";
+
+/* -------------------
+DISPLAY VARIABLES
+------------------- */
+
+function refreshPage(){
+    document.getElementById("status").innerHTML =
+        "Status: " + robotStatus;
+
+    document.getElementById("output").innerHTML =
+        "Output: " + robotOutput;
+}
+
+refreshPage();
+
+/* -------------------
+BUTTON FUNCTIONS
+Replace fetch links with Python routes
+------------------- */
+
+function startRobot(){
+    fetch("/start");
+}
+
+function stopRobot(){
+    fetch("/stop");
+}
+
+function moveForward(){
+    fetch("/forward");
+}
+
+function moveBackward(){
+    fetch("/backward");
+}
+
+function moveLeft(){
+    fetch("/left");
+}
+
+function moveRight(){
+    fetch("/right");
+}
+
+/* -------------------
+LIVE UPDATE FROM PYTHON
+------------------- */
+
+setInterval(() => {
+
+fetch("/data")
+.then(response => response.json())
+.then(data => {
+
+    robotStatus = data.status;
+    robotOutput = data.output;
+
+    refreshPage();
+
+});
+
+}, 1000);
+
+</script>
+
+</body>
+</html>
