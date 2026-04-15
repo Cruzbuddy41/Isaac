@@ -34,7 +34,7 @@ button{
 </head>
 
 <body>
-
+<img id="liveImage" src="lanes_result.jpg" alt="Live Stream" style="width:100%; max-width:800px;">
 <div id="box">
 
 <h2>Robot Dashboard</h2>
@@ -43,9 +43,6 @@ button{
 Status: PLACEHOLDER_STATUS
 </div>
 
-<div id="output">
-Output: PLACEHOLDER_OUTPUT
-</div>
 
 <br>
 
@@ -65,17 +62,8 @@ Output: PLACEHOLDER_OUTPUT
 
 <script>
 
-/* -------------------
-PLACEHOLDER VARIABLES
-Replace these with Python values
-------------------- */
-
 let robotStatus = "PLACEHOLDER_STATUS";
 let robotOutput = "PLACEHOLDER_OUTPUT";
-
-/* -------------------
-DISPLAY VARIABLES
-------------------- */
 
 function refreshPage(){
     document.getElementById("status").innerHTML =
@@ -86,11 +74,6 @@ function refreshPage(){
 }
 
 refreshPage();
-
-/* -------------------
-BUTTON FUNCTIONS
-Replace fetch links with Python routes
-------------------- */
 
 function startRobot(){
     fetch("/start");
@@ -126,8 +109,7 @@ fetch("/data")
 .then(response => response.json())
 .then(data => {
 
-    robotStatus = data.status;
-    robotOutput = data.output;
+    robotStatus = d4.direction;
 
     refreshPage();
 
@@ -135,6 +117,11 @@ fetch("/data")
 
 }, 1000);
 
+function updateImage() {
+const img = document.getElementById('liveImage');
+img.src = "lanes_result.jpg?t=" + new Date().getTime();
+}
+setInterval(updateImage, 1000);
 </script>
 
 </body>
