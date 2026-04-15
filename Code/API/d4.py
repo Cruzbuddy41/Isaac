@@ -4,6 +4,7 @@ import the_robot_photo
 import movement
 import chud_detection
 
+movement.move_forward(40,1)
 def regionOfInterest(img, vertices):
     mask = np.zeros_like(img)
     cv2.fillPoly(mask, vertices, 255)
