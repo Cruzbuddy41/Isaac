@@ -37,7 +37,7 @@ try:
         edges = cv2.Canny(dilated, 50, 150)
         # Big Triangle
         big_v1 = [0, h]  # Bottom Left
-        big_v2 = [w, h]  # Bottom Right
+        big_v2 = [w - 5, h - 5]  # Bottom Right
         big_v3 = [w,0]
         big_v4 = [0,0]
         big_pts = np.array([[big_v1, big_v2, big_v3, big_v4]], np.int32)
