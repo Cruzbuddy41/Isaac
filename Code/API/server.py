@@ -16,7 +16,7 @@ def serve_image():
 
 @app.route('/move', methods=['POST'])
 def move():
-    movement.move_forward(50,1.0)  # This executes your imported Python function
+    movement.move_forward(50,1.0)
     return jsonify({"status": "success", "message": "Moved forward!"})
 
 if __name__ == '__main__':
