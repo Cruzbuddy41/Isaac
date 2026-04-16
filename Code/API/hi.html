@@ -6,6 +6,11 @@
 <body>
     <h1>Live Feed</h1>
     <img id="liveImage" src="lanes_result.jpg" alt="Live Stream" style="width:100%; max-width:800px;">
+    <br>
+
+    <button onclick="triggerMoveForward()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">
+        Move Forward
+    </button>
 
     <script>
         function updateImage() {
@@ -13,6 +18,12 @@
             img.src = "lanes_result.jpg?t=" + new Date().getTime();
         }
         setInterval(updateImage, 1000);
+        function triggerMoveForward() {
+            fetch('/move', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => console.log("Success:", data.message))
+                .catch(error => console.error("Error calling Python:", error));
+        }
     </script>
 </body>
 </html>
