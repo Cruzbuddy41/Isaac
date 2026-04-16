@@ -8,7 +8,7 @@ CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 @app.route('/')
 def index():
-    return send_from_directory(CURRENT_DIR, 'index.html')
+    return send_from_directory(CURRENT_DIR, 'hi.html')
 
 @app.route('/lanes_result.jpg')
 def serve_image():
