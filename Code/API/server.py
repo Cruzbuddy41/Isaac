@@ -19,5 +19,20 @@ def move():
     movement.move_forward(50,1.0)
     return jsonify({"status": "success", "message": "Moved forward!"})
 
+@app.route('/moveLeft', methods=['POST'])
+def moveLeft():
+    movement.move_left(50,1.0)
+    return jsonify({"status": "success", "message": "Moved Left!"})
+
+@app.route('/moveRight', methods=['POST'])
+def moveRight():
+    movement.move_right(50,1.0)
+    return jsonify({"status": "success", "message": "Moved Right!"})
+
+@app.route('/stop', methods=['POST'])
+def stop():
+    movement.stop_all()
+    return jsonify({"status": "success", "message": "STOPPED!"})
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

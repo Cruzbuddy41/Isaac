@@ -11,7 +11,15 @@
     <button onclick="triggerMoveForward()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">
         Move Forward
     </button>
-
+    <button onclick="triggerMoveLeft()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">
+        Move Left
+    </button>
+    <button onclick="triggerMoveRight()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">
+        Move Right
+    </button>
+    <button onclick="stop()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">
+        Stop
+    </button>
     <script>
         function updateImage() {
             const img = document.getElementById('liveImage');
@@ -20,6 +28,24 @@
         setInterval(updateImage, 1000);
         function triggerMoveForward() {
             fetch('/move', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => console.log("Success:", data.message))
+                .catch(error => console.error("Error calling Python:", error));
+        }
+        function triggerMoveLeft() {
+                fetch('/moveLeft', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => console.log("Success:", data.message))
+                .catch(error => console.error("Error calling Python:", error));
+        }
+        function triggerMoveRight() {
+                fetch('/moveRight', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => console.log("Success:", data.message))
+                .catch(error => console.error("Error calling Python:", error));
+        }
+        function stop() {
+                fetch('/stop', { method: 'POST' })
                 .then(response => response.json())
                 .then(data => console.log("Success:", data.message))
                 .catch(error => console.error("Error calling Python:", error));
