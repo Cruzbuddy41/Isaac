@@ -10,7 +10,7 @@ SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 SENDER_EMAIL = "bd554192@ahschool.com"
 SENDER_PASSWORD = "cxgi kdfb abxw sftl"
-RECEIVER_EMAIL = "bd554192@ahschool.com"
+RECEIVER_EMAIL = "sadfeen.sadiq@ahschool.com"
 
 def email(img):
     currentTime = time.strftime("%m-%d-%Y %H:%M:%S", time.localtime())
