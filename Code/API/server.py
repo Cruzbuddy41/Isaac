@@ -20,4 +20,4 @@ def move():
     return jsonify({"status": "success", "message": "Moved forward!"})
 
 if __name__ == '__main__':
-    app.run(host='10.25.128.40', port=5000, debug=True)
+    app.run(host='127.0.0.1', port=5000, debug=True)
