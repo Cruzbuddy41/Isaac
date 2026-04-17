@@ -87,6 +87,6 @@ def takeImage():
         cv2.imwrite('test.jpg', mask)
         print(f"Status: {direction}")
 
-        cv2.imshow("Lane Detection", output_img)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        #cv2.imshow("Lane Detection", output_img)
+        #cv2.waitKey(0)
+        #cv2.destroyAllWindows()
