@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+import os
+import time
 import the_robot_photo
 import movement
 import chud_detection
@@ -10,8 +12,14 @@ def regionOfInterest(img, vertices):
     masked_img = cv2.bitwise_and(img, mask)
     return masked_img
 
+FLAG_FILE = 'stop.txt' # Ensure this matches the server's path if they are in different folders
+
 try:
     while True:
+        if os.path.exists(FLAG_FILE):
+            movement.stop_all()
+            time.sleep(0.5)
+            continue
         img = the_robot_photo.capture_photo_linux()
         if img is None:
             img = cv2.imread('lane.jpg')
@@ -33,7 +41,6 @@ try:
         kernel = np.ones((5, 5), np.uint8)
         dilated = cv2.dilate(blurred, kernel, iterations=1)
 
-        # Base edges for the whole image
         edges = cv2.Canny(dilated, 50, 150)
         # Big Triangle
         big_v1 = [0, h]  # Bottom Left
@@ -104,4 +111,6 @@ try:
 
 except KeyboardInterrupt:
     movement.stop_all()
+    if os.path.exists(FLAG_FILE):
+        os.remove(FLAG_FILE)
     print("Stopped by user")
