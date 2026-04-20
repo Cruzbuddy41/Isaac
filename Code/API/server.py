@@ -19,6 +19,7 @@ def index():
 @app.route('/lanes_result.jpg')
 def serve_image():
     d5.takeImage()
+
     return send_from_directory(
         CURRENT_DIR,
         'lanes_result.jpg',

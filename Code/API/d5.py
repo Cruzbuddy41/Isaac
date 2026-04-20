@@ -1,5 +1,8 @@
 import cv2
 import numpy as np
+import os
+
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def regionOfInterest(img, vertices):
@@ -7,11 +10,14 @@ def regionOfInterest(img, vertices):
     cv2.fillPoly(mask, vertices, 255)
     masked_img = cv2.bitwise_and(img, mask)
     return masked_img
+
+
 def takeImage():
-    img = cv2.imread('lane.jpg')
+    img_path = os.path.join(CURRENT_DIR, 'lane.jpg')
+    img = cv2.imread(img_path)
 
     if img is None:
-        print("Error: Could not load 'lane.jpg'. Please ensure the file is in the same directory.")
+        print(f"Error: Could not load '{img_path}'. Please ensure the file is in the same directory.")
     else:
         h, w = img.shape[:2]
         center_x = w // 2
@@ -83,10 +89,7 @@ def takeImage():
             direction = "SEARCHING"
 
         cv2.putText(output_img, f"Dir: {direction}", (50, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-        cv2.imwrite('lanes_result.jpg', output_img)
-        cv2.imwrite('test.jpg', mask)
-        print(f"Status: {direction}")
 
-        #cv2.imshow("Lane Detection", output_img)
-        #cv2.waitKey(0)
-        #cv2.destroyAllWindows()
+        cv2.imwrite(os.path.join(CURRENT_DIR, 'lanes_result.jpg'), output_img)
+        cv2.imwrite(os.path.join(CURRENT_DIR, 'test.jpg'), mask)
+        print(f"Status: {direction}")
