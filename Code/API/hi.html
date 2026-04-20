@@ -7,7 +7,7 @@
     <h1>Live Feed</h1>
     <img id="liveImage" src="lanes_result.jpg" alt="Live Stream" style="width:100%; max-width:800px;">
     <br>
-
+    <a href="/run-python">Click to take a photo</a>
     <button onclick="triggerMoveForward()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">
         Move Forward
     </button>
@@ -46,6 +46,12 @@
         }
         function stop() {
                 fetch('/stop', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => console.log("Success:", data.message))
+                .catch(error => console.error("Error calling Python:", error));
+        }
+        function resume() {
+                fetch('/resume', { method: 'POST' })
                 .then(response => response.json())
                 .then(data => console.log("Success:", data.message))
                 .catch(error => console.error("Error calling Python:", error));
