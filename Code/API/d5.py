@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import os
+import time
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -13,6 +14,7 @@ def regionOfInterest(img, vertices):
 
 
 def takeImage():
+    time.sleep(1)
     img_path = os.path.join(CURRENT_DIR, 'lane.jpg')
     img = cv2.imread(img_path)
 
