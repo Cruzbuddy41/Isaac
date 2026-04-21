@@ -22,43 +22,54 @@
     <button onclick="resume()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">
         Resume
     </button>
+
     <script>
         setInterval(updateImage, 2000);
+
         function updateImage() {
             fetch('/img', { method: 'POST' })
             .then(response => response.json())
-            .then(data => console.log("Success:", data.message))
+            .then(data => {
+                console.log("Success:", data.message);
+                const imgElement = document.getElementById('liveImage');
+                imgElement.src = 'lanes_result.jpg?t=' + new Date().getTime();
+            })
             .catch(error => console.error("Error calling Python:", error));
         }
+
         function triggerMoveForward() {
             fetch('/move', { method: 'POST' })
             .then(response => response.json())
             .then(data => console.log("Success:", data.message))
             .catch(error => console.error("Error calling Python:", error));
         }
+
         function triggerMoveLeft() {
-                fetch('/moveLeft', { method: 'POST' })
-                .then(response => response.json())
-                .then(data => console.log("Success:", data.message))
-                .catch(error => console.error("Error calling Python:", error));
+            fetch('/moveLeft', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => console.log("Success:", data.message))
+            .catch(error => console.error("Error calling Python:", error));
         }
+
         function triggerMoveRight() {
-                fetch('/moveRight', { method: 'POST' })
-                .then(response => response.json())
-                .then(data => console.log("Success:", data.message))
-                .catch(error => console.error("Error calling Python:", error));
+            fetch('/moveRight', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => console.log("Success:", data.message))
+            .catch(error => console.error("Error calling Python:", error));
         }
+
         function stop() {
-                fetch('/stop', { method: 'POST' })
-                .then(response => response.json())
-                .then(data => console.log("Success:", data.message))
-                .catch(error => console.error("Error calling Python:", error));
+            fetch('/stop', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => console.log("Success:", data.message))
+            .catch(error => console.error("Error calling Python:", error));
         }
+
         function resume() {
-                fetch('/resume', { method: 'POST' })
-                .then(response => response.json())
-                .then(data => console.log("Success:", data.message))
-                .catch(error => console.error("Error calling Python:", error));
+            fetch('/resume', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => console.log("Success:", data.message))
+            .catch(error => console.error("Error calling Python:", error));
         }
     </script>
 </body>
