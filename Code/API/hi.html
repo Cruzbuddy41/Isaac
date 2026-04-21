@@ -23,6 +23,7 @@
         Resume
     </button>
     <script>
+        setInterval(updateImage, 1000);
         function updateImage() {
             const img = document.getElementById('liveImage');
             img.src = "lanes_result.jpg?t=" + new Date().getTime();
