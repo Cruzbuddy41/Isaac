@@ -43,8 +43,8 @@ try:
 
         edges = cv2.Canny(dilated, 50, 150)
         # Big Triangle
-        big_v1 = [0, h]  # Bottom Left
-        big_v2 = [w, h]  # Bottom Right
+        big_v1 = [0,h]  # Bottom Left
+        big_v2 = [w,h]  # Bottom Right
         big_v3 = [w,200]
         big_v4 = [0,200]
         big_pts = np.array([[big_v1, big_v2, big_v3, big_v4]], np.int32)
@@ -85,7 +85,7 @@ try:
         cv2.polylines(output_img, big_pts, isClosed=True, color=(0, 255, 0), thickness=2)  # Green = Big
         cv2.polylines(output_img, small_pts, isClosed=True, color=(0, 255, 255), thickness=2)  # Yellow = Small
 
-        if top_line_detected and big_left_line_detected and big_right_line_detected and temp == 2:
+        if top_line_detected and big_left_line_detected and big_right_line_detected:
             direction = "STOP"
             movement.stop_all()
         elif top_line_detected and big_right_line_detected:
