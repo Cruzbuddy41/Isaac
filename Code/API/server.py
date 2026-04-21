@@ -16,8 +16,9 @@ def clear_stop_flag():
 def index():
     return send_from_directory(CURRENT_DIR, 'hi.html', max_age=0)
 
-@app.route('/lanes_result.jpg')
+@app.route('/img', methods=['POST'])
 def serve_image():
+    d5.takeImage()
     return send_from_directory(
         CURRENT_DIR,
         'lanes_result.jpg',
