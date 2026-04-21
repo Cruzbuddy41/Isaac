@@ -13,7 +13,7 @@ def regionOfInterest(img, vertices):
     return masked_img
 
 FLAG_FILE = 'stop.txt' # Ensure this matches the server's path if they are in different folders
-
+temp = 0
 try:
     while True:
         if os.path.exists(FLAG_FILE):
@@ -85,7 +85,7 @@ try:
         cv2.polylines(output_img, big_pts, isClosed=True, color=(0, 255, 0), thickness=2)  # Green = Big
         cv2.polylines(output_img, small_pts, isClosed=True, color=(0, 255, 255), thickness=2)  # Yellow = Small
 
-        if top_line_detected and big_left_line_detected and big_right_line_detected:
+        if top_line_detected and big_left_line_detected and big_right_line_detected and temp == 2:
             direction = "STOP"
             movement.stop_all()
         elif top_line_detected and big_right_line_detected:
