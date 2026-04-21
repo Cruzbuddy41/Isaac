@@ -45,8 +45,8 @@ try:
         # Big Triangle
         big_v1 = [0,h]  # Bottom Left
         big_v2 = [w,h]  # Bottom Right
-        big_v3 = [w,200]
-        big_v4 = [0,200]
+        big_v3 = [w,100]
+        big_v4 = [0,100]
         big_pts = np.array([[big_v1, big_v2, big_v3, big_v4]], np.int32)
 
         # Small Triangle
