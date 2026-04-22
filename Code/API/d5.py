@@ -93,5 +93,5 @@ def takeImage():
         cv2.putText(output_img, f"Dir: {direction}", (50, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
         cv2.imwrite(os.path.join(CURRENT_DIR, 'lanes_result.jpg'), output_img)
-        cv2.imwrite(os.path.join(CURRENT_DIR, 'test.jpg'), mask)
+        cv2.imwrite(os.path.join(CURRENT_DIR, 'lanes_result.jpg'), mask)
         print(f"Status: {direction}")
