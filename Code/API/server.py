@@ -1,14 +1,12 @@
-from flask import Flask, send_from_directory, jsonify, send_file
+from flask import Flask, send_from_directory, jsonify
 import os
 import movement
-import the_robot_photo
+import d5
 
 app = Flask(__name__)
 
-# Setup paths
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 FLAG_FILE = os.path.join(CURRENT_DIR, 'stop.txt')
-LOG_FILE = os.path.join(CURRENT_DIR, 'log.txt')
 
 def clear_stop_flag():
     if os.path.exists(FLAG_FILE):
@@ -16,28 +14,16 @@ def clear_stop_flag():
 
 @app.route('/')
 def index():
-    return send_from_directory(CURRENT_DIR, 'hi.html')
-
-@app.route('/lane.jpg')
-def get_lane_image():
-    return send_file(os.path.join(CURRENT_DIR, 'lane.jpg'), mimetype='image/jpeg')
-
-@app.route('/get_log')
-def get_log():
-    """Reads the current movement status from the log file."""
-    try:
-        if os.path.exists(LOG_FILE):
-            with open(LOG_FILE, 'r') as f:
-                status = f.read().strip()
-            return jsonify({"status": status})
-        return jsonify({"status": "Waiting for robot..."})
-    except Exception as e:
-        return jsonify({"status": f"Error: {str(e)}"})
+    return send_from_directory(CURRENT_DIR, 'hi.html', max_age=0)
 
 @app.route('/img', methods=['POST'])
 def serve_image():
-    the_robot_photo.capture_photo_linux()
-    return jsonify({"status": "success", "message": "Photo captured"})
+    d5.takeImage()
+    return send_from_directory(
+        CURRENT_DIR,
+        'lanes_result.jpg',
+        max_age=0
+    )
 
 @app.route('/move', methods=['POST'])
 def move():
