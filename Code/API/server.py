@@ -1,7 +1,7 @@
 from flask import Flask, send_from_directory, jsonify
 import os
 import movement
-import d5
+import the_robot_photo
 
 app = Flask(__name__)
 
@@ -18,7 +18,7 @@ def index():
 
 @app.route('/img', methods=['POST'])
 def serve_image():
-    d5.takeImage()
+    the_robot_photo.capture_photo_linux()
 
 @app.route('/move', methods=['POST'])
 def move():
