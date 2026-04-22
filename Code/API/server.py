@@ -1,40 +1,73 @@
 from flask import Flask, send_from_directory, jsonify, send_file
 import os
 import movement
+import the_robot_photo
 
 app = Flask(__name__)
-DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Setup paths
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+FLAG_FILE = os.path.join(CURRENT_DIR, 'stop.txt')
+LOG_FILE = os.path.join(CURRENT_DIR, 'log.txt')
+
+def clear_stop_flag():
+    if os.path.exists(FLAG_FILE):
+        os.remove(FLAG_FILE)
 
 @app.route('/')
 def index():
-    return send_from_directory(DIR, 'hi.html')
+    return send_from_directory(CURRENT_DIR, 'hi.html')
 
-@app.route('/lanes_result.jpg')
-def get_image():
-    # Browser will call this to see the latest image + triangles
-    return send_file(os.path.join(DIR, 'lanes_result.jpg'), mimetype='image/jpeg')
+@app.route('/lane.jpg')
+def get_lane_image():
+    return send_file(os.path.join(CURRENT_DIR, 'lane.jpg'), mimetype='image/jpeg')
 
 @app.route('/get_log')
 def get_log():
-    # Browser will call this to see the text status
+    """Reads the current movement status from the log file."""
     try:
-        with open(os.path.join(DIR, 'log.txt'), 'r') as f:
-            return jsonify({"status": f.read()})
-    except:
-        return jsonify({"status": "Waiting..."})
+        if os.path.exists(LOG_FILE):
+            with open(LOG_FILE, 'r') as f:
+                status = f.read().strip()
+            return jsonify({"status": status})
+        return jsonify({"status": "Waiting for robot..."})
+    except Exception as e:
+        return jsonify({"status": f"Error: {str(e)}"})
 
-# Manual Overrides (Buttons)
+@app.route('/img', methods=['POST'])
+def serve_image():
+    the_robot_photo.capture_photo_linux()
+    return jsonify({"status": "success", "message": "Photo captured"})
+
+@app.route('/move', methods=['POST'])
+def move():
+    clear_stop_flag()
+    movement.move_forward(50, 1.0)
+    return jsonify({"status": "success", "message": "Moved forward!"})
+
+@app.route('/moveLeft', methods=['POST'])
+def moveLeft():
+    clear_stop_flag()
+    movement.move_left(50, 1.0)
+    return jsonify({"status": "success", "message": "Moved Left!"})
+
+@app.route('/moveRight', methods=['POST'])
+def moveRight():
+    clear_stop_flag()
+    movement.move_right(50, 1.0)
+    return jsonify({"status": "success", "message": "Moved Right!"})
+
 @app.route('/stop', methods=['POST'])
 def stop():
-    with open(os.path.join(DIR, 'stop.txt'), 'w') as f: f.write("stop")
     movement.stop_all()
-    return jsonify({"status": "locked"})
+    with open(FLAG_FILE, 'w') as f:
+        f.write("stop")
+    return jsonify({"status": "success", "message": "STOPPED!"})
 
 @app.route('/resume', methods=['POST'])
 def resume():
-    if os.path.exists(os.path.join(DIR, 'stop.txt')):
-        os.remove(os.path.join(DIR, 'stop.txt'))
-    return jsonify({"status": "resumed"})
+    clear_stop_flag()
+    return jsonify({"status": "success", "message": "Resumed autonomous mode!"})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
