@@ -1,65 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Live Image Update</title>
+    <meta charset="UTF-8">
+    <title>Robot Control Center</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #222; color: #fff; }
+        .container { max-width: 800px; margin: auto; padding: 20px; }
+        #liveImage { width: 100%; border: 3px solid #444; border-radius: 8px; }
+        .status-card {
+            background: #333;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 10px solid #007bff;
+            font-size: 24px;
+        }
+        button {
+            padding: 15px 25px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+        .btn-move { background: #007bff; color: white; }
+        .btn-stop { background: #dc3545; color: white; }
+        .btn-resume { background: #28a745; color: white; }
+        button:hover { opacity: 0.8; }
+    </style>
 </head>
 <body>
-    <h1>Live Feed</h1>
-    <img id="liveImage" src="lane.jpg" alt="Live Stream" style="width:100%; max-width:800px;">
-    <br>
-    <button onclick="triggerMoveForward()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">Move Forward</button>
-    <button onclick="triggerMoveLeft()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">Move Left</button>
-    <button onclick="triggerMoveRight()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">Move Right</button>
-    <button onclick="stop()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">Stop</button>
-    <button onclick="resume()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">Resume</button>
+    <div class="container">
+        <h1>Live Robot Feed</h1>
+
+        <div class="status-card">
+            Current Action: <span id="movementStatus" style="font-weight:bold; color:#007bff;">Connecting...</span>
+        </div>
+
+        <img id="liveImage" src="lane.jpg" alt="Live Stream">
+
+        <div style="margin-top: 20px;">
+            <button class="btn-move" onclick="apiCall('/move')">Forward</button>
+            <button class="btn-move" onclick="apiCall('/moveLeft')">Left</button>
+            <button class="btn-move" onclick="apiCall('/moveRight')">Right</button>
+            <br>
+            <button class="btn-stop" onclick="apiCall('/stop')" style="margin-top:15px; width:200px;">STOP</button>
+            <button class="btn-resume" onclick="apiCall('/resume')">Resume Auto</button>
+        </div>
+    </div>
 
     <script>
+        // Refresh image every 2 seconds
         setInterval(updateImage, 2000);
+        // Refresh status every 1 second
+        setInterval(updateStatus, 1000);
 
         function updateImage() {
             fetch('/img', { method: 'POST' })
-            .then(response => response.json())
+            .then(() => {
+                const img = document.getElementById('liveImage');
+                img.src = 'lane.jpg?t=' + new Date().getTime();
+            });
+        }
+
+        function updateStatus() {
+            fetch('/get_log')
+            .then(res => res.json())
             .then(data => {
-                console.log("Success:", data.message);
-                const imgElement = document.getElementById('liveImage');
-                imgElement.src = 'lane.jpg?t=' + new Date().getTime();
-            })
-            .catch(error => console.error("Error calling Python:", error));
+                document.getElementById('movementStatus').innerText = data.status;
+            });
         }
 
-        function triggerMoveForward() {
-            fetch('/move', { method: 'POST' })
-            .then(response => response.json())
-            .then(data => console.log("Success:", data.message))
-            .catch(error => console.error("Error calling Python:", error));
-        }
-
-        function triggerMoveLeft() {
-            fetch('/moveLeft', { method: 'POST' })
-            .then(response => response.json())
-            .then(data => console.log("Success:", data.message))
-            .catch(error => console.error("Error calling Python:", error));
-        }
-
-        function triggerMoveRight() {
-            fetch('/moveRight', { method: 'POST' })
-            .then(response => response.json())
-            .then(data => console.log("Success:", data.message))
-            .catch(error => console.error("Error calling Python:", error));
-        }
-
-        function stop() {
-            fetch('/stop', { method: 'POST' })
-            .then(response => response.json())
-            .then(data => console.log("Success:", data.message))
-            .catch(error => console.error("Error calling Python:", error));
-        }
-
-        function resume() {
-            fetch('/resume', { method: 'POST' })
-            .then(response => response.json())
-            .then(data => console.log("Success:", data.message))
-            .catch(error => console.error("Error calling Python:", error));
+        function apiCall(endpoint) {
+            fetch(endpoint, { method: 'POST' })
+            .then(res => res.json())
+            .then(data => console.log("Server response:", data.message))
+            .catch(err => console.error("API Error:", err));
         }
     </script>
 </body>

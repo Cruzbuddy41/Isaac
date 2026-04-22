@@ -5,8 +5,10 @@ import the_robot_photo
 
 app = Flask(__name__)
 
+# Setup paths
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 FLAG_FILE = os.path.join(CURRENT_DIR, 'stop.txt')
+LOG_FILE = os.path.join(CURRENT_DIR, 'log.txt')
 
 def clear_stop_flag():
     if os.path.exists(FLAG_FILE):
@@ -16,10 +18,21 @@ def clear_stop_flag():
 def index():
     return send_from_directory(CURRENT_DIR, 'hi.html')
 
-# NEW: This route allows the browser to download the actual image file
 @app.route('/lane.jpg')
 def get_lane_image():
     return send_file(os.path.join(CURRENT_DIR, 'lane.jpg'), mimetype='image/jpeg')
+
+@app.route('/get_log')
+def get_log():
+    """Reads the current movement status from the log file."""
+    try:
+        if os.path.exists(LOG_FILE):
+            with open(LOG_FILE, 'r') as f:
+                status = f.read().strip()
+            return jsonify({"status": status})
+        return jsonify({"status": "Waiting for robot..."})
+    except Exception as e:
+        return jsonify({"status": f"Error: {str(e)}"})
 
 @app.route('/img', methods=['POST'])
 def serve_image():
