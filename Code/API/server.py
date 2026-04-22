@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory, jsonify
+from flask import Flask, send_from_directory, jsonify, send_file
 import os
 import movement
 import the_robot_photo
@@ -14,11 +14,17 @@ def clear_stop_flag():
 
 @app.route('/')
 def index():
-    return send_from_directory(CURRENT_DIR, 'hi.html', max_age=0)
+    return send_from_directory(CURRENT_DIR, 'hi.html')
+
+# NEW: This route allows the browser to download the actual image file
+@app.route('/lane.jpg')
+def get_lane_image():
+    return send_file(os.path.join(CURRENT_DIR, 'lane.jpg'), mimetype='image/jpeg')
 
 @app.route('/img', methods=['POST'])
 def serve_image():
     the_robot_photo.capture_photo_linux()
+    return jsonify({"status": "success", "message": "Photo captured"})
 
 @app.route('/move', methods=['POST'])
 def move():

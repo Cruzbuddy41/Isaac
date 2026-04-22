@@ -5,23 +5,13 @@
 </head>
 <body>
     <h1>Live Feed</h1>
-    <img id="liveImage" src="lanes_result.jpg" alt="Live Stream" style="width:100%; max-width:800px;">
+    <img id="liveImage" src="lane.jpg" alt="Live Stream" style="width:100%; max-width:800px;">
     <br>
-    <button onclick="triggerMoveForward()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">
-        Move Forward
-    </button>
-    <button onclick="triggerMoveLeft()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">
-        Move Left
-    </button>
-    <button onclick="triggerMoveRight()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">
-        Move Right
-    </button>
-    <button onclick="stop()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">
-        Stop
-    </button>
-    <button onclick="resume()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">
-        Resume
-    </button>
+    <button onclick="triggerMoveForward()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">Move Forward</button>
+    <button onclick="triggerMoveLeft()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">Move Left</button>
+    <button onclick="triggerMoveRight()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">Move Right</button>
+    <button onclick="stop()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">Stop</button>
+    <button onclick="resume()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">Resume</button>
 
     <script>
         setInterval(updateImage, 2000);
@@ -32,7 +22,7 @@
             .then(data => {
                 console.log("Success:", data.message);
                 const imgElement = document.getElementById('liveImage');
-                imgElement.src = 'lanes_result.jpg?t=' + new Date().getTime();
+                imgElement.src = 'lane.jpg?t=' + new Date().getTime();
             })
             .catch(error => console.error("Error calling Python:", error));
         }
