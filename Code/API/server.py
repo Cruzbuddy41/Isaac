@@ -5,7 +5,6 @@ import the_robot_photo
 
 app = Flask(__name__)
 
-# Setup paths
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 FLAG_FILE = os.path.join(CURRENT_DIR, 'stop.txt')
 LOG_FILE = os.path.join(CURRENT_DIR, 'log.txt')
@@ -18,13 +17,20 @@ def clear_stop_flag():
 def index():
     return send_from_directory(CURRENT_DIR, 'hi.html')
 
+# This serves the RAW image from the camera
 @app.route('/lane.jpg')
 def get_lane_image():
     return send_file(os.path.join(CURRENT_DIR, 'lane.jpg'), mimetype='image/jpeg')
 
+# NEW: This serves the PROCESSED image with the triangles/lines drawn on it
+@app.route('/lanes_result.jpg')
+def get_processed_image():
+    if os.path.exists(os.path.join(CURRENT_DIR, 'lanes_result.jpg')):
+        return send_file(os.path.join(CURRENT_DIR, 'lanes_result.jpg'), mimetype='image/jpeg')
+    return send_file(os.path.join(CURRENT_DIR, 'lane.jpg'), mimetype='image/jpeg')
+
 @app.route('/get_log')
 def get_log():
-    """Reads the current movement status from the log file."""
     try:
         if os.path.exists(LOG_FILE):
             with open(LOG_FILE, 'r') as f:
@@ -36,6 +42,7 @@ def get_log():
 
 @app.route('/img', methods=['POST'])
 def serve_image():
+    # This triggers the camera to take a new raw photo
     the_robot_photo.capture_photo_linux()
     return jsonify({"status": "success", "message": "Photo captured"})
 
@@ -67,7 +74,7 @@ def stop():
 @app.route('/resume', methods=['POST'])
 def resume():
     clear_stop_flag()
-    return jsonify({"status": "success", "message": "Resumed autonomous mode!"})
+    return jsonify({"status": "success", "message": "Resumed!"})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
