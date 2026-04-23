@@ -154,10 +154,10 @@
         CONSOLE_EL.scrollTop = CONSOLE_EL.scrollHeight; // Auto-scroll
     }
 
-    function triggerMoveForward() { sendControl('/move', 'Moving Forward...'); }
-    function triggerMoveLeft() { sendControl('/moveLeft', 'Turning Left...'); }
-    function triggerMoveRight() { sendControl('/moveRight', 'Turning Right...'); }
-    function stop() { sendControl('/stop', 'EMERGENCY STOP'); }
+    function triggerMoveForward() { sendControl('/move', 'MOVE FORWARD GNG'); }
+    function triggerMoveLeft() { sendControl('/moveLeft', 'Sliiiide to the left'); }
+    function triggerMoveRight() { sendControl('/moveRight', 'Sliiiide to the right'); }
+    function stop() { sendControl('/stop', 'RED LIGHT'); }
     function resume() { sendControl('/resume', 'Resuming operations...'); }
 
     function sendControl(route, consoleMessage) {
