@@ -1,79 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Live Image Update</title>
+    <title>Robot Live Console</title>
 </head>
 <body>
     <h1>Live Feed</h1>
-    <img id="liveImage" src="lanes_result.jpg" alt="Live Stream" style="width:100%; max-width:800px;">
+    <img id="liveImage" src="/get_processed_image" alt="Live Stream" style="width:100%; max-width:800px; border: 5px solid #333;">
+
     <br>
-    <button onclick="triggerMoveForward()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">
-        Move Forward
-    </button>
-    <button onclick="triggerMoveLeft()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">
-        Move Left
-    </button>
-    <button onclick="triggerMoveRight()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">
-        Move Right
-    </button>
-    <button onclick="stop()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">
-        Stop
-    </button>
-    <button onclick="resume()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">
-        Resume
-    </button>
+    <button onclick="triggerMoveForward()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">Move Forward</button>
+    <button onclick="triggerMoveLeft()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">Move Left</button>
+    <button onclick="triggerMoveRight()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">Move Right</button>
+    <button onclick="stop()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px; background-color: red; color: white;">Stop</button>
+    <button onclick="resume()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px; background-color: green; color: white;">Resume</button>
+
+    <hr>
     <h1>Console</h1>
-    <h2 id="console"></h2>
+    <h2 id="console" style="color: blue; font-family: monospace;">System Ready...</h2>
+
     <script>
         setInterval(updateImage, 2000);
+
         function updateImage() {
             fetch('/img', { method: 'POST' })
             .then(response => response.json())
             .then(data => {
-                console.log(data.message);
                 const imgElement = document.getElementById('liveImage');
                 imgElement.src = '/get_processed_image?t=' + new Date().getTime();
+                document.getElementById('console').textContent = "Status: " + data.message;
             })
-            document.getElementById('console').textContent = 'Getting image';
-            .catch(error => console.error("Error:", error));
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById('console').textContent = "Error: Connection Lost";
+            });
         }
 
         function triggerMoveForward() {
-            sendControl('/move');
-            document.getElementById('console').textContent = 'Just keep on swimming';
+            sendControl('/move', 'Just keep on swimming');
         }
 
         function triggerMoveLeft() {
-            sendControl('/moveLeft');
-            document.getElementById('console').textContent = 'Sliiiiiide to the left (CRISS CROSS)';
+            sendControl('/moveLeft', 'Sliiiiiide to the left (CRISS CROSS)');
         }
 
         function triggerMoveRight() {
-            sendControl('/moveRight');
-            document.getElementById('console').textContent = 'Sliiiiide to the right';
-        }
-
-        function sendControl(route) {
-            fetch(route, { method: 'POST' })
-            .then(response => response.json())
-            .then(data => console.log("Manual Action:", data.message))
-            .catch(error => console.error("Error:", error));
+            sendControl('/moveRight', 'Sliiiiide to the right');
         }
 
         function stop() {
-            fetch('/stop', { method: 'POST' })
-            .then(response => response.json())
-            .then(data => console.log("Success:", data.message))
-            .catch(error => console.error("Error calling Python:", error));
-            document.getElementById('console').textContent = 'STOP PLEASE';
+            sendControl('/stop', 'STOP PLEASE');
         }
 
         function resume() {
-            fetch('/resume', { method: 'POST' })
+            sendControl('/resume', 'Resuminggg');
+        }
+        function sendControl(route, consoleMessage) {
+            document.getElementById('console').textContent = consoleMessage;
+            fetch(route, { method: 'POST' })
             .then(response => response.json())
-            .then(data => console.log("Success:", data.message))
-            .catch(error => console.error("Error calling Python:", error));
-            document.getElementById('console').textContent = 'Resuminggg';
+            .then(data => console.log("Server response:", data))
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById('console').textContent = "Action Failed!";
+            });
         }
     </script>
 </body>
