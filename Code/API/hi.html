@@ -25,16 +25,15 @@
 
     <script>
         setInterval(updateImage, 2000);
-
         function updateImage() {
             fetch('/img', { method: 'POST' })
             .then(response => response.json())
             .then(data => {
-                console.log("Success:", data.message);
+                console.log(data.message);
                 const imgElement = document.getElementById('liveImage');
-                imgElement.src = 'lanes_result.jpg?t=' + new Date().getTime();
+                imgElement.src = '/get_processed_image?t=' + new Date().getTime();
             })
-            .catch(error => console.error("Error calling Python:", error));
+            .catch(error => console.error("Error:", error));
         }
 
         function triggerMoveForward() {

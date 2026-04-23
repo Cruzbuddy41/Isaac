@@ -1,7 +1,7 @@
 from flask import Flask, send_from_directory, jsonify
 import os
 import movement
-import d5
+import d4
 
 app = Flask(__name__)
 
@@ -18,12 +18,12 @@ def index():
 
 @app.route('/img', methods=['POST'])
 def serve_image():
-    d5.takeImage()
-    return send_from_directory(
-        CURRENT_DIR,
-        'lanes_result.jpg',
-        max_age=0
-    )
+    d4.takeImage()
+    return jsonify({"status": "success", "message": "Processed image saved"})
+
+@app.route('/get_processed_image')
+def get_processed_image():
+    return send_from_directory(CURRENT_DIR, 'lanes_result.jpg', max_age=0)
 
 @app.route('/move', methods=['POST'])
 def move():
