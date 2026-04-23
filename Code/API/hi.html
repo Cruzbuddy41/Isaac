@@ -22,7 +22,8 @@
     <button onclick="resume()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">
         Resume
     </button>
-
+    <h1>Console</h1>
+    <h2 id="console"></h2>
     <script>
         setInterval(updateImage, 2000);
         function updateImage() {
@@ -33,19 +34,23 @@
                 const imgElement = document.getElementById('liveImage');
                 imgElement.src = '/get_processed_image?t=' + new Date().getTime();
             })
+            document.getElementById('console').textContent = 'Getting image';
             .catch(error => console.error("Error:", error));
         }
 
         function triggerMoveForward() {
             sendControl('/move');
+            document.getElementById('console').textContent = 'Just keep on swimming';
         }
 
         function triggerMoveLeft() {
             sendControl('/moveLeft');
+            document.getElementById('console').textContent = 'Sliiiiiide to the left (CRISS CROSS)';
         }
 
         function triggerMoveRight() {
             sendControl('/moveRight');
+            document.getElementById('console').textContent = 'Sliiiiide to the right';
         }
 
         function sendControl(route) {
@@ -60,6 +65,7 @@
             .then(response => response.json())
             .then(data => console.log("Success:", data.message))
             .catch(error => console.error("Error calling Python:", error));
+            document.getElementById('console').textContent = 'STOP PLEASE';
         }
 
         function resume() {
@@ -67,6 +73,7 @@
             .then(response => response.json())
             .then(data => console.log("Success:", data.message))
             .catch(error => console.error("Error calling Python:", error));
+            document.getElementById('console').textContent = 'Resuminggg';
         }
     </script>
 </body>
