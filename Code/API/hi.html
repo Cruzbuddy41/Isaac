@@ -1,69 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Robot Live Console</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Mission Control</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
+            color: #eee;
+            overflow: hidden; /* Keeps it a dashboard feel */
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            height: 100vh;
+            gap: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .quadrant {
+            background-color: #262626;
+            border: 2px solid #444;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 1.2rem;
+            color: #00b4d8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .feed-img {
+            max-width: 100%;
+            max-height: 80%;
+            border: 2px solid #00b4d8;
+            border-radius: 4px;
+            object-fit: contain;
+        }
+        /* Controls */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            padding: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+
+        button:active { transform: scale(0.95); }
+
+        .btn-move { background-color: #444; color: white; }
+        .btn-stop { background-color: #d62828; color: white; grid-column: span 1; }
+        .btn-resume { background-color: #0077b6; color: white; grid-column: span 1; }
+
+        /* Console */
+        #console-output {
+            width: 90%;
+            height: 70%;
+            background: #000;
+            color: #0f0; /* Classic Hacker Green */
+            font-family: 'Courier New', Courier, monospace;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-y: auto;
+            border: 1px solid #333;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
-    <h1>Live Feed</h1>
-    <img id="liveImage" src="/get_processed_image" alt="Live Stream" style="width:100%; max-width:800px; border: 5px solid #333;">
 
-    <br>
-    <button onclick="triggerMoveForward()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">Move Forward</button>
-    <button onclick="triggerMoveLeft()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">Move Left</button>
-    <button onclick="triggerMoveRight()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px;">Move Right</button>
-    <button onclick="stop()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px; background-color: red; color: white;">Stop</button>
-    <button onclick="resume()" style="padding: 15px 30px; font-size: 18px; margin-top: 10px; background-color: green; color: white;">Resume</button>
+<div class="dashboard-container">
 
-    <hr>
-    <h1>Console</h1>
-    <h2 id="console" style="color: blue; font-family: monospace;">System Ready...</h2>
+    <div class="quadrant">
+        <h2>Live Robot Feed</h2>
+        <img id="liveImage" src="/get_processed_image" alt="Live Stream" class="feed-img">
+    </div>
 
-    <script>
-        setInterval(updateImage, 2000);
+    <div class="quadrant">
+        <h2>Target Template</h2>
+        <img id="templateImage" src="template.jpg" alt="Target Template" class="feed-img">
+        <p style="font-size: 0.8rem; color: #888;">Expected Object Alignment</p>
+    </div>
 
-        function updateImage() {
-            fetch('/img', { method: 'POST' })
-            .then(response => response.json())
-            .then(data => {
-                const imgElement = document.getElementById('liveImage');
-                imgElement.src = '/get_processed_image?t=' + new Date().getTime();
-                document.getElementById('console').textContent = "Status: " + data.message;
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                document.getElementById('console').textContent = "Error: Connection Lost";
-            });
-        }
+    <div class="quadrant">
+        <h2>Movement Controls</h2>
+        <div class="controls-grid">
+            <div></div>
+            <button class="btn-move" onclick="triggerMoveForward()">▲ FORWARD</button>
+            <div></div>
 
-        function triggerMoveForward() {
-            sendControl('/move', 'Just keep on swimming');
-        }
+            <button class="btn-move" onclick="triggerMoveLeft()">◀ LEFT</button>
+            <button class="btn-stop" onclick="stop()">STOP</button>
+            <button class="btn-move" onclick="triggerMoveRight()">RIGHT ▶</button>
 
-        function triggerMoveLeft() {
-            sendControl('/moveLeft', 'Sliiiiiide to the left (CRISS CROSS)');
-        }
+            <div></div>
+            <button class="btn-resume" onclick="resume()">RESUME</button>
+            <div></div>
+        </div>
+    </div>
 
-        function triggerMoveRight() {
-            sendControl('/moveRight', 'Sliiiiide to the right');
-        }
+    <div class="quadrant">
+        <h2>System Console</h2>
+        <div id="console-output">
+            > Initializing systems...<br>
+            > Connection established.<br>
+            > Ready for input.
+        </div>
+    </div>
 
-        function stop() {
-            sendControl('/stop', 'STOP PLEASE');
-        }
+</div>
 
-        function resume() {
-            sendControl('/resume', 'Resuminggg');
-        }
-        function sendControl(route, consoleMessage) {
-            document.getElementById('console').textContent = consoleMessage;
-            fetch(route, { method: 'POST' })
-            .then(response => response.json())
-            .then(data => console.log("Server response:", data))
-            .catch(error => {
-                console.error("Error:", error);
-                document.getElementById('console').textContent = "Action Failed!";
-            });
-        }
-    </script>
+<script>
+    const CONSOLE_EL = document.getElementById('console-output');
+    setInterval(updateImage, 2000);
+
+    function updateImage() {
+        fetch('/img', { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+            const imgElement = document.getElementById('liveImage');
+            imgElement.src = '/get_processed_image?t=' + new Date().getTime();
+            logToConsole("Sync: " + data.message);
+        })
+        .catch(error => {
+            logToConsole("Error: Connection to feed lost");
+        });
+    }
+
+    function logToConsole(message) {
+        const time = new Date().toLocaleTimeString().split(' ')[0];
+        CONSOLE_EL.innerHTML += `<br> [${time}] ${message}`;
+        CONSOLE_EL.scrollTop = CONSOLE_EL.scrollHeight; // Auto-scroll
+    }
+
+    function triggerMoveForward() { sendControl('/move', 'Moving Forward...'); }
+    function triggerMoveLeft() { sendControl('/moveLeft', 'Turning Left...'); }
+    function triggerMoveRight() { sendControl('/moveRight', 'Turning Right...'); }
+    function stop() { sendControl('/stop', 'EMERGENCY STOP'); }
+    function resume() { sendControl('/resume', 'Resuming operations...'); }
+
+    function sendControl(route, consoleMessage) {
+        logToConsole(consoleMessage);
+        fetch(route, { method: 'POST' })
+        .then(response => response.json())
+        .then(data => console.log("Server response:", data))
+        .catch(error => {
+            logToConsole("Action Failed: Check robot connection.");
+        });
+    }
+</script>
+
 </body>
 </html>
