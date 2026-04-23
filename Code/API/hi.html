@@ -37,24 +37,22 @@
         }
 
         function triggerMoveForward() {
-            fetch('/move', { method: 'POST' })
-            .then(response => response.json())
-            .then(data => console.log("Success:", data.message))
-            .catch(error => console.error("Error calling Python:", error));
+            sendControl('/move');
         }
 
         function triggerMoveLeft() {
-            fetch('/moveLeft', { method: 'POST' })
-            .then(response => response.json())
-            .then(data => console.log("Success:", data.message))
-            .catch(error => console.error("Error calling Python:", error));
+            sendControl('/moveLeft');
         }
 
         function triggerMoveRight() {
-            fetch('/moveRight', { method: 'POST' })
+            sendControl('/moveRight');
+        }
+
+        function sendControl(route) {
+            fetch(route, { method: 'POST' })
             .then(response => response.json())
-            .then(data => console.log("Success:", data.message))
-            .catch(error => console.error("Error calling Python:", error));
+            .then(data => console.log("Manual Action:", data.message))
+            .catch(error => console.error("Error:", error));
         }
 
         function stop() {

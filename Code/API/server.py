@@ -40,8 +40,17 @@ def get_image():
 @app.route('/move', methods=['POST'])
 def move_manual():
     movement.move_forward(50, 1.0)
-    return jsonify({"status": "success"})
+    return jsonify({"status": "success", "message": "Manual Forward"})
 
+@app.route('/moveLeft', methods=['POST'])
+def move_left_manual():
+    movement.move_left(50, 1.0)
+    return jsonify({"status": "success", "message": "Manual Left"})
+
+@app.route('/moveRight', methods=['POST'])
+def move_right_manual():
+    movement.move_right(50, 1.0)
+    return jsonify({"status": "success", "message": "Manual Right"})
 
 @app.route('/stop', methods=['POST'])
 def stop():
