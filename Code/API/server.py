@@ -2,6 +2,7 @@ from flask import Flask, send_from_directory, jsonify, send_file
 import os
 import movement
 import d4
+import the_robot_photo
 
 app = Flask(__name__)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -17,7 +18,6 @@ with open(FLAG_FILE, 'w') as f: f.write("stop")
 @app.route('/')
 def index():
     return send_from_directory(BASE_DIR, 'hi.html')
-
 
 @app.route('/img', methods=['POST'])
 def process_frame():
