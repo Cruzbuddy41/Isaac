@@ -14,6 +14,9 @@ def is_stopped():
 
 with open(FLAG_FILE, 'w') as f: f.write("stop")
 
+@app.route('/lane.jpg')
+def get_template_image():
+    return send_file(os.path.join(BASE_DIR, 'lane.jpg'), max_age=0)
 
 @app.route('/')
 def index():
