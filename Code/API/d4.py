@@ -52,7 +52,10 @@ def takeImage():
 
     cv2.polylines(output_img, big_pts, True, (0, 255, 0), 2)
     cv2.polylines(output_img, small_pts, True, (0, 255, 255), 2)
-    if t_det and l_det and r_det: direction = "STOP"
+    if t_det and l_det and r_det:
+        movement.move_left(55,0.1)
+        if(t_det and l_det and r_det):
+            direction = "STOP"
     elif t_det and r_det: direction = "LEFT"
     elif t_det and l_det: direction = "RIGHT"
     elif r_det or l_det: direction = "FORWARD"
