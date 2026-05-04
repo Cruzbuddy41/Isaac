@@ -8,7 +8,6 @@ app = Flask(__name__)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FLAG_FILE = os.path.join(BASE_DIR, 'stop.txt')
 
-
 def is_stopped():
     return os.path.exists(FLAG_FILE)
 

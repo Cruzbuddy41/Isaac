@@ -49,13 +49,19 @@ def takeImage():
         for line in small_lines:
             x1, y1, x2, y2 = line[0]
             cv2.line(output_img, (x1, y1), (x2, y2), (255, 0, 0), 3)
-
+    not_stop = True
+    not_stop_count = 0
     cv2.polylines(output_img, big_pts, True, (0, 255, 0), 2)
     cv2.polylines(output_img, small_pts, True, (0, 255, 255), 2)
-    if t_det and l_det and r_det:
-        movement.move_left(55,0.1)
-        if(t_det and l_det and r_det):
-            direction = "STOP"
+    if t_det and l_det and r_det and not_stop:
+        if(not_stop_count <= 10):
+            movement.move_left(55,0.1)
+            if(t_det and l_det and r_det):
+                direction = "STOP"
+                not_stop_count += 1
+            else:
+                not_stop_count = 0
+
     elif t_det and r_det: direction = "LEFT"
     elif t_det and l_det: direction = "RIGHT"
     elif r_det or l_det: direction = "FORWARD"
