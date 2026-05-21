@@ -1,6 +1,5 @@
 import cv2
 
-# Try to open the default camera (index 0)
 cap = cv2.VideoCapture(0)
 
 if not cap.isOpened():
