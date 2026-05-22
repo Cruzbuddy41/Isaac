@@ -103,28 +103,3 @@ def apply_movement(direction):
         movement.move_left(55, 0.1)
     elif direction == "FORWARD" or direction == "SEARCHING":
         movement.move_forward(40, 0.3)
-
-if __name__ == "__main__":
-    print("Starting Isaac's autonomous loop... Press Ctrl+C to stop.")
-
-    try:
-        while True:
-            # 1. Capture the frame and determine where to go
-            output_img, direction = takeImage()
-
-            if direction == "ERROR":
-                print("Camera error or missing lane.jpg. Exiting.")
-                movement.stop_all()
-                break
-
-            print(f"Current Direction: {direction}")
-
-            # 2. Tell the motors to move based on that direction
-            apply_movement(direction)
-
-    except KeyboardInterrupt:
-        # Safely stop the robot if you press Ctrl+C in the terminal
-        print("\nLoop interrupted by user. Stopping all motors.")
-        movement.stop_all()
-
-        """"""
