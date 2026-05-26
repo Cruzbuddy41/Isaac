@@ -11,6 +11,7 @@ def get_camera():
         time.sleep(1)
     return cap
 
+
 def capture_photo_linux(filename="lane.jpg"):
     camera = get_camera()
 
@@ -24,6 +25,8 @@ def capture_photo_linux(filename="lane.jpg"):
     ret, frame = camera.read()
 
     if ret:
+        frame = cv2.resize(frame, (640, 480))
+
         cv2.imwrite(filename, frame)
         print("Capture successful!")
         return frame

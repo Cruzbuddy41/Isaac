@@ -138,20 +138,23 @@
     function updateImage() {
         const timestamp = new Date().getTime();
 
-        const templateImg = document.getElementById('templateImage');
-        if(templateImg) {
-            templateImg.src = 'lane.jpg?t=' + timestamp;
-        }
-
         fetch('/img', { method: 'POST' })
         .then(response => response.json())
         .then(data => {
             const imgElement = document.getElementById('liveImage');
-            imgElement.src = '/get_processed_image?t=' + timestamp;
+            if(imgElement) {
+                imgElement.src = '/get_processed_image?t=' + timestamp;
+            }
+
+            const templateImg = document.getElementById('templateImage');
+            if(templateImg) {
+                templateImg.src = 'lane.jpg?t=' + timestamp; // Moved inside the sync block
+            }
+
             logToConsole("Sync: " + data.message);
         })
         .catch(error => {
-            logToConsole("Error: Connection to feed lost");
+        logToConsole("Error: Connection to feed lost");
         });
     }
 
