@@ -73,6 +73,6 @@ def detect(img):
            cv2.rectangle(output_img, (x, y), (x + w, y + h), (0, 0, 255), 4)
 
 
-    if chud_detected == True:
-        print("Chud Detected")
-        camera_email.email(img)
+   if (chud_detected == True):
+       print("Chud Detected")
+       camera_email.email(img)
