@@ -61,7 +61,3 @@ def detect(img):
             x, y, w, h = cv2.boundingRect(largest_contour)
             # Draw a red bounding box around the intruder/chud
             cv2.rectangle(output_img, (x, y), (x + w, y + h), (0, 0, 255), 4)
-
-    if (chud_detected == True):
-        print("Chud Detected")
-        camera_email.email(img)

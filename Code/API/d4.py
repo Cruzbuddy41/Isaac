@@ -4,6 +4,7 @@ import os
 import the_robot_photo
 import movement
 import chud_detection
+import camera_email
 
 not_stop_count = 0
 
@@ -27,6 +28,10 @@ def takeImage():
 
     if not chud_detection.chud_detected:
         chud_detection.detect(img)
+        if (chud_detection.chud_detected == True):
+            print("Chud Detected")
+            camera_email.email(img)
+
 
     h, w = img.shape[:2]
     center_x = w // 2
