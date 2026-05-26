@@ -47,4 +47,4 @@ def detect(img):
         camera_email.email(output_img)
         chud_detected = True
 
-    cv2.imwrite('anomaly_debug.jpg', clean_mask)
+    cv2.imwrite('anomaly_debug.jpg', clean_mask) #test
