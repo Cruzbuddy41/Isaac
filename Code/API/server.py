@@ -63,9 +63,10 @@ def stop():
 
 @app.route('/resume', methods=['POST'])
 def resume():
-    if os.path.exists(FLAG_FILE):
-        os.remove(FLAG_FILE)
-    return jsonify({"status": "success"})
+   if os.path.exists(FLAG_FILE):
+       os.remove(FLAG_FILE)
+   d4.reset_counters()
+   return jsonify({"status": "success"})
 
 
 if __name__ == '__main__':

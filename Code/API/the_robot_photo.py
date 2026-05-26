@@ -1,23 +1,29 @@
 import cv2
 import time
 
+cap = None
+
+def get_camera():
+    global cap
+    if cap is None or not cap.isOpened():
+        print("Initializing camera resource...")
+        cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
+        time.sleep(1)
+    return cap
 
 def capture_photo_linux(filename="lane.jpg"):
-    cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
-    time.sleep(1)
+    camera = get_camera()
 
-    if not cap.isOpened():
-        print("Could not open camera. Trying V4L2 backend...")
-        cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
-        if not cap.isOpened():
-            return None
-    for i in range(30):
-        cap.grab()
+    if not camera.isOpened():
+        print("Capture failed: Camera resource unavailable.")
+        return None
 
-    ret, frame = cap.read()
-    cap.release()
+    for _ in range(2):
+        camera.grab()
 
-    if ret == True:
+    ret, frame = camera.read()
+
+    if ret:
         cv2.imwrite(filename, frame)
         print("Capture successful!")
         return frame

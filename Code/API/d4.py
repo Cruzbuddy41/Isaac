@@ -103,3 +103,20 @@ def apply_movement(direction):
         movement.move_left(55, 0.1)
     elif direction == "FORWARD" or direction == "SEARCHING":
         movement.move_forward(40, 0.3)
+
+def reset_counters():
+    global not_stop_count
+    not_stop_count = 0
+    print("Navigation counters reset.")
+
+def apply_movement(direction):
+   if direction == "STOP" or direction == "ERROR":
+       movement.stop_all()
+   elif direction == "LEFT":
+       movement.move_left(55, 0.3)
+   elif direction == "RIGHT":
+       movement.move_right(55, 0.3)
+   elif direction == "Searching for side":
+       movement.move_left(55, 0.1)
+   elif direction == "FORWARD" or direction == "SEARCHING":
+       movement.move_forward(40, 0.3)
