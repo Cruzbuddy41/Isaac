@@ -9,7 +9,7 @@ from email.mime.image import MIMEImage
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 SENDER_EMAIL = "bd554192@ahschool.com"
-SENDER_PASSWORD = "gkxg ozxu zgtz xrde"
+SENDER_PASSWORD = "xcci zgdw lcdi njvg"
 RECEIVER_EMAIL = "bd568711@ahschool.com"
 
 def email(img):
