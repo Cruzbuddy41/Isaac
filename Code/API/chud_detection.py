@@ -57,7 +57,7 @@ def detect(img):
 
 
    output_img = img.copy()
-   object_detected = False
+   chud_detected = False
 
 
    if contours:
@@ -67,7 +67,12 @@ def detect(img):
 
        # Threshold to ignore tiny specs of noise/lighting changes
        if cv2.contourArea(largest_contour) > 500:
-           object_detected = True
+           chud_detected = True
            x, y, w, h = cv2.boundingRect(largest_contour)
            # Draw a red bounding box around the intruder/chud
            cv2.rectangle(output_img, (x, y), (x + w, y + h), (0, 0, 255), 4)
+
+
+    if chud_detected == True:
+        print("Chud Detected")
+        camera_email.email(img)
