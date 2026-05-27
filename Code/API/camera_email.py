@@ -13,41 +13,41 @@ SENDER_PASSWORD = "xcci zgdw lcdi njvg"
 RECEIVER_EMAIL = "bd568711@ahschool.com"
 
 def email(img):
-    currentTime = time.strftime("%m-%d-%Y %H:%M:%S", time.localtime())
-    subject = "Photo capture: " + currentTime
-    body = "Here is the photo showing proof of Chud detection."
+   currentTime = time.strftime("%m-%d-%Y %H:%M:%S", time.localtime())
+   subject = "Photo capture: " + currentTime
+   body = "Here is the photo showing proof of Chud detection."
 
-    msg = MIMEMultipart()
-    msg['From'] = SENDER_EMAIL
-    msg['To'] = RECEIVER_EMAIL
-    msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
+   msg = MIMEMultipart()
+   msg['From'] = SENDER_EMAIL
+   msg['To'] = RECEIVER_EMAIL
+   msg['Subject'] = subject
+   msg.attach(MIMEText(body, 'plain'))
 
-    try:
-        photo_to_send = 'phototosend.jpg'
-        cv2.imwrite('phototosend.jpg', img)
-        with open('phototosend.jpg', 'rb') as f:
-            img_data = f.read()
-        image_part = MIMEImage(img_data, name=os.path.basename('phototosend.jpg'))
-        image_part.add_header('Content-Disposition', f'attachment; filename="{img}"')
-        msg.attach(image_part)
-    except FileNotFoundError:
-        print(f"Attachment file not found. Cannot send email.")
-        return
+   try:
+       photo_to_send = 'phototosend.jpg'
+       cv2.imwrite(photo_to_send, img)
+       with open(photo_to_send, 'rb') as f:
+           img_data = f.read()
+       image_part = MIMEImage(img_data, name=os.path.basename(photo_to_send))
+       # FIXED: Changed filename="{img}" to filename="{photo_to_send}"
+       image_part.add_header('Content-Disposition', f'attachment; filename="{photo_to_send}"')
+       msg.attach(image_part)
+   except FileNotFoundError:
+       print(f"Attachment file not found. Cannot send email.")
+       return
 
-
-    print(f"Attempting to send email to {RECEIVER_EMAIL}...")
-    try:
-        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
-        server.starttls()
-        server.login(SENDER_EMAIL, SENDER_PASSWORD)
-        server.sendmail(SENDER_EMAIL, RECEIVER_EMAIL, msg.as_string())
-        server.quit()
-        print("Email sent successfully!")
-    except smtplib.SMTPAuthenticationError:
-        print("Authentication Error: Check your sender email and App Password.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+   print(f"Attempting to send email to {RECEIVER_EMAIL}...")
+   try:
+       server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+       server.starttls()
+       server.login(SENDER_EMAIL, SENDER_PASSWORD)
+       server.sendmail(SENDER_EMAIL, RECEIVER_EMAIL, msg.as_string())
+       server.quit()
+       print("Email sent successfully!")
+   except smtplib.SMTPAuthenticationError:
+       print("Authentication Error: Check your sender email and App Password.")
+   except Exception as e:
+       print(f"An error occurred: {e}")
 
 
 
