@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import os
 
-from traits.trait_types import false
 
 import the_robot_photo
 import movement
