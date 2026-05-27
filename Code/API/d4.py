@@ -1,13 +1,16 @@
 import cv2
 import numpy as np
 import os
+
+from traits.trait_types import false
+
 import the_robot_photo
 import movement
 import chud_detection
 import camera_email
 
 not_stop_count = 0
-
+chud_detection.chud_detected = false
 
 def regionOfInterest(img, vertices):
     mask = np.zeros_like(img)
