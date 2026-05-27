@@ -10,7 +10,7 @@ import chud_detection
 import camera_email
 
 not_stop_count = 0
-chud_detection.chud_detected = false
+chud_detection.chud_detected = False
 
 def regionOfInterest(img, vertices):
     mask = np.zeros_like(img)
