@@ -28,11 +28,6 @@ def takeImage():
     if img is None:
         return None, "ERROR"
 
-    if not chud_detection.chud_detected:
-        chud_detection.detect(img)
-        if (chud_detection.chud_detected == True):
-            print("Chud Detected")
-            camera_email.email(img)
 
 
     h, w = img.shape[:2]
@@ -93,7 +88,11 @@ def takeImage():
         direction = "Searching for side"
     else:
         direction = "SEARCHING"
-
+    if not chud_detection.chud_detected:
+        chud_detection.detect(img)
+        if (chud_detection.chud_detected == True):
+            print("Chud Detected")
+            camera_email.email(img)
     cv2.putText(output_img, f"Dir: {direction}", (50, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
     cv2.imwrite('lanes_result.jpg', output_img)
     return output_img, direction
