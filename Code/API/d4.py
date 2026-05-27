@@ -10,6 +10,7 @@ import camera_email
 
 not_stop_count = 0
 chud_detection.chud_detected = False
+waittimer = 3
 
 def regionOfInterest(img, vertices):
     mask = np.zeros_like(img)
@@ -19,6 +20,7 @@ def regionOfInterest(img, vertices):
 
 
 def takeImage():
+    global waittimer
     global not_stop_count
     direction = "SEARCHING"
 
@@ -88,11 +90,15 @@ def takeImage():
         direction = "Searching for side"
     else:
         direction = "SEARCHING"
-    if not chud_detection.chud_detected:
-        chud_detection.detect(img)
-        if (chud_detection.chud_detected == True):
-            print("Chud Detected")
-            camera_email.email(img)
+    if waittimer == 0:
+        if not chud_detection.chud_detected:
+            chud_detection.detect(img)
+            if (chud_detection.chud_detected == True):
+                print("Chud Detected")
+                camera_email.email(img)
+    else:
+        waittimer-=1
+
     cv2.putText(output_img, f"Dir: {direction}", (50, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
     cv2.imwrite('lanes_result.jpg', output_img)
     return output_img, direction
