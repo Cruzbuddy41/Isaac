@@ -10,21 +10,21 @@ def detect(img):
     global chud_detected
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-    # FIXED LINE: Changed 5 to (5, 5), 0
+    # Smooth out camera grain noise
     gauss = cv2.GaussianBlur(hsv, (5, 5), 0)
 
     # 1. Define Known Background Color Ranges (Lower, Upper)
-    # Turquoise/Blue Tape (from your original code)
-    lower_turquoise = np.array([80, 50, 50])
-    upper_turquoise = np.array([100, 255, 255])
+    # Turquoise/Blue Tape
+    lower_turquoise = np.array([85, 40, 40])
+    upper_turquoise = np.array([130, 255, 255])
 
-    # Grout Lines
-    lower_grout = np.array([20, 10, 10])
-    upper_grout = np.array([40, 35, 40])
+    # Grout Lines (Widened to accept shadow variations)
+    lower_grout = np.array([10, 5, 20])
+    upper_grout = np.array([40, 60, 160])
 
-    # Tiles
-    lower_tile = np.array([25, 10, 55])
-    upper_tile = np.array([50, 40, 90])
+    # Tiles (CRITICAL FIX: Opened upper Value to 255 so bright tiles aren't flagged as anomalies)
+    lower_tile = np.array([10, 2, 50])
+    upper_tile = np.array([40, 80, 255])
 
     # 2. Create masks for all allowed background elements
     mask_turquoise = cv2.inRange(gauss, lower_turquoise, upper_turquoise)
@@ -32,7 +32,6 @@ def detect(img):
     mask_tile = cv2.inRange(gauss, lower_tile, upper_tile)
 
     # 3. Combine all allowed background elements into one mask
-    # cv2.bitwise_or means "if it is tile OR grout OR tape, it is background"
     background_mask = cv2.bitwise_or(mask_turquoise, mask_grout)
     background_mask = cv2.bitwise_or(background_mask, mask_tile)
 
@@ -50,24 +49,29 @@ def detect(img):
 
     output_img = img.copy()
     chud_detected = False
-    cropped_robot = None  # Holds the actual cropped image slice
+    cropped_robot = None
 
     if contours:
         # Find the largest anomalous object
         largest_contour = max(contours, key=cv2.contourArea)
 
-        # Threshold to ignore tiny specs of noise/lighting changes
-        if cv2.contourArea(largest_contour) > 500:
+        # CRITICAL FIX: Increased from 500 to 5000.
+        # The robot is huge, but compression artifacts/shadows are small.
+        if cv2.contourArea(largest_contour) > 5000:
             chud_detected = True
             x, y, w, h = cv2.boundingRect(largest_contour)
+
+            # Adjust height factor
             height_multiplier = 0.8
             h = int(h * height_multiplier)
 
-            # Keep the boundary box from running off the bottom of the image frame
             if y + h > img.shape[0]:
                 h = img.shape[0] - y
-            # Draw a red bounding box around the intruder/chud
+
+            # Draw a red bounding box around the intruder
             cv2.rectangle(output_img, (x, y), (x + w, y + h), (0, 0, 255), 4)
 
-            # This line actually CROPS the robot out as its own sub-image
+            # Crop the robot
             cropped_robot = img[y:y + h, x:x + w]
+
+    return output_img, cropped_robot
