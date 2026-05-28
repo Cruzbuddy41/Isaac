@@ -50,6 +50,7 @@ def detect(img):
 
     output_img = img.copy()
     chud_detected = False
+    cropped_robot = None  # Holds the actual cropped image slice
 
     if contours:
         # Find the largest anomalous object
@@ -59,5 +60,14 @@ def detect(img):
         if cv2.contourArea(largest_contour) > 500:
             chud_detected = True
             x, y, w, h = cv2.boundingRect(largest_contour)
+            height_multiplier = 0.8
+            h = int(h * height_multiplier)
+
+            # Keep the boundary box from running off the bottom of the image frame
+            if y + h > img.shape[0]:
+                h = img.shape[0] - y
             # Draw a red bounding box around the intruder/chud
             cv2.rectangle(output_img, (x, y), (x + w, y + h), (0, 0, 255), 4)
+
+            # This line actually CROPS the robot out as its own sub-image
+            cropped_robot = img[y:y + h, x:x + w]
