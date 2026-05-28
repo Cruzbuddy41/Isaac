@@ -62,7 +62,7 @@ def detect(img):
             x, y, w, h = cv2.boundingRect(largest_contour)
 
             # Adjust height factor
-            height_multiplier = 0.8
+            height_multiplier = 0.6
             h = int(h * height_multiplier)
 
             if y + h > img.shape[0]:
