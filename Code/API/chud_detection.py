@@ -10,11 +10,11 @@ def detect(img):
     global chud_detected
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-    # Smooth out camera grain noise
+    # Smooth out camera grain noise gently
     gauss = cv2.GaussianBlur(hsv, (5, 5), 0)
 
     # 1. Define Known Background Color Ranges (Lower, Upper)
-    # CRITICAL FIX: Lowered upper Hue from 130 to 118 so it stops eating purple objects
+    # Turquoise/Blue Tape
     lower_turquoise = np.array([95, 40, 30])
     upper_turquoise = np.array([118, 255, 255])
 
@@ -26,11 +26,11 @@ def detect(img):
     lower_tile = np.array([10, 2, 50])
     upper_tile = np.array([40, 80, 255])
 
-    # Robot Chassis & Tracks (Anything that is pure dark/black)
+    # Robot Chassis & Tracks (Pure dark/black)
     lower_robot_black = np.array([0, 0, 0])
     upper_robot_black = np.array([180, 255, 75])
 
-    # Robot Sticker/Silver parts (Grayscale: very low saturation)
+    # Robot Sticker/Silver parts (Grayscale / low saturation)
     lower_robot_silver = np.array([0, 0, 70])
     upper_robot_silver = np.array([180, 35, 255])
 
@@ -41,18 +41,17 @@ def detect(img):
     mask_robot_black = cv2.inRange(gauss, lower_robot_black, upper_robot_black)
     mask_robot_silver = cv2.inRange(gauss, lower_robot_silver, upper_robot_silver)
 
-    # 3. Combine all allowed elements (Tile + Grout + Tape + Robot Parts)
+    # 3. Combine all allowed elements into one background map
     background_mask = cv2.bitwise_or(mask_turquoise, mask_grout)
     background_mask = cv2.bitwise_or(background_mask, mask_tile)
     background_mask = cv2.bitwise_or(background_mask, mask_robot_black)
     background_mask = cv2.bitwise_or(background_mask, mask_robot_silver)
 
-    # 4. INVERT THE MASK
-    # Anything that is NOT floor, tape, or robot is now an anomaly
+    # 4. INVERT THE MASK - Anything left over is an anomaly
     anomaly_mask = cv2.bitwise_not(background_mask)
 
-    # 5. Clean up noise (stray pixels) using morphology
-    kernel = np.ones((5, 5), np.uint8)
+    # 5. CRITICAL FIX: Shrunk kernel to (3,3) so it doesn't erase distant objects
+    kernel = np.ones((3, 3), np.uint8)
     clean_mask = cv2.morphologyEx(anomaly_mask, cv2.MORPH_OPEN, kernel)
     clean_mask = cv2.morphologyEx(clean_mask, cv2.MORPH_CLOSE, kernel)
 
@@ -63,26 +62,27 @@ def detect(img):
     chud_detected = False
     cropped_robot = None
 
+    # CRITICAL FIX: Check ALL contours to see if any match our anomaly size
     if contours:
-        # Find the largest anomalous object
-        largest_contour = max(contours, key=cv2.contourArea)
+        for contour in contours:
+            area = cv2.contourArea(contour)
 
-        # Set to 150 pixels to confidently catch the alien while filtering tiny specks
-        if cv2.contourArea(largest_contour) > 150:
-            chud_detected = True
-            x, y, w, h = cv2.boundingRect(largest_contour)
+            # Lowered threshold to 30 to catch small, far-away objects
+            if area > 30:
+                chud_detected = True
+                x, y, w, h = cv2.boundingRect(contour)
 
-            # Adjust height factor for the crop box
-            height_multiplier = 1.3
-            h = int(h * height_multiplier)
+                # Adjust height factor for the crop box
+                height_multiplier = 1.3
+                h = int(h * height_multiplier)
+                if y + h > img.shape[0]:
+                    h = img.shape[0] - y
 
-            if y + h > img.shape[0]:
-                h = img.shape[0] - y
+                # Draw a red bounding box around the detected anomaly
+                cv2.rectangle(output_img, (x, y), (x + w, y + h), (0, 0, 255), 4)
 
-            # Draw a red bounding box around the detected anomaly
-            cv2.rectangle(output_img, (x, y), (x + w, y + h), (0, 0, 255), 4)
+                # Crop out the detected object
+                cropped_robot = img[y:y + h, x:x + w]
 
-            # Crop out the anomaly
-            cropped_robot = img[y:y + h, x:x + w]
-
-    return output_img, cropped_robot
+                # If we find at least one valid anomaly, trigger detection and break
+                break
