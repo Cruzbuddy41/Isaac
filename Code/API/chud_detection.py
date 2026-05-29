@@ -63,19 +63,28 @@ def detect(img):
         for contour in contours:
             area = cv2.contourArea(contour)
 
-            # Keep this threshold around 30-40 since the figure is physically small in frame
             if area > 30:
-                chud_detected = True
                 x, y, w, h = cv2.boundingRect(contour)
 
-                # Expand crop box slightly
-                h = int(h * 1.3)
-                if y + h > img.shape[0]:
-                    h = img.shape[0] - y
+                # CRITICAL FIX: Calculate the aspect ratio to filter out wires/lines
+                aspect_ratio = float(w) / h
 
-                # Draw bounding box
-                cv2.rectangle(output_img, (x, y), (x + w, y + h), (0, 0, 255), 4)
-                cropped_robot = img[y:y + h, x:x + w]
-                break
+                # A wire will be extreme (e.g., 0.1 or 10.0). The figure is chunky (0.4 to 2.5).
+                # We also cap the max size (w < 150, h < 150) so giant objects don't trigger an email.
+                if 0.4 < aspect_ratio < 2.5 and w < 150 and h < 150:
+                    chud_detected = True
 
-    return output_img, cropped_robot
+                    # Expand crop box slightly
+                    crop_h = int(h * 1.3)
+                    if y + crop_h > img.shape[0]:
+                        crop_h = img.shape[0] - y
+
+                    # Draw bounding box
+                    cv2.rectangle(output_img, (x, y), (x + w, y + crop_h), (0, 0, 255), 4)
+
+                    # Crop out the detected object
+                    cropped_robot = img[y:y + crop_h, x:x + w]
+
+                    # Found a valid anomaly, break the loop
+                    break
+
