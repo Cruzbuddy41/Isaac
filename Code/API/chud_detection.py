@@ -14,9 +14,9 @@ def detect(img):
     gauss = cv2.GaussianBlur(hsv, (5, 5), 0)
 
     # 1. Define Known Background Color Ranges (Lower, Upper)
-    # Turquoise/Blue Tape
-    lower_turquoise = np.array([85, 40, 40])
-    upper_turquoise = np.array([130, 255, 255])
+    # CRITICAL FIX: Lowered upper Hue from 130 to 118 so it stops eating purple objects
+    lower_turquoise = np.array([95, 40, 30])
+    upper_turquoise = np.array([118, 255, 255])
 
     # Grout Lines
     lower_grout = np.array([10, 5, 20])
@@ -67,9 +67,8 @@ def detect(img):
         # Find the largest anomalous object
         largest_contour = max(contours, key=cv2.contourArea)
 
-        # FIXED THRESHOLD: Lowered to 30 so small or distant anomalies
-        # (like the alien toy) trigger the detection system.
-        if cv2.contourArea(largest_contour) > 30:
+        # Set to 150 pixels to confidently catch the alien while filtering tiny specks
+        if cv2.contourArea(largest_contour) > 150:
             chud_detected = True
             x, y, w, h = cv2.boundingRect(largest_contour)
 
