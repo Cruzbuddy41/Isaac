@@ -10,23 +10,24 @@ def detect(img):
     global chud_detected
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-    # 1. Increase blur slightly to smooth out harsh edges where tape meets floor
-    gauss = cv2.GaussianBlur(hsv, (7, 7), 0)
+    # 1. Mild blur to keep small details intact
+    gauss = cv2.GaussianBlur(hsv, (5, 5), 0)
 
-    # 2. BROAD BACKGROUND MASKS
-    # Instead of highly specific ranges, use broad bins to catch all background elements.
+    # 2. ADJUSTED BACKGROUND MASKS
 
-    # Catch ALL low-saturation colors (Tiles, Grout, Robot Sticker, Dust)
-    # This covers tans, whites, grays, and pale colors.
+    # FIX: Lowered upper saturation from 90 to 55.
+    # A threshold of 90 was eating vibrant colors that looked slightly washed out under room lights.
+    # 55 is tight enough to only catch true grayscale (white/grey) and pale tans/tiles.
     lower_bg_desat = np.array([0, 0, 0])
-    upper_bg_desat = np.array([180, 90, 255])
+    upper_bg_desat = np.array([180, 55, 255])
 
-    # Catch ALL low-value colors (Robot Chassis, Treads, Deep Shadows)
-    # This covers blacks and dark grays across all hues.
+    # FIX: Lowered upper value from 60 to 45.
+    # This ensures deep shadows and dark surfaces are masked out,
+    # but dark variations of a colored alien won't be accidentally deleted.
     lower_bg_dark = np.array([0, 0, 0])
-    upper_bg_dark = np.array([180, 255, 60])
+    upper_bg_dark = np.array([180, 255, 45])
 
-    # Catch the highly saturated blue tape
+    # Catch the highly saturated blue tape (Keep this as is)
     lower_tape = np.array([90, 60, 50])
     upper_tape = np.array([130, 255, 255])
 
@@ -35,18 +36,17 @@ def detect(img):
     mask_dark = cv2.inRange(gauss, lower_bg_dark, upper_bg_dark)
     mask_tape = cv2.inRange(gauss, lower_tape, upper_tape)
 
-    # 4. Combine all background elements into one massive background map
+    # 4. Combine all background elements
     background_mask = cv2.bitwise_or(mask_desat, mask_dark)
     background_mask = cv2.bitwise_or(background_mask, mask_tape)
 
-    # 5. INVERT THE MASK - Anything left over is the anomaly (The Alien)
-    # Because the purple alien has a hue of ~140, high saturation, and high value,
-    # it safely falls completely outside our broad background masks.
+    # 5. INVERT THE MASK - Anything left over is an anomaly (The Alien)
     anomaly_mask = cv2.bitwise_not(background_mask)
 
-    # 6. Clean up noise
-    # Increased kernel to (5,5) to eat the noise generated at the edges of the tape
-    kernel = np.ones((5, 5), np.uint8)
+    # 6. FIX: Shrink the cleanup kernel from (5,5) to (3,3)
+    # A 5x5 opening completely erases small objects. A 3x3 kernel clears
+    # camera grain without destroying a "little figure".
+    kernel = np.ones((3, 3), np.uint8)
     clean_mask = cv2.morphologyEx(anomaly_mask, cv2.MORPH_OPEN, kernel)
     clean_mask = cv2.morphologyEx(clean_mask, cv2.MORPH_CLOSE, kernel)
 
@@ -61,10 +61,9 @@ def detect(img):
         for contour in contours:
             area = cv2.contourArea(contour)
 
-            # CRITICAL FIX: Increased threshold to 150.
-            # 30 is too small and will detect single flecks of dirt or camera noise.
-            # The alien object is large enough to easily pass 150 area.
-            if area > 150:
+            # FIX: Lowered area threshold from 150 to 35.
+            # If the figure is small or far away, its pixel footprint will be tiny.
+            if area > 35:
                 chud_detected = True
                 x, y, w, h = cv2.boundingRect(contour)
 
@@ -80,7 +79,7 @@ def detect(img):
                 # Crop out the detected object
                 cropped_robot = img[y:y + h, x:x + w]
 
-                # We found a valid anomaly, break the loop
+                # Found a valid anomaly, break the loop
                 break
 
     return output_img, cropped_robot
