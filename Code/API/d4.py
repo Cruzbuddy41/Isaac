@@ -71,6 +71,8 @@ def takeImage():
     cv2.polylines(output_img, big_pts, True, (0, 255, 0), 2)
     cv2.polylines(output_img, small_pts, True, (0, 255, 255), 2)
 
+    # ... (Keep all your existing lane tracking logic exactly the same) ...
+
     if t_det and l_det and r_det and not_stop:
         if not_stop_count <= 5:
             movement.move_left(55, 0.1)
@@ -90,45 +92,23 @@ def takeImage():
         direction = "Searching for side"
     else:
         direction = "SEARCHING"
-    if waittimer == 0:
-        if not chud_detection.chud_detected:
-            chud_detection.detect(img)
-            if (chud_detection.chud_detected == True):
-                print("Chud Detected")
-                camera_email.email(img)
+
+    # --- MINIMAL NECESSARY CHANGE HERE ---
+    # Only count down and run the alien detector when the robot is actively SEARCHING
+    if direction == "SEARCHING":
+        if waittimer == 0:
+            if not chud_detection.chud_detected:
+                chud_detection.detect(img)
+                if chud_detection.chud_detected == True:
+                    print("Chud Detected")
+                    camera_email.email(img)
+        else:
+            waittimer -= 1
     else:
-        waittimer-=1
+        # Reset the timer if it finds the tape again, ensuring it doesn't
+        # false-trigger during normal line navigation
+        waittimer = 6
 
     cv2.putText(output_img, f"Dir: {direction}", (50, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
     cv2.imwrite('lanes_result.jpg', output_img)
     return output_img, direction
-
-
-def apply_movement(direction):
-    if direction == "STOP":
-        movement.stop_all()
-    elif direction == "LEFT":
-        movement.move_left(55, 0.3)
-    elif direction == "RIGHT":
-        movement.move_right(55, 0.3)
-    elif direction == "Searching for side":
-        movement.move_left(55, 0.1)
-    elif direction == "FORWARD" or direction == "SEARCHING":
-        movement.move_forward(40, 0.3)
-
-def reset_counters():
-    global not_stop_count
-    not_stop_count = 0
-    print("Navigation counters reset.")
-
-def apply_movement(direction):
-   if direction == "STOP" or direction == "ERROR":
-       movement.stop_all()
-   elif direction == "LEFT":
-       movement.move_left(55, 0.3)
-   elif direction == "RIGHT":
-       movement.move_right(55, 0.3)
-   elif direction == "Searching for side":
-       movement.move_left(55, 0.1)
-   elif direction == "FORWARD" or direction == "SEARCHING":
-       movement.move_forward(40, 0.3)
