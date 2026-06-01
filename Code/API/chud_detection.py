@@ -25,8 +25,8 @@ def detect(img):
 
     # --- PERFECTED COLOR RANGE FOR YOUR PURPLE ALIEN ---
     # Low bound dropped to 123 to capture the full indigo-purple spectrum in your photos
-    lower_purple = np.array([123, 60, 45])
-    upper_purple = np.array([142, 255, 255])
+    lower_purple = np.array([15, 5, 40])
+    upper_purple = np.array([35, 30, 70])
 
     # Directly isolate the purple alien object
     anomaly_mask = cv2.inRange(gauss, lower_purple, upper_purple)
