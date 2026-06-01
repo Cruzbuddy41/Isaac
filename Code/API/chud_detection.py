@@ -23,14 +23,14 @@ def detect(img):
     # Standard blur to smooth out tile texture
     gauss = cv2.GaussianBlur(hsv, (5, 5), 0)
 
-    # --- MINIMAL NECESSARY CHANGE: TARGET PURPLE DIRECTLY ---
-    # This completely bypasses the grout lines and tile noise in your photo
-    lower_purple = np.array([130, 50, 50])
-    upper_purple = np.array([165, 255, 255])
+    # --- PERFECTED COLOR RANGE FOR YOUR PURPLE ALIEN ---
+    # Low bound dropped to 123 to capture the full indigo-purple spectrum in your photos
+    lower_purple = np.array([123, 60, 45])
+    upper_purple = np.array([142, 255, 255])
 
     # Directly isolate the purple alien object
     anomaly_mask = cv2.inRange(gauss, lower_purple, upper_purple)
-    # --------------------------------------------------------
+    # ---------------------------------------------------
 
     # Morphology to clean up the mask (Kept exactly the same)
     kernel_close = np.ones((7, 7), np.uint8)
@@ -87,7 +87,7 @@ def detect(img):
     else:
         detection_counter = 0
 
-    # Check if we've hit our threshold
+    # Check if we've hit our threshold (3 consecutive frames)
     if detection_counter >= 3:
         chud_detected = True
 
