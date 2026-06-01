@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import camera_email
 
-# Added a counter variable alongside your boolean
+# Keep your counter variables alongside your boolean
 global chud_detected
 global detection_counter
 
@@ -15,8 +15,6 @@ def detect(img):
     global detection_counter
 
     # 1. MASK OUT THE ROBOT CHASSIS
-    # Calculate the bottom 25% of the image to ignore.
-    # This prevents the white "Makita" text and chassis glares from triggering false positives.
     height, width = img.shape[:2]
     ignore_bottom_y = int(height * 0.75)
 
@@ -25,29 +23,16 @@ def detect(img):
     # Standard blur to smooth out tile texture
     gauss = cv2.GaussianBlur(hsv, (5, 5), 0)
 
-    # FINETUNED BACKGROUND MASKS
-    lower_bg_desat = np.array([0, 0, 0])
-    upper_bg_desat = np.array([180, 55, 255])
+    # --- MINIMAL NECESSARY CHANGE: TARGET PURPLE DIRECTLY ---
+    # This completely bypasses the grout lines and tile noise in your photo
+    lower_purple = np.array([130, 50, 50])
+    upper_purple = np.array([165, 255, 255])
 
-    lower_bg_dark = np.array([0, 0, 0])
-    upper_bg_dark = np.array([180, 255, 40])
+    # Directly isolate the purple alien object
+    anomaly_mask = cv2.inRange(gauss, lower_purple, upper_purple)
+    # --------------------------------------------------------
 
-    lower_blue = np.array([90, 50, 40])
-    upper_blue = np.array([125, 255, 255])
-
-    # Create the masks
-    mask_desat = cv2.inRange(gauss, lower_bg_desat, upper_bg_desat)
-    mask_dark = cv2.inRange(gauss, lower_bg_dark, upper_bg_dark)
-    mask_blue = cv2.inRange(gauss, lower_blue, upper_blue)
-
-    # Combine background maps
-    background_mask = cv2.bitwise_or(mask_desat, mask_dark)
-    background_mask = cv2.bitwise_or(background_mask, mask_blue)
-
-    # Invert - anything left over is our target
-    anomaly_mask = cv2.bitwise_not(background_mask)
-
-    # Morphology to clean up the mask
+    # Morphology to clean up the mask (Kept exactly the same)
     kernel_close = np.ones((7, 7), np.uint8)
     kernel_open = np.ones((3, 3), np.uint8)
 
@@ -71,7 +56,7 @@ def detect(img):
             if area > 30:
                 x, y, w, h = cv2.boundingRect(contour)
 
-                # CRITICAL FIX: Ignore any contours that are located on the robot itself
+                # Ignore any contours that are located on the robot itself
                 if y > ignore_bottom_y:
                     continue
 
@@ -96,16 +81,14 @@ def detect(img):
                     # Break loop since we found our target
                     break
 
-    # --- NEW TICKER LOGIC ---
+    # --- TICKER LOGIC ---
     if alien_found_this_frame:
         detection_counter += 1
     else:
-        # Reset the counter if the frame is empty. This requires 3 CONSECUTIVE frames.
         detection_counter = 0
 
     # Check if we've hit our threshold
     if detection_counter >= 3:
         chud_detected = True
 
-    # Ensure your script expects these returns wherever detect() is called
     return output_img, cropped_robot, chud_detected
